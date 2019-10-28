@@ -7,7 +7,7 @@ sampling.
 from abc import ABC, abstractmethod
 
 
-class RoadDamageModel:
+class RoadDamageModel(ABC):
 
     @abstractmethod
     def get_damage_for_coordinates(self, coordinates, magnitudes):
