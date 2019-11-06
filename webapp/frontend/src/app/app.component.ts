@@ -57,7 +57,9 @@ export class AppComponent {
       //   iconUrl: '2273e3d8ad9264b7daa5bdbf8e6b47f8.png',
       //   shadowUrl: '44a526eed258222515aa21eaffd14a96.png',
       // })
-    })
+    }),
+    draggable: true,
+    clickable: true
   };
   geoJSON = {
     id: 'geoJSON',
@@ -79,7 +81,7 @@ export class AppComponent {
   model = new LeafletLayersModel(
     [this.LAYER_OSM, this.LAYER_OCM],
     this.LAYER_OSM.id,
-    [this.circle, this.polygon, this.square, this.marker]
+    [this.circle, this.polygon, this.square, this.marker, this.geoJSON]
   );
 
   layers: Layer[];
@@ -125,5 +127,26 @@ export class AppComponent {
     this.layers = newLayers;
 
     return false;
+  }
+
+  addMarker(event) {
+    // console.log(event);
+    const timestamp = (new Date()).getTime();
+    const newMarker = {
+      id: 'marker_' + timestamp,
+      name: 'Marker_' + timestamp,
+      enabled: true,
+      layer: marker(event.latlng, {
+        draggable: true,
+      })
+    };
+
+    newMarker.layer.on('dragend', (dragEvent) => {
+      console.log('Marker dragged', dragEvent.target._latlng);
+    });
+
+    this.model.overlayLayers.push(newMarker);
+    console.log(event.latlng);
+    this.apply();
   }
 }

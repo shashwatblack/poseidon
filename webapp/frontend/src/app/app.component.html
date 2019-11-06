@@ -89,7 +89,11 @@
 </div>
 
 <div class="content" role="main">
-  <div style="height: calc(100vh - 60px); width: 100%;" leaflet [leafletOptions]="options" [leafletLayers]="layers"></div>
+  <div style="height: calc(100vh - 60px); width: 100%;"
+       leaflet [leafletOptions]="options"
+       [leafletLayers]="layers"
+       (leafletClick)="addMarker($event)">
+  </div>
 </div>
 
 <router-outlet></router-outlet>
