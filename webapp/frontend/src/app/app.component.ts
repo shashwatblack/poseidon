@@ -57,6 +57,7 @@ export class AppComponent {
       //   iconUrl: '2273e3d8ad9264b7daa5bdbf8e6b47f8.png',
       //   shadowUrl: '44a526eed258222515aa21eaffd14a96.png',
       // })
+      draggable: true,
     }),
     draggable: true,
     clickable: true
@@ -85,6 +86,7 @@ export class AppComponent {
   );
 
   layers: Layer[];
+
   layersControl = {
     baseLayers: {
       'Open Street Map': this.LAYER_OSM.layer,
@@ -98,6 +100,7 @@ export class AppComponent {
       GeoJSON: this.geoJSON.layer
     }
   };
+
   options = {
     // layers: [
     //   // tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, attribution: 'Poseidon'})
@@ -108,6 +111,27 @@ export class AppComponent {
     // ],
     zoom: 10,
     center: latLng(30.619026, -96.338900)
+  };
+
+  drawOptions = {
+    position: 'topright',
+    draw: {
+      marker: {
+        // icon: icon({
+        //   iconSize: [25, 41],
+        //   iconAnchor: [13, 41],
+        //   iconUrl: 'assets/marker-icon.png',
+        //   shadowUrl: 'assets/marker-shadow.png'
+        // })
+      },
+      rectangle: false,
+      circlemarker: false,
+      circle: {
+        shapeOptions: {
+          color: '#aaaaaa'
+        }
+      }
+    }
   };
 
   constructor() {
@@ -131,6 +155,7 @@ export class AppComponent {
 
   addMarker(event) {
     // console.log(event);
+    return;
     const timestamp = (new Date()).getTime();
     const newMarker = {
       id: 'marker_' + timestamp,
@@ -146,7 +171,6 @@ export class AppComponent {
     });
 
     this.model.overlayLayers.push(newMarker);
-    console.log(event.latlng);
     this.apply();
   }
 }

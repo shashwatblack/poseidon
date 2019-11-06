@@ -20,7 +20,9 @@
     "@angular/platform-browser-dynamic": "~8.2.13",
     "@angular/router": "~8.2.13",
     "@asymmetrik/ngx-leaflet": "^6.0.1",
+    "@asymmetrik/ngx-leaflet-draw": "^5.0.1",
     "leaflet": "^1.5.1",
+    "leaflet-draw": "^1.0.4",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
@@ -33,6 +35,7 @@
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/leaflet": "^1.5.5",
+    "@types/leaflet-draw": "^1.0.1",
     "@types/node": "~8.9.4",
     "codelyzer": "^5.0.0",
     "jasmine-core": "~3.4.0",
