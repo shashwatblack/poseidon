@@ -1,0 +1,13 @@
+On dev:
+-------------------------------------------
+cd webapp/frontend/
+ng build --base-href '/static/dist/'
+
+This will create webapp/frontend/static/dist folder with all the built resources.
+These will be served as static resources by django.
+
+'webapp/frontend/static/dist' has also been added as a TEMPLATE_DIR in settings.py
+This allows the ng built index.html to be served directly as the home view.
+
+Note: This setup probably won't work well with multiple angular routes.
+At the very least, the django urls will need to be updated to accommodate any sub paths.
