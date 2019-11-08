@@ -1,0 +1,15 @@
+<div>
+  <form (submit)="fetchMagnitude($event)">
+    <div class="form-group">
+      <label for="magnitude">Magnitude</label>
+      <input type="text" class="form-control" id="magnitude" name="magnitude" placeholder="Enter magnitude"
+             [(ngModel)]="magnitude">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  <div style="margin-top: 20px;">
+    <code *ngIf="magnitudeResponse">
+      The equivalent energy is: {{magnitudeResponse.energy}}
+    </code>
+  </div>
+</div>
