@@ -1,0 +1,20 @@
+How to run the server on local:
+-------------------------------------------
+Prerequisites:
+    git
+    python3
+    pipenv
+    node/npm
+
+Steps:
+    git clone git@github.com:harishk1908/poseidon.git
+    cd poseidon
+    pipenv install
+    pipenv shell
+    cd webapp/frontend
+    ng build --base-href '/static/dist/'
+    cd ..
+    python manage.py migrate
+    python manage.py runserver
+
+    # the server is now running on localhost:8000
