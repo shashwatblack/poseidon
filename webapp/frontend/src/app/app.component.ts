@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 import {circle, geoJSON, icon, latLng, Layer, marker, polygon, tileLayer} from 'leaflet';
 import {LeafletLayersModel} from './leaflet-layers.model';
 
@@ -7,7 +7,7 @@ import {LeafletLayersModel} from './leaflet-layers.model';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
   title = 'poseidon-frontend';
 
   LAYER_OCM = {
@@ -129,6 +129,12 @@ export class AppComponent {
       circle: {
         shapeOptions: {
           color: '#aaaaaa'
+        },
+      },
+      polyline: {
+        shapeOptions: {
+          color: '#f357a1',
+          weight: 10
         }
       }
     }
@@ -136,6 +142,48 @@ export class AppComponent {
 
   constructor() {
     this.apply();
+  }
+
+  ngAfterViewInit() {
+    this.hotPatchLeafletCircleRadiusIssue();
+  }
+
+  hotPatchLeafletCircleRadiusIssue() {
+    // hot patch issue with leaflet-draw circle resize
+    // REF: https://stackoverflow.com/a/48063394/1067005
+
+    /* tslint:disable */
+    // @ts-ignore
+    declare var L: any;
+    L.Edit.Circle = L.Edit.CircleMarker.extend({
+      _createResizeMarker: function () {
+        var center = this._shape.getLatLng(),
+          resizemarkerPoint = this._getResizeMarkerPoint(center);
+
+        this._resizeMarkers = [];
+        this._resizeMarkers.push(this._createMarker(resizemarkerPoint, this.options.resizeIcon));
+      },
+      _getResizeMarkerPoint: function (latlng) {
+        let delta = this._shape._radius * Math.cos(Math.PI / 4),
+          point = this._map.project(latlng);
+        return this._map.unproject([point.x + delta, point.y - delta]);
+      },
+      _resize: function (latlng) {
+        let moveLatLng = this._moveMarker.getLatLng();
+        let radius;
+        if (L.GeometryUtil.isVersion07x()) {
+          radius = moveLatLng.distanceTo(latlng);
+        } else {
+          radius = this._map.distance(moveLatLng, latlng);
+        }
+
+        // **** This fixes the cicle resizing ****
+        this._shape.setRadius(radius);
+
+        this._map.fire(L.Draw.Event.EDITRESIZE, {layer: this._shape});
+      }
+    });
+    /* tslint:enable */
   }
 
   apply() {
