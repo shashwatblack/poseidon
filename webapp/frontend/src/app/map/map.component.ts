@@ -102,15 +102,6 @@ export class MapComponent implements OnInit {
     return false;
   }
 
-  updateEarthquakeIntensity() {
-      const color = this.utils.percentageToColor(this.disasterService.earthquakeParameters.intensity);
-      this.disasterBaseLayer.setStyle({
-          color: color,
-          fillColor: color,
-          fillOpacity: 0.3,
-      });
-  }
-
   startEarthquake(params = null) {
     let latlng;
     latlng = params ? params.latlng : this.map.getCenter();
@@ -124,8 +115,8 @@ export class MapComponent implements OnInit {
     this.leafletDirective._toolbars.edit._modes.edit.handler.enable();
 
     // earthquake intensity color
-    this.updateEarthquakeIntensity();
-    this.disasterService.earthquakeIntensityUpdated$.subscribe(() => this.updateEarthquakeIntensity());
+    this.earthquakeIntensityUpdated();
+    this.disasterService.earthquakeIntensityUpdated$.subscribe(() => this.earthquakeIntensityUpdated());
   }
 
   earthquakeCenterUpdated(event) {
@@ -134,6 +125,15 @@ export class MapComponent implements OnInit {
 
   earthquakeRadiusUpdated(event) {
     this.disasterService.updateEarthquakeRadius(event.layer._mRadius);
+  }
+
+  earthquakeIntensityUpdated() {
+      const color = this.utils.percentageToColor(this.disasterService.earthquakeParameters.intensity);
+      this.disasterBaseLayer.setStyle({
+          color: color,
+          fillColor: color,
+          fillOpacity: 0.3,
+      });
   }
 
   constructor(private disasterService: DisasterService, private utils: UtilsService) {
