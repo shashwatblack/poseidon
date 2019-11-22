@@ -1,33 +1,55 @@
 <div>
-  <button type="submit" class="btn btn-primary" (click)="disasterService.startEarthquake()">Hit it EQ!!</button>
+  <div *ngIf="state.wizardStep == WizardSteps.DisasterChoice">
+    <h4 class="wizard-step-title">What would you like to simulate?</h4>
+    <button class="btn btn-lg btn-danger btn-select-disaster" (click)="chooseDisaster(DisasterTaxonomies.Earthquake)">
+      Earthquake!!
+    </button>
+    <button class="btn btn-lg btn-warning btn-select-disaster" (click)="chooseDisaster(DisasterTaxonomies.Hurricane)">
+      Hurricane!!
+    </button>
+  </div>
+  <div *ngIf="state.wizardStep == WizardSteps.InputParameters">
+    <form (submit)="fetchMagnitude($event)">
+      <div *ngIf="state.chosenDisaster == DisasterTaxonomies.Earthquake">
+        <h4 class="wizard-step-title">Earthquake</h4>
+        <div class="form-group">
+          <label for="intensityRange">Earthquake Intensity</label>
+          <input type="range" class="form-control custom-range" id="intensityRange" name="intensity"
+                 [(ngModel)]="earthquakeParameters.intensity"
+                 (change)="disasterService.updateEarthquakeIntensity($event.target.value)">
+        </div>
+        <br>
+        <code>
+          Epicenter: [{{earthquakeParameters.center.lat}}, {{earthquakeParameters.center.lng}}]
+        </code>
+        <br>
+        <code>
+          Radius: {{earthquakeParameters.radius}}
+        </code>
+        <br>
+        <code>
+          Intensity: {{earthquakeParameters.intensity}}
+        </code>
+      </div>
+      <div *ngIf="state.chosenDisaster == DisasterTaxonomies.Hurricane">
+        <h4 class="wizard-step-title">Hurricane</h4>
+        <div class="form-group">
+          <label for="magnitude">Magnitude</label>
+          <input type="text" class="form-control" id="magnitude" name="magnitude" placeholder="Enter magnitude"
+                 [(ngModel)]="magnitude">
+        </div>
+      </div>
+      <hr>
+      <div class="action-buttons">
+        <button type="button" class="btn btn-outline-secondary" (click)="goBack()">Previous</button>
+        <button type="submit" class="btn btn-primary pull-right">Submit</button>
+      </div>
+    </form>
+  </div>
+
+
   <br>
-  <br>
-  <label for="intensityRange">Earthquake Intensity</label>
-  <input type="range" class="custom-range" id="intensityRange"
-         [(ngModel)]="earthquakeParameters.intensity"
-         (change)="disasterService.updateEarthquakeIntensity($event.target.value)">
-  <br>
-  <code>
-    Epicenter: [{{earthquakeParameters.center.lat}}, {{earthquakeParameters.center.lng}}]
-  </code>
-  <br>
-  <code>
-    Radius: {{earthquakeParameters.radius}}
-  </code>
-  <br>
-  <code>
-    Intensity: {{earthquakeParameters.intensity}}
-  </code>
-  <hr>
-  <br>
-  <form (submit)="fetchMagnitude($event)">
-    <div class="form-group">
-      <label for="magnitude">Magnitude</label>
-      <input type="text" class="form-control" id="magnitude" name="magnitude" placeholder="Enter magnitude"
-             [(ngModel)]="magnitude">
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
+
   <div style="margin-top: 20px;">
     <code *ngIf="magnitudeResponse">
       The equivalent energy is: {{magnitudeResponse.energy}}
