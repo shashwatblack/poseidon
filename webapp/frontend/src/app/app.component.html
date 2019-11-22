@@ -92,12 +92,7 @@
 
 <div class="content" role="main">
   <div class="map-wrapper">
-    <div leaflet [leafletOptions]="options"
-         [leafletLayers]="layers"
-         (leafletClick)="addMarker($event)"
-         leafletDraw
-         [leafletDrawOptions]="drawOptions">
-    </div>
+    <app-map></app-map>
   </div>
   <div class="sidebar-wrapper">
     <app-sidebar></app-sidebar>

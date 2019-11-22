@@ -1,0 +1,5 @@
+$headerHeight: 60px;
+
+.leaflet-container {
+  height: calc(100vh - #{$headerHeight});
+}
