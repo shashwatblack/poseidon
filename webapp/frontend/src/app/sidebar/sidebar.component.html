@@ -1,6 +1,10 @@
 <div>
   <button type="submit" class="btn btn-primary" (click)="disasterService.startEarthquake()">Hit it EQ!!</button>
   <br>
+  <br>
+  <label for="intensityRange">Earthquake Intensity</label>
+  <input type="range" class="custom-range" id="intensityRange"
+         (change)="disasterService.updateEarthquakeIntensity($event.target.value)">
   <hr>
   <br>
   <form (submit)="fetchMagnitude($event)">

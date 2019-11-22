@@ -3,6 +3,7 @@ import {Map, circle, geoJSON, icon, latLng, Layer, marker, polygon, tileLayer} f
 import {LeafletLayersModel} from './leaflet-layers.model';
 import {LeafletDirective} from '@asymmetrik/ngx-leaflet';
 import {DisasterService} from '../disaster.service';
+import {UtilsService} from "../utils.service";
 
 @Component({
   selector: 'app-map',
@@ -13,6 +14,7 @@ import {DisasterService} from '../disaster.service';
 export class MapComponent implements OnInit {
   map: Map;
   leafletDirective: LeafletDirective;
+  disasterBaseLayer: any;
   LAYER_OSM = {
     id: 'openstreetmap',
     name: 'Open Street Map',
@@ -104,14 +106,22 @@ export class MapComponent implements OnInit {
     let latlng;
     latlng = params ? params.latlng : this.map.getCenter();
 
-    const earthquakeCircleLayer = circle(latlng, {radius: 10000});
+    this.disasterBaseLayer = circle(latlng, {radius: 10000});
     // @ts-ignore
-    this.leafletDirective.options.edit.featureGroup.addLayer(earthquakeCircleLayer);
+    this.leafletDirective.options.edit.featureGroup.addLayer(this.disasterBaseLayer);
     // @ts-ignore
     this.leafletDirective._toolbars.edit._modes.edit.handler.enable();
+
+    this.disasterService.intensityUpdated$.subscribe((intensity) => {
+      const color = this.utils.intensityToColor(intensity)
+      this.disasterBaseLayer.setStyle({
+          color: color,
+          fillColor: color
+      });
+    });
   }
 
-  constructor(private disasterService: DisasterService) {
+  constructor(private disasterService: DisasterService, private utils: UtilsService) {
     this.apply();
 
     this.disasterService.earthquakeStarted$.subscribe((params) => this.startEarthquake(params));
