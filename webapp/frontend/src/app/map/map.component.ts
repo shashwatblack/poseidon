@@ -2,6 +2,7 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {Map, circle, geoJSON, icon, latLng, Layer, marker, polygon, tileLayer} from 'leaflet';
 import {LeafletLayersModel} from './leaflet-layers.model';
 import {LeafletDirective} from '@asymmetrik/ngx-leaflet';
+import {DisasterService} from '../disaster.service';
 
 @Component({
   selector: 'app-map',
@@ -99,17 +100,21 @@ export class MapComponent implements OnInit {
     return false;
   }
 
-  startEarthquake(event = null) {
+  startEarthquake(params = null) {
     let latlng;
-    latlng = event ? event.latlng : this.map.getCenter();
+    latlng = params ? params.latlng : this.map.getCenter();
 
     const earthquakeCircleLayer = circle(latlng, {radius: 10000});
+    // @ts-ignore
     this.leafletDirective.options.edit.featureGroup.addLayer(earthquakeCircleLayer);
+    // @ts-ignore
     this.leafletDirective._toolbars.edit._modes.edit.handler.enable();
   }
 
-  constructor() {
+  constructor(private disasterService: DisasterService) {
     this.apply();
+
+    this.disasterService.earthquakeStarted$.subscribe((params) => this.startEarthquake(params));
   }
 
   ngOnInit() {

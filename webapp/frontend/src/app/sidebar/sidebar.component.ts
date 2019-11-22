@@ -1,6 +1,6 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {DisasterService} from '../disaster.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,12 +8,11 @@ import {Observable} from 'rxjs';
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
-  @Output() startEarthquakeEvent = new EventEmitter<boolean>();
 
   private magnitudeResponse: any;
   private magnitude: string;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private disasterService: DisasterService) {
   }
 
   ngOnInit() {
@@ -30,9 +29,5 @@ export class SidebarComponent implements OnInit {
         },
         err => console.error(err)
       );
-  }
-
-  startEarthquake() {
-    this.startEarthquakeEvent.emit();
   }
 }
