@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {Map, circle, geoJSON, icon, latLng, Layer, marker, polygon, tileLayer} from 'leaflet';
 import {LeafletLayersModel} from './leaflet-layers.model';
-import {LeafletDirective} from '@asymmetrik/ngx-leaflet';
+import {LeafletDrawDirective} from '@asymmetrik/ngx-leaflet-draw';
 import {DisasterService} from '../disaster.service';
 import {UtilsService} from '../utils.service';
 
@@ -13,7 +13,7 @@ import {UtilsService} from '../utils.service';
 })
 export class MapComponent implements OnInit {
   map: Map;
-  leafletDirective: LeafletDirective;
+  leafletDrawDirective: LeafletDrawDirective;
   disasterBaseLayer: any;
   LAYER_OSM = {
     id: 'openstreetmap',
@@ -110,9 +110,9 @@ export class MapComponent implements OnInit {
 
     this.disasterBaseLayer = circle(latlng, {radius: 10000});
     // @ts-ignore
-    this.leafletDirective.options.edit.featureGroup.addLayer(this.disasterBaseLayer);
+    this.leafletDrawDirective.options.edit.featureGroup.addLayer(this.disasterBaseLayer);
     // @ts-ignore
-    this.leafletDirective._toolbars.edit._modes.edit.handler.enable();
+    this.leafletDrawDirective._toolbars.edit._modes.edit.handler.enable();
 
     // earthquake intensity color
     this.earthquakeIntensityUpdated();
@@ -150,7 +150,7 @@ export class MapComponent implements OnInit {
     this.map = map;
   }
 
-  onLeafletDrawReady(leafletDirective: LeafletDirective) {
-    this.leafletDirective = leafletDirective;
+  onLeafletDrawReady(leafletDrawDirective: LeafletDrawDirective) {
+    this.leafletDrawDirective = leafletDrawDirective;
   }
 }
