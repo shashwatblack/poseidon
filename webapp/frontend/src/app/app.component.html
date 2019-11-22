@@ -92,10 +92,10 @@
 
 <div class="content" role="main">
   <div class="map-wrapper">
-    <app-map></app-map>
+    <app-map #mapComponent></app-map>
   </div>
   <div class="sidebar-wrapper">
-    <app-sidebar></app-sidebar>
+    <app-sidebar (startEarthquakeEvent)="mapComponent.startEarthquake()"></app-sidebar>
   </div>
 </div>
 

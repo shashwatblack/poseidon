@@ -1,22 +1,17 @@
-import {Component, OnInit} from '@angular/core';
-import {circle, geoJSON, icon, latLng, Layer, marker, polygon, tileLayer} from 'leaflet';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Map, circle, geoJSON, icon, latLng, Layer, marker, polygon, tileLayer} from 'leaflet';
 import {LeafletLayersModel} from './leaflet-layers.model';
+import {LeafletDirective} from '@asymmetrik/ngx-leaflet';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.scss']
+  styleUrls: ['./map.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class MapComponent implements OnInit {
-  LAYER_OCM = {
-    id: 'opencyclemap',
-    name: 'Open Cycle Map',
-    enabled: true,
-    layer: tileLayer('http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png', {
-      maxZoom: 18,
-      attribution: 'Open Cycle Map'
-    })
-  };
+  map: Map;
+  leafletDirective: LeafletDirective;
   LAYER_OSM = {
     id: 'openstreetmap',
     name: 'Open Street Map',
@@ -26,87 +21,16 @@ export class MapComponent implements OnInit {
       attribution: 'Open Street Map'
     })
   };
-  circle = {
-    id: 'circle',
-    name: 'Circle',
-    enabled: true,
-    layer: circle([30.609026, -96.348900], {radius: 5000})
-  };
-  polygon = {
-    id: 'polygon',
-    name: 'Polygon',
-    enabled: true,
-    layer: polygon([[30.8, -96.85], [30.92, -96.92], [30.87, -96.8]])
-  };
-  square = {
-    id: 'square',
-    name: 'Square',
-    enabled: true,
-    layer: polygon([[30.8, -96.55], [30.9, -96.55], [30.9, -96.7], [30.8, -96.7]])
-  };
-  marker = {
-    id: 'marker',
-    name: 'Marker',
-    enabled: true,
-    layer: marker([30.619026, -96.338900], {
-      // icon: icon({
-      //   iconSize: [25, 41],
-      //   iconAnchor: [13, 41],
-      //   iconUrl: '2273e3d8ad9264b7daa5bdbf8e6b47f8.png',
-      //   shadowUrl: '44a526eed258222515aa21eaffd14a96.png',
-      // })
-      draggable: true,
-    }),
-    draggable: true,
-    clickable: true
-  };
-  geoJSON = {
-    id: 'geoJSON',
-    name: 'Geo JSON Polygon',
-    enabled: true,
-    layer: geoJSON(
-      ({
-        type: 'Polygon',
-        coordinates: [[
-          [-96.6, 30.87],
-          [-96.5, 30.87],
-          [-96.5, 30.93],
-          [-96.6, 30.87]
-        ]]
-      }) as any,
-      {style: () => ({color: '#ff7800'})})
-  };
 
   model = new LeafletLayersModel(
-    [this.LAYER_OSM, this.LAYER_OCM],
+    [this.LAYER_OSM],
     this.LAYER_OSM.id,
-    [this.circle, this.polygon, this.square, this.marker, this.geoJSON]
+    []
   );
 
   layers: Layer[];
 
-  layersControl = {
-    baseLayers: {
-      'Open Street Map': this.LAYER_OSM.layer,
-      'Open Cycle Map': this.LAYER_OCM.layer
-    },
-    overlays: {
-      Circle: this.circle.layer,
-      Square: this.square.layer,
-      Polygon: this.polygon.layer,
-      Marker: this.marker.layer,
-      GeoJSON: this.geoJSON.layer
-    }
-  };
-
   options = {
-    // layers: [
-    //   // tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18, attribution: 'Poseidon'})
-    //   tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', {
-    //     maxZoom: 18,
-    //     attribution: 'Poseidon',
-    //   })
-    // ],
     zoom: 10,
     center: latLng(30.619026, -96.338900)
   };
@@ -114,27 +38,11 @@ export class MapComponent implements OnInit {
   drawOptions = {
     position: 'topright',
     draw: {
-      marker: {
-        // icon: icon({
-        //   iconSize: [25, 41],
-        //   iconAnchor: [13, 41],
-        //   iconUrl: 'assets/marker-icon.png',
-        //   shadowUrl: 'assets/marker-shadow.png'
-        // })
-      },
+      marker: false,
       rectangle: false,
       circlemarker: false,
-      circle: {
-        shapeOptions: {
-          color: '#aaaaaa'
-        },
-      },
-      polyline: {
-        shapeOptions: {
-          color: '#f357a1',
-          weight: 10
-        }
-      }
+      circle: false,
+      polyline: false
     }
   };
 
@@ -191,25 +99,13 @@ export class MapComponent implements OnInit {
     return false;
   }
 
-  addMarker(event) {
-    // console.log(event);
-    return;
-    const timestamp = (new Date()).getTime();
-    const newMarker = {
-      id: 'marker_' + timestamp,
-      name: 'Marker_' + timestamp,
-      enabled: true,
-      layer: marker(event.latlng, {
-        draggable: true,
-      })
-    };
+  startEarthquake(event = null) {
+    let latlng;
+    latlng = event ? event.latlng : this.map.getCenter();
 
-    newMarker.layer.on('dragend', (dragEvent) => {
-      console.log('Marker dragged', dragEvent.target._latlng);
-    });
-
-    this.model.overlayLayers.push(newMarker);
-    this.apply();
+    const earthquakeCircleLayer = circle(latlng, {radius: 10000});
+    this.leafletDirective.options.edit.featureGroup.addLayer(earthquakeCircleLayer);
+    this.leafletDirective._toolbars.edit._modes.edit.handler.enable();
   }
 
   constructor() {
@@ -218,5 +114,13 @@ export class MapComponent implements OnInit {
 
   ngOnInit() {
     this.hotPatchLeafletCircleRadiusIssue();
+  }
+
+  onMapReady(map: Map) {
+    this.map = map;
+  }
+
+  onLeafletDrawReady(leafletDirective: LeafletDirective) {
+    this.leafletDirective = leafletDirective;
   }
 }

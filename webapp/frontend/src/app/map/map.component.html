@@ -1,6 +1,9 @@
-<div leaflet [leafletOptions]="options"
+<div leaflet
+     (leafletMapReady)="onMapReady($event)"
+     [leafletOptions]="options"
      [leafletLayers]="layers"
-     (leafletClick)="addMarker($event)"
+     (leafletClick)="startEarthquake($event)"
      leafletDraw
+     (leafletDrawReady)="onLeafletDrawReady($event)"
      [leafletDrawOptions]="drawOptions">
 </div>
