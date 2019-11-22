@@ -17,11 +17,15 @@ export class DisasterService {
 
   // Observable string sources
   private startEarthquakeSource = new Subject<string>();
+  private updateCenterSource = new Subject<number>();
+  private updateRadiusSource = new Subject<number>();
   private updateIntensitySource = new Subject<number>();
 
   // Observable string streams
   earthquakeStarted$ = this.startEarthquakeSource.asObservable();
-  intensityUpdated$ = this.updateIntensitySource.asObservable();
+  earthquakeCenterUpdated$ = this.updateCenterSource.asObservable();
+  earthquakeRadiusUpdated$ = this.updateRadiusSource.asObservable();
+  earthquakeIntensityUpdated$ = this.updateIntensitySource.asObservable();
 
   // Service message commands
   startEarthquake() {
@@ -31,6 +35,16 @@ export class DisasterService {
   updateEarthquakeIntensity(newIntensity) {
     this.earthquakeParameters.intensity = newIntensity;
     this.updateIntensitySource.next(newIntensity);
+  }
+
+  updateEarthquakeCenter(newCenter) {
+    this.earthquakeParameters.center = newCenter;
+    this.updateCenterSource.next(newCenter);
+  }
+
+  updateEarthquakeRadius(newRadius) {
+    this.earthquakeParameters.radius = newRadius;
+    this.updateRadiusSource.next(newRadius);
   }
 
   constructor() { }

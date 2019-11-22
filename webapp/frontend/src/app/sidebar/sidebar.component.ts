@@ -11,8 +11,10 @@ export class SidebarComponent implements OnInit {
 
   private magnitudeResponse: any;
   private magnitude: string;
+  private earthquakeParameters: object;
 
   constructor(private http: HttpClient, private disasterService: DisasterService) {
+    this.earthquakeParameters = disasterService.earthquakeParameters;
   }
 
   ngOnInit() {

@@ -4,7 +4,20 @@
   <br>
   <label for="intensityRange">Earthquake Intensity</label>
   <input type="range" class="custom-range" id="intensityRange"
+         [(ngModel)]="earthquakeParameters.intensity"
          (change)="disasterService.updateEarthquakeIntensity($event.target.value)">
+  <br>
+  <code>
+    Epicenter: [{{earthquakeParameters.center.lat}}, {{earthquakeParameters.center.lng}}]
+  </code>
+  <br>
+  <code>
+    Radius: {{earthquakeParameters.radius}}
+  </code>
+  <br>
+  <code>
+    Intensity: {{earthquakeParameters.intensity}}
+  </code>
   <hr>
   <br>
   <form (submit)="fetchMagnitude($event)">

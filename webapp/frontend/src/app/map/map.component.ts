@@ -3,7 +3,7 @@ import {Map, circle, geoJSON, icon, latLng, Layer, marker, polygon, tileLayer} f
 import {LeafletLayersModel} from './leaflet-layers.model';
 import {LeafletDirective} from '@asymmetrik/ngx-leaflet';
 import {DisasterService} from '../disaster.service';
-import {UtilsService} from "../utils.service";
+import {UtilsService} from '../utils.service';
 
 @Component({
   selector: 'app-map',
@@ -102,9 +102,20 @@ export class MapComponent implements OnInit {
     return false;
   }
 
+  updateEarthquakeIntensity() {
+      const color = this.utils.percentageToColor(this.disasterService.earthquakeParameters.intensity);
+      this.disasterBaseLayer.setStyle({
+          color: color,
+          fillColor: color,
+          fillOpacity: 0.3,
+      });
+  }
+
   startEarthquake(params = null) {
     let latlng;
     latlng = params ? params.latlng : this.map.getCenter();
+
+    this.disasterService.updateEarthquakeCenter(latlng);
 
     this.disasterBaseLayer = circle(latlng, {radius: 10000});
     // @ts-ignore
@@ -112,13 +123,17 @@ export class MapComponent implements OnInit {
     // @ts-ignore
     this.leafletDirective._toolbars.edit._modes.edit.handler.enable();
 
-    this.disasterService.intensityUpdated$.subscribe((intensity) => {
-      const color = this.utils.intensityToColor(intensity)
-      this.disasterBaseLayer.setStyle({
-          color: color,
-          fillColor: color
-      });
-    });
+    // earthquake intensity color
+    this.updateEarthquakeIntensity();
+    this.disasterService.earthquakeIntensityUpdated$.subscribe(() => this.updateEarthquakeIntensity());
+  }
+
+  earthquakeCenterUpdated(event) {
+    this.disasterService.updateEarthquakeCenter(event.layer._latlng);
+  }
+
+  earthquakeRadiusUpdated(event) {
+    this.disasterService.updateEarthquakeRadius(event.layer._mRadius);
   }
 
   constructor(private disasterService: DisasterService, private utils: UtilsService) {
