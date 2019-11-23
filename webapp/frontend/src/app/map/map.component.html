@@ -5,6 +5,6 @@
      leafletDraw
      (leafletDrawReady)="onLeafletDrawReady($event)"
      [leafletDrawOptions]="drawOptions"
-     (leafletDrawEditMove)="earthquakeCenterUpdated($event)"
-     (leafletDrawEditResize)="earthquakeRadiusUpdated($event)">
+     (leafletDrawEditMove)="baseLayerUpdated()"
+     (leafletDrawEditResize)="baseLayerUpdated()">
 </div>

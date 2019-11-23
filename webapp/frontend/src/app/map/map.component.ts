@@ -1,10 +1,10 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {Map, circle, geoJSON, icon, latLng, Layer, marker, polygon, tileLayer} from 'leaflet';
+import {circle, LatLng, latLng, Layer, Map, tileLayer} from 'leaflet';
 import {LeafletLayersModel} from './leaflet-layers.model';
 import {LeafletDrawDirective} from '@asymmetrik/ngx-leaflet-draw';
 import {DisasterService} from '../disaster.service';
 import {UtilsService} from '../utils.service';
-import {WizardSteps} from '../enums';
+import {DisasterTaxonomies, WizardSteps} from '../enums';
 
 @Component({
   selector: 'app-map',
@@ -16,7 +16,8 @@ export class MapComponent implements OnInit {
   /*** GLOBALS ********************************************************************************************************/
   map: Map;
   leafletDrawDirective: LeafletDrawDirective;
-  disasterBaseLayer: any;
+  earthquakeBaseLayer: any;
+  hurricaneBaseLayers: any;
 
   /*** MAP PARAMETERS *************************************************************************************************/
   LAYER_OSM = {
@@ -113,12 +114,32 @@ export class MapComponent implements OnInit {
     }
   }
 
+  enableMapEdit() {
+    if (!this.leafletDrawDirective) {
+      return;
+    }
+    // @ts-ignore
+    this.leafletDrawDirective._toolbars.edit._modes.edit.handler.enable();
+  }
+
   clearMap() {
     if (!this.leafletDrawDirective) {
       return;
     }
     // @ts-ignore
     this.leafletDrawDirective.options.edit.featureGroup.clearLayers();
+  }
+
+  baseLayerUpdated() {
+    if (this.disasterService.state.chosenDisaster === DisasterTaxonomies.Earthquake) {
+      this.disasterService.earthquakeParameters.center = this.earthquakeBaseLayer._latlng;
+      this.disasterService.earthquakeParameters.radius = this.earthquakeBaseLayer._mRadius;
+    } else if (this.disasterService.state.chosenDisaster === DisasterTaxonomies.Hurricane) {
+      this.disasterService.hurricaneParameters.start.center = this.hurricaneBaseLayers.start._latlng;
+      this.disasterService.hurricaneParameters.start.radius = this.hurricaneBaseLayers.start._mRadius;
+      this.disasterService.hurricaneParameters.end.center = this.hurricaneBaseLayers.end._latlng;
+      this.disasterService.hurricaneParameters.end.radius = this.hurricaneBaseLayers.end._mRadius;
+    }
   }
 
   /*** EARTHQUAKE *****************************************************************************************************/
@@ -128,30 +149,22 @@ export class MapComponent implements OnInit {
     let latlng;
     latlng = params ? params.latlng : this.map.getCenter();
 
-    this.disasterService.updateEarthquakeCenter(latlng);
+    this.disasterService.earthquakeParameters.center = latlng;
 
-    this.disasterBaseLayer = circle(latlng, {radius: 10000});
+    this.earthquakeBaseLayer = circle(latlng, {radius: 10000});
     // @ts-ignore
-    this.leafletDrawDirective.options.edit.featureGroup.addLayer(this.disasterBaseLayer);
-    // @ts-ignore
-    this.leafletDrawDirective._toolbars.edit._modes.edit.handler.enable();
+    this.leafletDrawDirective.options.edit.featureGroup.addLayer(this.earthquakeBaseLayer);
+
+    this.enableMapEdit();
 
     // earthquake intensity color
     this.earthquakeIntensityUpdated();
     this.disasterService.earthquakeIntensityUpdated$.subscribe(() => this.earthquakeIntensityUpdated());
   }
 
-  earthquakeCenterUpdated(event) {
-    this.disasterService.updateEarthquakeCenter(event.layer._latlng);
-  }
-
-  earthquakeRadiusUpdated(event) {
-    this.disasterService.updateEarthquakeRadius(event.layer._mRadius);
-  }
-
   earthquakeIntensityUpdated() {
       const color = this.utils.percentageToColor(this.disasterService.earthquakeParameters.intensity);
-      this.disasterBaseLayer.setStyle({
+      this.earthquakeBaseLayer.setStyle({
           color: color,
           fillColor: color,
           fillOpacity: 0.3,
@@ -159,12 +172,49 @@ export class MapComponent implements OnInit {
   }
 
   /*** HURRICANE ******************************************************************************************************/
+  startHurricane() {
+    this.clearMap();
+
+    let latlng = this.map.getCenter();
+
+    this.hurricaneBaseLayers = {
+      start: circle(latlng, {radius: 10000}),
+      end: circle(new LatLng(latlng.lat + 0.4, latlng.lng + 0.4), {radius: 5000}),
+    };
+
+    // @ts-ignore
+    this.leafletDrawDirective.options.edit.featureGroup.addLayer(this.hurricaneBaseLayers.start);
+    // @ts-ignore
+    this.leafletDrawDirective.options.edit.featureGroup.addLayer(this.hurricaneBaseLayers.end);
+
+    this.enableMapEdit();
+
+    // intensity colors
+    this.hurricaneUpdated();
+    this.disasterService.hurricaneUpdated$.subscribe(() => this.hurricaneUpdated());
+  }
+
+  hurricaneUpdated() {
+      let color = this.utils.percentageToColor(this.disasterService.hurricaneParameters.start.intensity);
+      this.hurricaneBaseLayers.start.setStyle({
+          color: color,
+          fillColor: color,
+          fillOpacity: 0.3,
+      });
+      color = this.utils.percentageToColor(this.disasterService.hurricaneParameters.end.intensity);
+      this.hurricaneBaseLayers.end.setStyle({
+          color: color,
+          fillColor: color,
+          fillOpacity: 0.3,
+      });
+  }
 
   /*** CLASS METHODS **************************************************************************************************/
   constructor(private disasterService: DisasterService, private utils: UtilsService) {
     this.apply();
     this.disasterService.stateUpdated$.subscribe(() => this.stateUpdated());
     this.disasterService.earthquakeStarted$.subscribe((params) => this.startEarthquake(params));
+    this.disasterService.hurricaneStarted$.subscribe(() => this.startHurricane());
   }
 
   ngOnInit() {

@@ -14,7 +14,6 @@ export class SidebarComponent implements OnInit {
 
   private magnitudeResponse: any;
   private magnitude: string;
-  private earthquakeParameters: object;
 
   chooseDisaster(chosenDisaster: DisasterTaxonomies) {
     this.disasterService.state.chosenDisaster = chosenDisaster;
@@ -22,7 +21,7 @@ export class SidebarComponent implements OnInit {
     if (this.disasterService.state.chosenDisaster === DisasterTaxonomies.Earthquake) {
       this.disasterService.startEarthquake();
     } else if (this.disasterService.state.chosenDisaster === DisasterTaxonomies.Hurricane) {
-      console.log('Method not implemented.');
+      this.disasterService.startHurricane();
     }
 
     this.disasterService.state.wizardStep = WizardSteps.InputParameters;
@@ -46,9 +45,7 @@ export class SidebarComponent implements OnInit {
       );
   }
 
-  constructor(private http: HttpClient, private disasterService: DisasterService) {
-    this.earthquakeParameters = disasterService.earthquakeParameters;
-  }
+  constructor(private http: HttpClient, private disasterService: DisasterService) {}
 
   ngOnInit() {
   }

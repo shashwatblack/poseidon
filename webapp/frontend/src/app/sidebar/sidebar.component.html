@@ -15,29 +15,60 @@
         <div class="form-group">
           <label for="intensityRange">Earthquake Intensity</label>
           <input type="range" class="form-control custom-range" id="intensityRange" name="intensity"
-                 [(ngModel)]="earthquakeParameters.intensity"
+                 [(ngModel)]="disasterService.earthquakeParameters.intensity"
                  (change)="disasterService.updateEarthquakeIntensity($event.target.value)">
         </div>
         <br>
         <code>
-          Epicenter: [{{earthquakeParameters.center.lat}}, {{earthquakeParameters.center.lng}}]
+          Epicenter: [{{disasterService.earthquakeParameters.center.lat}}, {{disasterService.earthquakeParameters.center.lng}}]
         </code>
         <br>
         <code>
-          Radius: {{earthquakeParameters.radius}}
+          Radius: {{disasterService.earthquakeParameters.radius}}
         </code>
         <br>
         <code>
-          Intensity: {{earthquakeParameters.intensity}}
+          Intensity: {{disasterService.earthquakeParameters.intensity}}
         </code>
       </div>
       <div *ngIf="disasterService.state.chosenDisaster == DisasterTaxonomies.Hurricane">
         <h4 class="wizard-step-title">Hurricane</h4>
         <div class="form-group">
-          <label for="magnitude">Magnitude</label>
-          <input type="text" class="form-control" id="magnitude" name="magnitude" placeholder="Enter magnitude"
-                 [(ngModel)]="magnitude">
+          <label for="startIntensityRange">Start Intensity</label>
+          <input type="range" class="form-control custom-range" id="startIntensityRange" name="startIntensity"
+                 [(ngModel)]="disasterService.hurricaneParameters.start.intensity"
+                 (change)="disasterService.updateHurricaneStartIntensity($event.target.value)">
         </div>
+        <div class="form-group">
+          <label for="endIntensityRange">End Intensity</label>
+          <input type="range" class="form-control custom-range" id="endIntensityRange" name="endIntensity"
+                 [(ngModel)]="disasterService.hurricaneParameters.end.intensity"
+                 (change)="disasterService.updateHurricaneEndIntensity($event.target.value)">
+        </div>
+        <br>
+        <code>
+          Start Center: [{{disasterService.hurricaneParameters.start.center.lat}}, {{disasterService.hurricaneParameters.start.center.lng}}]
+        </code>
+        <br>
+        <code>
+          Start Radius: {{disasterService.hurricaneParameters.start.radius}}
+        </code>
+        <br>
+        <code>
+          Start Intensity: {{disasterService.hurricaneParameters.start.intensity}}
+        </code>
+        <br>
+        <code>
+          End Center: [{{disasterService.hurricaneParameters.end.center.lat}}, {{disasterService.hurricaneParameters.end.center.lng}}]
+        </code>
+        <br>
+        <code>
+          End Radius: {{disasterService.hurricaneParameters.end.radius}}
+        </code>
+        <br>
+        <code>
+          End Intensity: {{disasterService.hurricaneParameters.end.intensity}}
+        </code>
       </div>
       <hr>
       <div class="action-buttons">

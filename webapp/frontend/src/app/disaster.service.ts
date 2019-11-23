@@ -44,22 +44,25 @@ export class DisasterService {
   // Observable sources
   private updateStateSource = new Subject<object>();
   private startEarthquakeSource = new Subject<string>();
-  private updateCenterSource = new Subject<number>();
-  private updateRadiusSource = new Subject<number>();
+  private updateEarthquakeSource = new Subject<number>();
   private updateIntensitySource = new Subject<number>();
+  private startHurricaneSource = new Subject<string>();
+  private updateHurricaneSource = new Subject<string>();
 
   // Observables
   stateUpdated$ = this.updateStateSource.asObservable();
   earthquakeStarted$ = this.startEarthquakeSource.asObservable();
-  earthquakeCenterUpdated$ = this.updateCenterSource.asObservable();
-  earthquakeRadiusUpdated$ = this.updateRadiusSource.asObservable();
+  earthquakeUpdated$ = this.updateEarthquakeSource.asObservable();
   earthquakeIntensityUpdated$ = this.updateIntensitySource.asObservable();
+  hurricaneStarted$ = this.startHurricaneSource.asObservable();
+  hurricaneUpdated$ = this.updateHurricaneSource.asObservable();
 
   // Service message commands
   invokeStateUpdate() {
     this.updateStateSource.next();
   }
 
+  /*** EARTHQUAKE *****************************************************************************************************/
   startEarthquake() {
     this.startEarthquakeSource.next();
   }
@@ -69,14 +72,23 @@ export class DisasterService {
     this.updateIntensitySource.next(newIntensity);
   }
 
-  updateEarthquakeCenter(newCenter) {
-    this.earthquakeParameters.center = newCenter;
-    this.updateCenterSource.next(newCenter);
+  /*** HURRICANE ******************************************************************************************************/
+  startHurricane() {
+    this.startHurricaneSource.next();
   }
 
-  updateEarthquakeRadius(newRadius) {
-    this.earthquakeParameters.radius = newRadius;
-    this.updateRadiusSource.next(newRadius);
+  updateHurricaneStartIntensity(newIntensity) {
+    this.hurricaneParameters.start.intensity = newIntensity;
+    this.updateHurricane();
+  }
+
+  updateHurricaneEndIntensity(newIntensity) {
+    this.hurricaneParameters.end.intensity = newIntensity;
+    this.updateHurricane();
+  }
+
+  updateHurricane() {
+    this.updateHurricaneSource.next();
   }
 
   constructor() { }
