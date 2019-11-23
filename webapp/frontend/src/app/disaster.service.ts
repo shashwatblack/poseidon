@@ -1,11 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import {DisasterTaxonomies, WizardSteps} from './enums';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DisasterService {
-  currentDisaster = 'Earthquake';
+  state: {
+    wizardStep: WizardSteps,
+    chosenDisaster?: DisasterTaxonomies,
+  } = {
+    wizardStep: WizardSteps.DisasterChoice,
+  };
+
   earthquakeParameters = {
     center: {
       lat: 0.0,
@@ -15,19 +22,44 @@ export class DisasterService {
     intensity: 5
   };
 
-  // Observable string sources
+  hurricaneParameters = {
+    start: {
+      center: {
+        lat: 0.0,
+        lng: 0.0
+      },
+      radius: 5000,
+      intensity: 5
+    },
+    end: {
+      center: {
+        lat: 0.0,
+        lng: 0.0
+      },
+      radius: 5000,
+      intensity: 5
+    }
+  };
+
+  // Observable sources
+  private updateStateSource = new Subject<object>();
   private startEarthquakeSource = new Subject<string>();
   private updateCenterSource = new Subject<number>();
   private updateRadiusSource = new Subject<number>();
   private updateIntensitySource = new Subject<number>();
 
-  // Observable string streams
+  // Observables
+  stateUpdated$ = this.updateStateSource.asObservable();
   earthquakeStarted$ = this.startEarthquakeSource.asObservable();
   earthquakeCenterUpdated$ = this.updateCenterSource.asObservable();
   earthquakeRadiusUpdated$ = this.updateRadiusSource.asObservable();
   earthquakeIntensityUpdated$ = this.updateIntensitySource.asObservable();
 
   // Service message commands
+  invokeStateUpdate() {
+    this.updateStateSource.next();
+  }
+
   startEarthquake() {
     this.startEarthquakeSource.next();
   }

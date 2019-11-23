@@ -1,16 +1,16 @@
 <div>
-  <div *ngIf="state.wizardStep == WizardSteps.DisasterChoice">
+  <div *ngIf="disasterService.state.wizardStep == WizardSteps.DisasterChoice">
     <h4 class="wizard-step-title">What would you like to simulate?</h4>
     <button class="btn btn-lg btn-danger btn-select-disaster" (click)="chooseDisaster(DisasterTaxonomies.Earthquake)">
-      Earthquake!!
+      Earthquake !!
     </button>
     <button class="btn btn-lg btn-warning btn-select-disaster" (click)="chooseDisaster(DisasterTaxonomies.Hurricane)">
-      Hurricane!!
+      Hurricane !!
     </button>
   </div>
-  <div *ngIf="state.wizardStep == WizardSteps.InputParameters">
+  <div *ngIf="disasterService.state.wizardStep == WizardSteps.InputParameters">
     <form (submit)="fetchMagnitude($event)">
-      <div *ngIf="state.chosenDisaster == DisasterTaxonomies.Earthquake">
+      <div *ngIf="disasterService.state.chosenDisaster == DisasterTaxonomies.Earthquake">
         <h4 class="wizard-step-title">Earthquake</h4>
         <div class="form-group">
           <label for="intensityRange">Earthquake Intensity</label>
@@ -31,7 +31,7 @@
           Intensity: {{earthquakeParameters.intensity}}
         </code>
       </div>
-      <div *ngIf="state.chosenDisaster == DisasterTaxonomies.Hurricane">
+      <div *ngIf="disasterService.state.chosenDisaster == DisasterTaxonomies.Hurricane">
         <h4 class="wizard-step-title">Hurricane</h4>
         <div class="form-group">
           <label for="magnitude">Magnitude</label>
@@ -42,7 +42,7 @@
       <hr>
       <div class="action-buttons">
         <button type="button" class="btn btn-outline-secondary" (click)="goBack()">Previous</button>
-        <button type="submit" class="btn btn-primary pull-right">Submit</button>
+        <button type="submit" class="btn btn-success pull-right">Start Simulation!</button>
       </div>
     </form>
   </div>

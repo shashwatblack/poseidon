@@ -12,31 +12,25 @@ export class SidebarComponent implements OnInit {
   WizardSteps = WizardSteps;
   DisasterTaxonomies = DisasterTaxonomies;
 
-  private state: {
-    wizardStep: WizardSteps,
-    chosenDisaster?: DisasterTaxonomies,
-  } = {
-    wizardStep: WizardSteps.DisasterChoice,
-  };
-
   private magnitudeResponse: any;
   private magnitude: string;
   private earthquakeParameters: object;
 
   chooseDisaster(chosenDisaster: DisasterTaxonomies) {
-    this.state.chosenDisaster = chosenDisaster;
+    this.disasterService.state.chosenDisaster = chosenDisaster;
 
-    if (this.state.chosenDisaster === DisasterTaxonomies.Earthquake) {
+    if (this.disasterService.state.chosenDisaster === DisasterTaxonomies.Earthquake) {
       this.disasterService.startEarthquake();
-    } else if (this.state.chosenDisaster === DisasterTaxonomies.Hurricane) {
+    } else if (this.disasterService.state.chosenDisaster === DisasterTaxonomies.Hurricane) {
       console.log('Method not implemented.');
     }
 
-    this.state.wizardStep = WizardSteps.InputParameters;
+    this.disasterService.state.wizardStep = WizardSteps.InputParameters;
   }
 
   goBack() {
-    this.state.wizardStep = Math.max(0, this.state.wizardStep - 1);
+    this.disasterService.state.wizardStep = Math.max(0, this.disasterService.state.wizardStep - 1);
+    this.disasterService.invokeStateUpdate();
   }
 
   fetchMagnitude(event: Event) {

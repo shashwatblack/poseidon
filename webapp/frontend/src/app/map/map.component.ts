@@ -4,6 +4,7 @@ import {LeafletLayersModel} from './leaflet-layers.model';
 import {LeafletDrawDirective} from '@asymmetrik/ngx-leaflet-draw';
 import {DisasterService} from '../disaster.service';
 import {UtilsService} from '../utils.service';
+import {WizardSteps} from '../enums';
 
 @Component({
   selector: 'app-map',
@@ -12,9 +13,12 @@ import {UtilsService} from '../utils.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class MapComponent implements OnInit {
+  /*** GLOBALS ********************************************************************************************************/
   map: Map;
   leafletDrawDirective: LeafletDrawDirective;
   disasterBaseLayer: any;
+
+  /*** MAP PARAMETERS *************************************************************************************************/
   LAYER_OSM = {
     id: 'openstreetmap',
     name: 'Open Street Map',
@@ -24,20 +28,12 @@ export class MapComponent implements OnInit {
       attribution: 'Open Street Map'
     })
   };
-
-  model = new LeafletLayersModel(
-    [this.LAYER_OSM],
-    this.LAYER_OSM.id,
-    []
-  );
-
+  model = new LeafletLayersModel([this.LAYER_OSM], this.LAYER_OSM.id, []);
   layers: Layer[];
-
   options = {
     zoom: 10,
     center: latLng(30.619026, -96.338900)
   };
-
   drawOptions = {
     position: 'topright',
     draw: {
@@ -102,7 +98,33 @@ export class MapComponent implements OnInit {
     return false;
   }
 
+  /*** COMMON METHODS *************************************************************************************************/
+  stateUpdated() {
+    switch (this.disasterService.state.wizardStep) {
+      case WizardSteps.DisasterChoice:
+        this.clearMap();
+        break;
+      case WizardSteps.InputParameters:
+        break;
+      case WizardSteps.Simulation:
+        break;
+      case WizardSteps.Results:
+        break;
+    }
+  }
+
+  clearMap() {
+    if (!this.leafletDrawDirective) {
+      return;
+    }
+    // @ts-ignore
+    this.leafletDrawDirective.options.edit.featureGroup.clearLayers();
+  }
+
+  /*** EARTHQUAKE *****************************************************************************************************/
   startEarthquake(params = null) {
+    this.clearMap();
+
     let latlng;
     latlng = params ? params.latlng : this.map.getCenter();
 
@@ -136,9 +158,12 @@ export class MapComponent implements OnInit {
       });
   }
 
+  /*** HURRICANE ******************************************************************************************************/
+
+  /*** CLASS METHODS **************************************************************************************************/
   constructor(private disasterService: DisasterService, private utils: UtilsService) {
     this.apply();
-
+    this.disasterService.stateUpdated$.subscribe(() => this.stateUpdated());
     this.disasterService.earthquakeStarted$.subscribe((params) => this.startEarthquake(params));
   }
 
