@@ -26,7 +26,7 @@ class RoadNetwork:
     SEGMENT_PICKLE = "cal_segment.gpickle"
     SETTLE_NODE_FILE = "cal.csv"
     SETTLE_PICKLE = "cal_settle.gpickle"
-    SHORTEST_PATH_PICKLE = "shortest_paths.pickle"
+    SHORTEST_PATH_PICKLE = "settle_shortest_paths.pickle"
 
     def __init__(self, should_load_from_files=False):
         if should_load_from_files:
@@ -87,35 +87,25 @@ class RoadNetwork:
             G_segment = nx.read_gpickle(self.BASE_PATH + self.SEGMENT_PICKLE)
             G_settle = nx.read_gpickle(self.BASE_PATH + self.SETTLE_PICKLE)
 
-            # first find all-pair shortest path for graph G_segment
-            # then we use this information to get the paths from settle A to B
-            print ("Running all-pairs shortest paths ...")
-            paths = dict(nx.all_pairs_shortest_path(G_segment))
-            print ("Done")
-            with open(self.BASE_PATH + self.SHORTEST_PATH_PICKLE, "wb") as handle:
-                pickle.dump(paths, handle, protocol=pickle.HIGHEST_PROTOCOL)
-            
-            '''
+
+            # run sssp from some segment node from each settlement
+            print ("Running sssp ...")
             n_settle = nx.number_of_nodes(G_settle)
+            n_segment = nx.number_of_nodes(G_segment)
             for i in range(n_settle):
                 vx = G_settle.nodes()[i]
-                vx_segs = vx['seg']
-                print (vx)
+                src = next(iter(vx['seg']))
+                
+                paths = nx.single_source_shortest_path(G_segment, source=str(src))
                 for j in range(n_settle):
                     if j > i:
                         vy = G_settle.nodes()[j]
-                        vy_segs = vy['seg']
-                        print (vy_segs)
-                        break
-                break
-            '''
-
-
-
-
-
-
-
+                        dst = next(iter(vy['seg']))
+                        if paths[str(dst)]:  # path exists, should add this to settlement graph edge
+                            G_settle.add_edge(i, j, path=paths[str(dst)])                            
+            
+            print ("Done;", nx.number_of_edges(G_settle), "edges")
+            nx.write_gpickle(G_settle, self.BASE_PATH + self.SHORTEST_PATH_PICKLE) 
 
 
         self.tileView = None
