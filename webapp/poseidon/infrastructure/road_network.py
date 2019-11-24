@@ -11,12 +11,87 @@ The "red" edges each have two sets as attributes: The set of blue nodes along th
 blue edges that form up that road.
 """
 
+import networkx as nx 
+import csv 
+from geo_location import GeoLocation
+
 
 class RoadNetwork:
+
+    BOUNDING_DIST = 2               # 2 km bounding box distance for cities
+    BASE_PATH = "../../dat/"
+    SEGMENT_NODE_FILE = "cal.cnode.csv"
+    SEGMENT_EDGE_FILE = "cal.cedge.csv"
+    SEGMENT_PICKLE = "cal_segment.gpickle"
+    SETTLE_NODE_FILE = "cal.csv"
+    SETTLE_PICKLE = "cal_settle.gpickle"
+
     def __init__(self, should_load_from_files=False):
+        if should_load_from_files:
+
+            # load segment view from node and edge csv
+            print ("Loading segment view ...")
+            G_segment = nx.Graph()
+            with open(self.BASE_PATH + self.SEGMENT_NODE_FILE) as csv_f:
+                csv_r = csv.reader(csv_f, delimiter=',')
+                for row in csv_r:
+                    G_segment.add_node(row[0], pos=GeoLocation.from_degrees(float(row[2]), float(row[1])),
+                        mappedToCity=False)     
+            with open(self.BASE_PATH + self.SEGMENT_EDGE_FILE) as csv_f:
+                csv_r = csv.reader(csv_f, delimiter=',')
+                for row in csv_r:
+                    G_segment.add_edge(row[1], row[2], d=row[3])
+            print ("Done;", nx.number_of_nodes(G_segment), "segments")
+            nx.write_gpickle(G_segment, self.BASE_PATH + self.SEGMENT_PICKLE)
+            # TODO: save segment view to file; to reload later
+
+
+            # create settlement view from segment view
+            print ("Loading settlement view ...")
+            G_settle = nx.Graph()
+            with open(self.BASE_PATH + self.SETTLE_NODE_FILE) as csv_f:
+                csv_r = csv.DictReader(csv_f, delimiter=',')
+                for row in csv_r:
+                    lat = float(row['lat'])
+                    lng = float(row['lng'])
+                    loc = GeoLocation.from_degrees(lat, lng)
+                    SW_loc, NE_loc = loc.bounding_locations(self.BOUNDING_DIST)
+                    
+                    #print (SW_loc.deg_lat, SW_loc.deg_lon, NE_loc.deg_lat, NE_loc.deg_lon)
+
+                    # find all nodes that are within this box
+                    segment_nodes_in = []  # would contain which segment nodes are in this box
+                    for i in range(nx.number_of_nodes(G_segment)):
+                        v = G_segment.nodes()[str(i)]
+                        v_loc = v['pos']    #
+                        v_mapped = v['mappedToCity']
+                        if not v_mapped and v_loc.within_bounds(SW_loc, NE_loc) :
+                            #print (v_loc, "in", SW_loc, NE_loc)
+                            segment_nodes_in.append(i)
+                            G_segment.nodes()[str(i)]['mappedToCity'] = True
+            
+                    # if no nodes inside this box, discard city
+                    if (len(segment_nodes_in) > 0):
+                        G_settle.add_node(row['city'], box=(SW_loc, NE_loc), seg=set(segment_nodes_in))
+            
+            print ("Done;",nx.number_of_nodes(G_settle), "settlements")
+            nx.write_gpickle(G_settle, self.BASE_PATH + self.SETTLE_PICKLE)
+        else:
+            
+            # find the edges that connect settlement A to B
+            # would store the resulting graph to file and reload
+            G_segment = nx.read_gpickle(self.BASE_PATH + self.SEGMENT_PICKLE)
+            G_settle = nx.read_gpickle(self.BASE_PATH + self.SETTLE_PICKLE)
+
+            #print (nx.number_of_nodes(G_settle))
+
+            
+
+
         self.tileView = None
         self.segmentView = None
         self.settlementView = None
+
 
     # This function should return the pertinent settlementView for a given segmentView. Useful to apply damages.
     # Should follow a different methodology from what we use to create the settlement view since all we have to
@@ -28,3 +103,7 @@ class RoadNetwork:
     # Useful for applying damages. To be completed by: Harish
     def get_recalculated_segment_view(self, damaged_road_tiles):
         pass
+
+
+# test driver code
+r = RoadNetwork(False)
