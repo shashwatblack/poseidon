@@ -14,6 +14,7 @@ blue edges that form up that road.
 import networkx as nx 
 import csv 
 from geo_location import GeoLocation
+import pickle
 
 
 class RoadNetwork:
@@ -25,6 +26,7 @@ class RoadNetwork:
     SEGMENT_PICKLE = "cal_segment.gpickle"
     SETTLE_NODE_FILE = "cal.csv"
     SETTLE_PICKLE = "cal_settle.gpickle"
+    SHORTEST_PATH_PICKLE = "shortest_paths.pickle"
 
     def __init__(self, should_load_from_files=False):
         if should_load_from_files:
@@ -51,6 +53,7 @@ class RoadNetwork:
             G_settle = nx.Graph()
             with open(self.BASE_PATH + self.SETTLE_NODE_FILE) as csv_f:
                 csv_r = csv.DictReader(csv_f, delimiter=',')
+                k = 0
                 for row in csv_r:
                     lat = float(row['lat'])
                     lng = float(row['lng'])
@@ -72,7 +75,8 @@ class RoadNetwork:
             
                     # if no nodes inside this box, discard city
                     if (len(segment_nodes_in) > 0):
-                        G_settle.add_node(row['city'], box=(SW_loc, NE_loc), seg=set(segment_nodes_in))
+                        G_settle.add_node(k, name=row['city'], box=(SW_loc, NE_loc), seg=set(segment_nodes_in))
+                        k += 1
             
             print ("Done;",nx.number_of_nodes(G_settle), "settlements")
             nx.write_gpickle(G_settle, self.BASE_PATH + self.SETTLE_PICKLE)
@@ -83,9 +87,35 @@ class RoadNetwork:
             G_segment = nx.read_gpickle(self.BASE_PATH + self.SEGMENT_PICKLE)
             G_settle = nx.read_gpickle(self.BASE_PATH + self.SETTLE_PICKLE)
 
-            #print (nx.number_of_nodes(G_settle))
-
+            # first find all-pair shortest path for graph G_segment
+            # then we use this information to get the paths from settle A to B
+            print ("Running all-pairs shortest paths ...")
+            paths = dict(nx.all_pairs_shortest_path(G_segment))
+            print ("Done")
+            with open(self.BASE_PATH + self.SHORTEST_PATH_PICKLE, "wb") as handle:
+                pickle.dump(paths, handle, protocol=pickle.HIGHEST_PROTOCOL)
             
+            '''
+            n_settle = nx.number_of_nodes(G_settle)
+            for i in range(n_settle):
+                vx = G_settle.nodes()[i]
+                vx_segs = vx['seg']
+                print (vx)
+                for j in range(n_settle):
+                    if j > i:
+                        vy = G_settle.nodes()[j]
+                        vy_segs = vy['seg']
+                        print (vy_segs)
+                        break
+                break
+            '''
+
+
+
+
+
+
+
 
 
         self.tileView = None
