@@ -85,6 +85,8 @@
     "use-lifecycle-interface": true,
     "use-pipe-transform-interface": true,
     "prefer-const": false,
+    "quotemark": false,
+    "variable-name": false,
     "object-literal-shorthand": false
   },
   "rulesDirectory": [
