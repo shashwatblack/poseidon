@@ -13,6 +13,7 @@ import {LeafletDrawDirective} from '@asymmetrik/ngx-leaflet-draw';
 import {DisasterService} from '../disaster.service';
 import {UtilsService} from '../utils.service';
 import {DisasterTaxonomies, WizardSteps} from '../enums';
+import * as L from 'leaflet';
 
 @Component({
   selector: 'app-map',
@@ -302,6 +303,8 @@ export class MapComponent implements OnInit {
 
   onMapReady(map: Map) {
     this.map = map;
+    L.drawLocal.edit.handlers.edit.tooltip.subtext = "Drag middle point handler to change epicenter.";
+    L.drawLocal.edit.handlers.edit.tooltip.text = "Drag edge point handler to change radius.";
   }
 
   onLeafletDrawReady(leafletDrawDirective: LeafletDrawDirective) {
