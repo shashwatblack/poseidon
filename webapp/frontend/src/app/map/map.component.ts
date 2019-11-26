@@ -206,7 +206,7 @@ export class MapComponent implements OnInit {
     this.hurricaneUpdated();
     this.disasterService.hurricaneUpdated$.subscribe(() => this.hurricaneUpdated());
 
-    // create new feature group to display the hurricane path tube
+    // create new svg group to display the hurricane shadow
     if (this.hurricaneShadow) {
       this.hurricaneShadow.remove();
     }
@@ -214,8 +214,11 @@ export class MapComponent implements OnInit {
     const parentElement = this.map.getPanes().overlayPane.firstChild.firstChild;
     parentElement.insertBefore(this.hurricaneShadow, parentElement.firstChild);
 
-    // finally make sure disaster service is updated. this will also update the tube.
+    // make sure disaster service is updated with new coords. Doing this will also update the hurricane shadow.
     this.hurricaneUpdatedOnMap();
+
+    // also register for map zoom events, so shadow is updated
+    this.map.on('zoomend', () => { this.updateHurricaneShadow(); });
   }
 
   hurricaneUpdated() {
@@ -231,7 +234,7 @@ export class MapComponent implements OnInit {
       fillColor: color,
       fillOpacity: 0.0,
     });
-    this.updateHurricaneTube();
+    this.updateHurricaneShadow();
   }
 
   hurricaneUpdatedOnMap() {
@@ -239,11 +242,11 @@ export class MapComponent implements OnInit {
     this.disasterService.hurricaneParameters.start.radius = this.hurricaneBaseLayers.start._mRadius;
     this.disasterService.hurricaneParameters.end.center = this.hurricaneBaseLayers.end._latlng;
     this.disasterService.hurricaneParameters.end.radius = this.hurricaneBaseLayers.end._mRadius;
-    this.updateHurricaneTube();
+    this.updateHurricaneShadow();
   }
 
-  updateHurricaneTube() {
-    if (!this.hurricaneShadow) {
+  updateHurricaneShadow() {
+    if (this.disasterService.state.chosenDisaster !== DisasterTaxonomies.Hurricane || !this.hurricaneShadow) {
       return;
     }
 
@@ -281,7 +284,7 @@ export class MapComponent implements OnInit {
           <stop offset="100%" style="stop-color:${endColor}; stop-opacity:1" />
         </linearGradient>
       </defs>
-      <g><rect width="100%" height="100%" fill="url(#gradient)" fill-opacity="0.3" clip-path="url(#shape)"/></g>
+      <g><rect x="-500%" y="-500%" width="1000%" height="1000%" fill="url(#gradient)" fill-opacity="0.3" clip-path="url(#shape)"/></g>
     `;
   }
 
