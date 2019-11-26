@@ -1,4 +1,5 @@
 import math
+from shapely.geometry import LineString, box
  
  
 class GeoLocation:
@@ -35,7 +36,14 @@ class GeoLocation:
         deg_lon = math.degrees(rad_lon)
         return GeoLocation(rad_lat, rad_lon, deg_lat, deg_lon)
     
-    
+    # added by Arif; used in checking which roads go through which tile
+    @classmethod
+    def line_intersects_box(cls, pointA, pointB, boxSW, boxNE):
+        line = LineString([(pointA.deg_lat, pointA.deg_lon), (pointB.deg_lat, pointB.deg_lon)])
+        bx = box(boxSW.deg_lat, boxSW.deg_lon, boxNE.deg_lat, boxNE.deg_lon)
+        return (line.intersects(bx))
+        
+
     def __init__(
             self,
             rad_lat,
