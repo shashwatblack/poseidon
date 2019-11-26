@@ -18,8 +18,19 @@
 
 .action-buttons {
   text-align: right;
+
   button {
     border-radius: 0;
     margin-left: 10px;
   }
+}
+
+code {
+  color: #177d9b;
+}
+
+.value {
+  font-weight: bold;
+  font-size: 15px;
+  color: #1976d2;
 }

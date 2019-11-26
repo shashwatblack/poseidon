@@ -20,15 +20,18 @@
         </div>
         <br>
         <code>
-          Epicenter: [{{disasterService.earthquakeParameters.center.lat}}, {{disasterService.earthquakeParameters.center.lng}}]
+          Epicenter: [
+            <span class="value">{{disasterService.earthquakeParameters.center.lat.toFixed(8)}}</span>,
+            <span class="value">{{disasterService.earthquakeParameters.center.lng.toFixed(8)}}</span>
+          ]
         </code>
         <br>
         <code>
-          Radius: {{disasterService.earthquakeParameters.radius}}
+          Radius: <span class="value">{{(disasterService.earthquakeParameters.radius / 1000).toFixed(4)}} km</span>
         </code>
         <br>
         <code>
-          Intensity: {{disasterService.earthquakeParameters.intensity}}
+          Intensity: <span class="value">{{disasterService.earthquakeParameters.intensity}}</span>
         </code>
       </div>
       <div *ngIf="disasterService.state.chosenDisaster == DisasterTaxonomies.Hurricane">
@@ -47,27 +50,33 @@
         </div>
         <br>
         <code>
-          Start Center: [{{disasterService.hurricaneParameters.start.center.lat}}, {{disasterService.hurricaneParameters.start.center.lng}}]
+          Start Center: [
+            <span class="value">{{disasterService.hurricaneParameters.start.center.lat.toFixed(8)}}</span>,
+            <span class="value">{{disasterService.hurricaneParameters.start.center.lng.toFixed(8)}}</span>
+          ]
         </code>
         <br>
         <code>
-          Start Radius: {{disasterService.hurricaneParameters.start.radius}}
+          Start Radius: <span class="value">{{(disasterService.hurricaneParameters.start.radius / 1000).toFixed(4)}} km</span>
         </code>
         <br>
         <code>
-          Start Intensity: {{disasterService.hurricaneParameters.start.intensity}}
+          Start Intensity: <span class="value">{{disasterService.hurricaneParameters.start.intensity}}</span>
         </code>
         <br>
         <code>
-          End Center: [{{disasterService.hurricaneParameters.end.center.lat}}, {{disasterService.hurricaneParameters.end.center.lng}}]
+          End Center: [
+            <span class="value">{{disasterService.hurricaneParameters.end.center.lat.toFixed(8)}}</span>,
+            <span class="value">{{disasterService.hurricaneParameters.end.center.lng.toFixed(8)}}</span>
+          ]
         </code>
         <br>
         <code>
-          End Radius: {{disasterService.hurricaneParameters.end.radius}}
+          End Radius: <span class="value">{{(disasterService.hurricaneParameters.end.radius / 1000).toFixed(4)}} km</span>
         </code>
         <br>
         <code>
-          End Intensity: {{disasterService.hurricaneParameters.end.intensity}}
+          End Intensity: <span class="value">{{disasterService.hurricaneParameters.end.intensity}}</span>
         </code>
       </div>
       <hr>
