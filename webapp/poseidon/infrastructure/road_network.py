@@ -13,6 +13,7 @@ blue edges that form up that road.
 
 import networkx as nx 
 import csv 
+import math
 from geo_location import GeoLocation
 import pickle
 
@@ -27,29 +28,75 @@ class RoadNetwork:
     SETTLE_NODE_FILE = "cal.csv"
     SETTLE_PICKLE = "cal_settle.gpickle"
     SHORTEST_PATH_PICKLE = "settle_shortest_paths.pickle"
+    TILE_PICKLE = "cal_tile.gpickle"
 
     def __init__(self, should_load_from_files=False):
         if should_load_from_files:
-
+            min_lat = 400
+            max_lat = -400
+            min_long = 400
+            max_long = -400
             # load segment view from node and edge csv
-            print ("Loading segment view ...")
+            print ("Building segment view ...")
             G_segment = nx.Graph()
             with open(self.BASE_PATH + self.SEGMENT_NODE_FILE) as csv_f:
                 csv_r = csv.reader(csv_f, delimiter=',')
                 for row in csv_r:
-                    G_segment.add_node(row[0], pos=GeoLocation.from_degrees(float(row[2]), float(row[1])),
-                        mappedToCity=False)     
+                    lat = float(row[2])
+                    lng = float(row[1])
+                    G_segment.add_node(row[0], pos=GeoLocation.from_degrees(lat, lng),  mappedToCity=False)     
+                    min_lat = min(lat, min_lat)
+                    max_lat = max(lat, max_lat)
+                    min_long = min(lng, min_long)
+                    max_long = max(lng, max_long)
             with open(self.BASE_PATH + self.SEGMENT_EDGE_FILE) as csv_f:
                 csv_r = csv.reader(csv_f, delimiter=',')
                 for row in csv_r:
                     G_segment.add_edge(row[1], row[2], d=row[3])
             print ("Done;", nx.number_of_nodes(G_segment), "segments")
             nx.write_gpickle(G_segment, self.BASE_PATH + self.SEGMENT_PICKLE)
-            # TODO: save segment view to file; to reload later
+            
+            
+            print ("Min lat: ", min_lat)
+            print ("Min long: ", min_long)
+            print ("Max lat: ", max_lat)
+            print ("Max long: ", max_long)
+
+
+            # create tile view from segment view
+            print ("Building tile view ...")
+            G_tile = nx.Graph()
+            delta = 0.01
+            cnt = 0
+            while min_lat <= max_lat:
+                while min_long <= max_long:
+                    # tile boundaries
+                    SW_loc = GeoLocation.from_degrees(min_lat, min_long)
+                    NE_loc = GeoLocation.from_degrees(min_lat + delta, min_long + delta)
+                    edges = set()   # edges from segment view
+                    # take every edge
+                    eid = 0
+                    for e in G_segment.edges():
+                        u = G_segment.node()[e[0]]['pos']
+                        v = G_segment.node()[e[1]]['pos']
+
+                        # check if this edge intersects this tile
+                        if GeoLocation.line_intersects_box(u, v, SW_loc, NE_loc):
+                            edges.update(eid)
+                        eid += 1
+                    G_tile.add_node((SW_loc, NE_loc), seg_edges=edges)
+                    min_long += delta
+                min_lat += delta 
+                cnt += 1
+                if cnt % 1000 == 0:
+                    print ("Processed", cnt, "tiles")
+            print ("Done;", nx.number_of_nodes(G_tile), "tiles")
+            nx.write_gpickle(G_tile, self.BASE_PATH + self.TILE_PICKLE)
 
 
             # create settlement view from segment view
-            print ("Loading settlement view ...")
+            '''
+            print ("Building settlement view ...")
             G_settle = nx.Graph()
             with open(self.BASE_PATH + self.SETTLE_NODE_FILE) as csv_f:
                 csv_r = csv.DictReader(csv_f, delimiter=',')
@@ -78,14 +125,14 @@ class RoadNetwork:
                         G_settle.add_node(k, name=row['city'], box=(SW_loc, NE_loc), seg=set(segment_nodes_in))
                         k += 1
             
-            print ("Done;",nx.number_of_nodes(G_settle), "settlements")
-            nx.write_gpickle(G_settle, self.BASE_PATH + self.SETTLE_PICKLE)
-        else:
-            
+            #print ("Done;",nx.number_of_nodes(G_settle), "settlements")
+            #nx.write_gpickle(G_settle, self.BASE_PATH + self.SETTLE_PICKLE)
+
+
             # find the edges that connect settlement A to B
             # would store the resulting graph to file and reload
             G_segment = nx.read_gpickle(self.BASE_PATH + self.SEGMENT_PICKLE)
-            G_settle = nx.read_gpickle(self.BASE_PATH + self.SETTLE_PICKLE)
+            #G_settle = nx.read_gpickle(self.BASE_PATH + self.SETTLE_PICKLE)
 
 
             # run sssp from some segment node from each settlement
@@ -106,11 +153,21 @@ class RoadNetwork:
             
             print ("Done;", nx.number_of_edges(G_settle), "edges")
             nx.write_gpickle(G_settle, self.BASE_PATH + self.SHORTEST_PATH_PICKLE) 
+            print ("Done;",nx.number_of_nodes(G_settle), "settlements")
+            '''
 
 
-        self.tileView = None
-        self.segmentView = None
-        self.settlementView = None
+            # create tile view from segment view
+
+
+        else:
+            G_segment = nx.read_gpickle(self.BASE_PATH + self.SEGMENT_PICKLE)
+            G_settle = nx.read_gpickle(self.BASE_PATH + self.SHORTEST_PATH_PICKLE)
+            G_tile = nx.read_gpickle(self.BASE_PATH + self.TILE_PICKLE)
+
+        self.tileView = G_segment
+        self.segmentView = G_settle
+        self.settlementView = G_tile
 
 
     # This function should return the pertinent settlementView for a given segmentView. Useful to apply damages.
@@ -126,4 +183,4 @@ class RoadNetwork:
 
 
 # test driver code
-r = RoadNetwork(False)
+r = RoadNetwork(True)
