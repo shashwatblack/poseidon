@@ -6,7 +6,8 @@ import {
   Layer,
   Map,
   Point,
-  tileLayer
+  tileLayer,
+  FeatureGroup
 } from 'leaflet';
 import {LeafletLayersModel} from './leaflet-layers.model';
 import {LeafletDrawDirective} from '@asymmetrik/ngx-leaflet-draw';
@@ -14,6 +15,7 @@ import {DisasterService} from '../disaster.service';
 import {UtilsService} from '../utils.service';
 import {DisasterTaxonomies, WizardSteps} from '../enums';
 import * as L from 'leaflet';
+import {MapService} from '../map.service';
 
 @Component({
   selector: 'app-map',
@@ -289,8 +291,25 @@ export class MapComponent implements OnInit {
     `;
   }
 
+  /*** PLOTTING BASE **************************************************************************************************/
+  plotCities() {
+    console.log("Trying");
+    this.mapService.getSettlementViewPromise().then((data) => {
+      let featureGroup = new FeatureGroup();
+      for (let city of data.cities) {
+        this.plotCity(featureGroup, city);
+      }
+      featureGroup.addTo(this.map);
+      this.map.fitBounds(featureGroup.getBounds());
+    });
+  }
+
+  plotCity(featureGroup, city) {
+    featureGroup.addLayer(circle([city.lat, city.lng], {radius: city.population / 100}));
+  }
+
   /*** CLASS METHODS **************************************************************************************************/
-  constructor(private disasterService: DisasterService, private utils: UtilsService) {
+  constructor(private mapService: MapService, private disasterService: DisasterService, private utils: UtilsService) {
     this.apply();
     this.disasterService.stateUpdated$.subscribe(() => this.stateUpdated());
     this.disasterService.earthquakeStarted$.subscribe((params) => this.startEarthquake(params));
@@ -305,6 +324,8 @@ export class MapComponent implements OnInit {
     this.map = map;
     L.drawLocal.edit.handlers.edit.tooltip.subtext = "Drag middle point handler to change epicenter.";
     L.drawLocal.edit.handlers.edit.tooltip.text = "Drag edge point handler to change radius.";
+
+    this.plotCities();
   }
 
   onLeafletDrawReady(leafletDrawDirective: LeafletDrawDirective) {

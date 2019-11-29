@@ -28,3 +28,33 @@ class EarthquakeView(View):
             "success": True,
             "energy": GaussianEarthquake.get_energy_from_magnitude(magnitude)
         })
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class MapView(View):
+    """
+    Returns the tile/settlement views of the map
+    """
+    def get(self, request):
+        requested_map_type = request.GET.get('map_type', Constants.SETTLEMENT_VIEW)
+        if requested_map_type == Constants.SETTLEMENT_VIEW:
+            return JsonResponse(self.get_dummy_settlement_view())
+        elif requested_map_type == Constants.TILE_VIEW:
+            return JsonResponse({})  # todo
+
+    @staticmethod
+    def get_dummy_settlement_view():
+        import csv
+        cities = list()
+        with open('dat/cal.csv') as f:
+            for row in csv.DictReader(f):
+                cities.append({
+                    "city": row['city'],
+                    "population": int(row['population']),
+                    "lat": float(row['lat']),
+                    "lng": float(row['lng']),
+                })
+        return {
+            "cities": cities,
+            "edges": []  # todo
+        }
