@@ -306,7 +306,9 @@ export class MapComponent implements OnInit {
 
   plotCity(featureGroup, city) {
     let radius = Math.sqrt(city.population);
-    featureGroup.addLayer(circle([city.lat, city.lng], { radius }));
+    let cityCircle = circle([city.lat, city.lng], { radius });
+    cityCircle.bindTooltip(`<b>${city.city}</b><br/> Population: <b>${city.population}</b>`);
+    featureGroup.addLayer(cityCircle);
   }
 
   /*** CLASS METHODS **************************************************************************************************/
