@@ -44,7 +44,9 @@ class MapView(View):
 
     @staticmethod
     def get_dummy_settlement_view():
+        # imported locally because just dummy
         import csv
+        import random
         cities = list()
         with open('dat/cal.csv') as f:
             for row in csv.DictReader(f):
@@ -53,8 +55,19 @@ class MapView(View):
                     "population": int(row['population']),
                     "lat": float(row['lat']),
                     "lng": float(row['lng']),
+                    "damage": random.randint(0, 100)
                 })
+
+        edges = list()
+        for city1 in random.sample(cities, 10):
+            city2 = random.choice(cities)
+            edges.append({
+                "start": [float(city1['lat']), float(city1['lng'])],
+                "end": [float(city2['lat']), float(city2['lng'])],
+                "damage": random.randint(0, 100)
+            })
+
         return {
             "cities": cities,
-            "edges": []  # todo
+            "edges": edges
         }

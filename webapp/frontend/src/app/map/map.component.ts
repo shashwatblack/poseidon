@@ -7,7 +7,7 @@ import {
   Map,
   Point,
   tileLayer,
-  FeatureGroup
+  FeatureGroup, polyline
 } from 'leaflet';
 import {LeafletLayersModel} from './leaflet-layers.model';
 import {LeafletDrawDirective} from '@asymmetrik/ngx-leaflet-draw';
@@ -299,6 +299,10 @@ export class MapComponent implements OnInit {
       for (let city of data.cities) {
         this.plotCity(featureGroup, city);
       }
+      for (let edge of data.edges) {
+        this.plotEdge(featureGroup, edge);
+      }
+
       featureGroup.addTo(this.map);
       this.map.fitBounds(featureGroup.getBounds());
     });
@@ -306,9 +310,15 @@ export class MapComponent implements OnInit {
 
   plotCity(featureGroup, city) {
     let radius = Math.sqrt(city.population);
-    let cityCircle = circle([city.lat, city.lng], { radius });
+    let color = this.utils.intensityToColor(city.damage);
+    let cityCircle = circle([city.lat, city.lng], { radius, color });
     cityCircle.bindTooltip(`<b>${city.city}</b><br/> Population: <b>${city.population}</b>`);
     featureGroup.addLayer(cityCircle);
+  }
+
+  plotEdge(featureGroup, edge) {
+    let color = this.utils.intensityToColor(edge.damage);
+    featureGroup.addLayer(polyline([edge.start, edge.end], { color }));
   }
 
   /*** CLASS METHODS **************************************************************************************************/
