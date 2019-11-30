@@ -117,5 +117,10 @@ class DisasterSimulationView(View):
 
         return {
             "cities": cities,
-            "edges": edges
+            "edges": edges,
+            "stats": [{
+                "city": "San Fransisco",
+                "population": "150000",
+                "vulnerability": 88
+            }]  # and so on. list an ordered list of dictionaries.
         }
