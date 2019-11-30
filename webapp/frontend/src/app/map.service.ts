@@ -21,7 +21,5 @@ export class MapService {
     return this.settlementViewPromise;
   }
 
-  constructor(private http: HttpClient) {
-    this.fetchSettlementView();
-  }
+  constructor(private http: HttpClient) {}
 }

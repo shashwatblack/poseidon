@@ -32,6 +32,12 @@ export class SidebarComponent implements OnInit {
     this.disasterService.invokeStateUpdate();
   }
 
+  simulateDisaster() {
+    this.disasterService.simulateDisaster();
+    this.disasterService.state.wizardStep = WizardSteps.Simulation;
+    this.disasterService.invokeStateUpdate();
+  }
+
   fetchMagnitude(event: Event) {
     event.preventDefault();
     this.http.post('http://localhost:8000/api/earthquake/', {

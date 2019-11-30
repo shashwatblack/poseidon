@@ -120,8 +120,10 @@ export class MapComponent implements OnInit {
       case WizardSteps.InputParameters:
         break;
       case WizardSteps.Simulation:
+        // todo: make it gray, possibly show spinner overlay
         break;
       case WizardSteps.Results:
+        this.showSimulationResults();
         break;
     }
   }
@@ -292,20 +294,22 @@ export class MapComponent implements OnInit {
   }
 
   /*** PLOTTING BASE **************************************************************************************************/
-  plotCities() {
-    console.log("Trying");
-    this.mapService.getSettlementViewPromise().then((data) => {
-      let featureGroup = new FeatureGroup();
-      for (let city of data.cities) {
-        this.plotCity(featureGroup, city);
-      }
-      for (let edge of data.edges) {
-        this.plotEdge(featureGroup, edge);
-      }
+  showSimulationResults() {
+    this.plotCities(this.disasterService.simulationResponse);
+    // todo: also show the top 10
+  }
 
-      featureGroup.addTo(this.map);
-      this.map.fitBounds(featureGroup.getBounds());
-    });
+  plotCities(data) {
+    let featureGroup = new FeatureGroup();
+    for (let city of data.cities) {
+      this.plotCity(featureGroup, city);
+    }
+    for (let edge of data.edges) {
+      this.plotEdge(featureGroup, edge);
+    }
+
+    featureGroup.addTo(this.map);
+    this.map.fitBounds(featureGroup.getBounds());
   }
 
   plotCity(featureGroup, city) {
@@ -337,8 +341,6 @@ export class MapComponent implements OnInit {
     this.map = map;
     L.drawLocal.edit.handlers.edit.tooltip.subtext = "Drag middle point handler to change epicenter.";
     L.drawLocal.edit.handlers.edit.tooltip.text = "Drag edge point handler to change radius.";
-
-    this.plotCities();
   }
 
   onLeafletDrawReady(leafletDrawDirective: LeafletDrawDirective) {
