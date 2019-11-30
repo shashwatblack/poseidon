@@ -25,6 +25,7 @@ class RoadNetwork:
     SEGMENT_NODE_FILE = "cal.cnode.csv"
     SEGMENT_EDGE_FILE = "cal.cedge.csv"
     SEGMENT_PICKLE = "cal_segment.gpickle"
+    MERGED_SEGMENT_PICKLE = "cal_segment_merged.gpickle"
     SETTLE_NODE_FILE = "cal.csv"
     SETTLE_PICKLE = "cal_settle.gpickle"
     SHORTEST_PATH_PICKLE = "settle_shortest_paths.pickle"
@@ -159,39 +160,52 @@ class RoadNetwork:
             # run dfs
             n_settle = nx.number_of_nodes(G_settle)
             n_segment = nx.number_of_nodes(G_segment)
-            print ("Running dfs on %d settlements ..." % n_settle)
+            
+            '''
+            print ("Merging segment nodes ...")
+            G_segment_2 = G_segment.copy()
             for i in range(n_settle):
-                G_segment_2 = G_segment.copy()
-                print (nx.number_of_nodes(G_segment_2), nx.number_of_edges(G_segment_2))
+                G_segment_2, dummy = RoadNetwork.merge_segment_nodes_of_settlemnt(G_segment_2, G_settle, i)
+            print ("Done")
+            nx.write_gpickle(G_segment_2, self.BASE_PATH + self.MERGED_SEGMENT_PICKLE)
+            '''
+
+            G_segment_2 = nx.read_gpickle(self.BASE_PATH + self.MERGED_SEGMENT_PICKLE)
+            print (nx.number_of_nodes(G_segment_2), nx.number_of_edges(G_segment_2))
+
+            
+            print ("Running sssp on %d settlements ..." % n_settle)
+            for i in range(n_settle):
                 # merge all nodes in src city to single node
-                G_segment_2, src = RoadNetwork.merge_segment_nodes_of_settlemnt(G_segment_2, G_settle, i)
-                print ("SRC:", src)
                 no_path = 0
+                src = str(next(iter(G_settle.nodes()[i]['seg'])))
+                print (src)
                 for j in range(i+1, n_settle):
                     G_segment_3 = G_segment_2.copy()
-                    # merge all nodes in dst city to single node
-                    G_segment_3, dst = RoadNetwork.merge_segment_nodes_of_settlemnt(G_segment_3, G_settle, j)
-            
                     # delete all nodes belonging to cities that are not src or dst
                     for k in range(n_settle):
                         if k != i and k != j:
-                            seg_nodes = G_settle.nodes()[k]['seg']
-                            for node in seg_nodes:
-                                G_segment_3.remove_node(str(node))
-                            #print (nx.number_of_nodes(G_segment_3), nx.number_of_edges(G_segment_3))
-                    
+                            seg_node0 = str(next(iter(G_settle.nodes()[k]['seg'])))
+                            G_segment_3.remove_node(seg_node0)
+
+                    dst = str(next(iter(G_settle.nodes()[j]['seg'])))
+                    #print (src, dst)
                     try:
                         p = nx.dijkstra_path(G_segment_3, source=src, target=dst)
-                        print (p)
+                        G_settle.add_edge(int(src), int(dst), path=p)
                     except:
                         no_path += 1
 
                     if (j % 100 == 0):
-                        print ("Processed %d nodes" % j)
+                        print ("Processed %d dst nodes" % j)
 
                 print ("No path: %d" % no_path)
-                break           
+                
+                if (i % 100 == 0):
+                    print ("Processed %d src nodes" % i)
 
+            nx.write_gpickle(G_settle, self.BASE_PATH + self.SHORTEST_PATH_PICKLE)
+            
         else:
             G_segment = nx.read_gpickle(self.BASE_PATH + self.SEGMENT_PICKLE)
             G_settle = nx.read_gpickle(self.BASE_PATH + self.SHORTEST_PATH_PICKLE)
