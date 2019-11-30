@@ -11,6 +11,7 @@ The "red" edges each have two sets as attributes: The set of blue nodes along th
 blue edges that form up that road.
 """
 import csv
+import math
 from itertools import combinations
 
 import networkx as nx
@@ -32,7 +33,7 @@ class RoadNetwork:
             self.construct_tile_view()
         self.graph_segment_view = nx.read_gpickle(f"{self.DATA_DIR}/graph_segment_view.gpickle")
         self.graph_settlement_view = nx.read_gpickle(f"{self.DATA_DIR}/graph_settlement_view.gpickle")
-        # self.graph_tile_view = nx.read_gpickle(f"{self.DATA_DIR}/graph_tile_view.gpickle")
+        self.graph_tile_view = nx.read_gpickle(f"{self.DATA_DIR}/graph_tile_view.gpickle")
 
     # constructs the segment_view and saved it into graph_segment_view.gpickle
     def construct_segment_view(self):
@@ -361,7 +362,64 @@ class RoadNetwork:
         nx.write_gpickle(graph_settlement_view, f"{self.DATA_DIR}/graph_settlement_view.gpickle")
 
     def construct_tile_view(self):
-        pass
+        print("Building tile view...")
+        graph_segment_view = nx.read_gpickle(f"{self.DATA_DIR}/graph_segment_view.gpickle")
+        graph_tile_view = nx.Graph()
+
+        min_lat = 400
+        max_lat = -400
+        min_lng = 400
+        max_lng = -400
+        with open(f"{self.DATA_DIR}/cal.cnode.csv") as f:
+            for row in csv.reader(f):
+                lat = float(row[2])
+                lng = float(row[1])
+                min_lat = min(lat, min_lat)
+                max_lat = max(lat, max_lat)
+                min_lng = min(lng, min_lng)
+                max_lng = max(lng, max_lng)
+        print(f"min_lat: {min_lat} \tmax_lat: {max_lat} \tmin_lng: {min_lng} \tmax_lng: {max_lng} \t")
+
+        delta = 0.01
+
+        # just some small utility functions
+        def get_tile_id(_lat, _lng):
+            return (
+                math.floor((_lat - min_lat) / delta),
+                math.floor((_lng - min_lng) / delta)
+            )
+
+        max_tile_i, max_tile_j = get_tile_id(max_lat, max_lng)
+        for i in range(max_tile_i + 1):
+            for j in range(max_tile_j + 1):
+                sw_loc = GeoLocation.from_degrees(min_lat + i * delta, min_lng + j * delta)
+                ne_loc = GeoLocation.from_degrees(min_lat + (i + 1) * delta, min_lng + (j + 1) * delta)
+                graph_tile_view.add_node(
+                    (i, j), sw_loc=sw_loc, ne_loc=ne_loc, segment_nodes=list(), segment_edges=list()
+                )
+
+        # now we assign blue nodes to tiles they belong to
+        blue_nodes = graph_segment_view.nodes(data=True)
+        for node, attr in blue_nodes:
+            location = attr['pos']
+            tile_id = get_tile_id(location.deg_lat, location.deg_lon)
+            graph_tile_view.nodes[tile_id]['segment_nodes'].append(node)
+
+        # now we assign blue edges to tiles
+        for u, v in graph_segment_view.edges():
+            location = blue_nodes[u]['pos']
+            tile1 = get_tile_id(location.deg_lat, location.deg_lon)
+
+            location = blue_nodes[v]['pos']
+            tile2 = get_tile_id(location.deg_lat, location.deg_lon)
+
+            graph_tile_view.nodes[tile1]['segment_edges'].append((u, v))
+
+            if tile1 != tile2:
+                graph_tile_view.nodes[tile2]['segment_edges'].append((u, v))
+
+        nx.write_gpickle(graph_tile_view, f"{self.DATA_DIR}/graph_tile_view.gpickle")
+        print(f"Done! Created {graph_tile_view.number_of_nodes()} tiles.")
 
     # This function should return the pertinent settlementView for a given segmentView. Useful to apply damages.
     # Should follow a different methodology from what we use to create the settlement view since all we have to
@@ -376,4 +434,4 @@ class RoadNetwork:
 
 
 if __name__ == '__main__':
-    RoadNetwork(recreate_files=True)
+    RoadNetwork(recreate_files=False)
