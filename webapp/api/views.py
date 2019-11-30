@@ -1,7 +1,7 @@
 import json
 import random
 
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseBadRequest
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import View
@@ -35,10 +35,23 @@ class EarthquakeView(View):
 
 
 @method_decorator(csrf_exempt, name='dispatch')
-class MapView(View):
-    """
-    Returns the tile/settlement views of the map
-    """
+class DisasterSimulationView(View):
+    def post(self, request):
+        simulation_params = request.POST.get('simulation_params', None)
+        if not simulation_params:
+            return HttpResponseBadRequest("Field simulation_params required.")
+
+        # @harish: call simulation orchestrator here like this
+        # simulation_response = simulate(simulation_params)
+
+        # for now, I'll just create a dummy response
+        simulation_response = self.get_settlement_view()
+
+        return JsonResponse({
+            "success": True,
+            "simulation_response": simulation_response
+        })
+
     def get(self, request):
         requested_map_type = request.GET.get('map_type', Constants.SETTLEMENT_VIEW)
         if requested_map_type == Constants.SETTLEMENT_VIEW:
@@ -104,5 +117,10 @@ class MapView(View):
 
         return {
             "cities": cities,
-            "edges": edges
+            "edges": edges,
+            "stats": [{
+                "city": "San Fransisco",
+                "population": "150000",
+                "vulnerability": 88
+            }]  # and so on. list an ordered list of dictionaries.
         }
