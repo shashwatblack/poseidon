@@ -5,6 +5,7 @@ import {FormsModule} from '@angular/forms';
 
 import {LeafletModule} from '@asymmetrik/ngx-leaflet';
 import {LeafletDrawModule} from '@asymmetrik/ngx-leaflet-draw';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -24,6 +25,7 @@ import {MapComponent} from './map/map.component';
     AppRoutingModule,
     LeafletModule.forRoot(),
     LeafletDrawModule.forRoot(),
+    NgxSpinnerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

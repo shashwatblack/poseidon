@@ -16,6 +16,7 @@ import {UtilsService} from '../utils.service';
 import {DisasterTaxonomies, WizardSteps} from '../enums';
 import * as L from 'leaflet';
 import {MapService} from '../map.service';
+import {NgxSpinnerService} from 'ngx-spinner';
 
 @Component({
   selector: 'app-map',
@@ -113,6 +114,7 @@ export class MapComponent implements OnInit {
 
   /*** COMMON METHODS *************************************************************************************************/
   stateUpdated() {
+    this.spinner.hide();
     switch (this.disasterService.state.wizardStep) {
       case WizardSteps.DisasterChoice:
         this.clearMap();
@@ -120,7 +122,7 @@ export class MapComponent implements OnInit {
       case WizardSteps.InputParameters:
         break;
       case WizardSteps.Simulation:
-        // todo: make it gray, possibly show spinner overlay
+        this.spinner.show();
         break;
       case WizardSteps.Results:
         this.showSimulationResults();
@@ -296,7 +298,6 @@ export class MapComponent implements OnInit {
   /*** PLOTTING BASE **************************************************************************************************/
   showSimulationResults() {
     this.plotCities(this.disasterService.simulationResponse);
-    // todo: also show the top 10
   }
 
   plotCities(data) {
@@ -326,7 +327,8 @@ export class MapComponent implements OnInit {
   }
 
   /*** CLASS METHODS **************************************************************************************************/
-  constructor(private mapService: MapService, private disasterService: DisasterService, private utils: UtilsService) {
+  constructor(private mapService: MapService, private disasterService: DisasterService,
+              private utils: UtilsService, private spinner: NgxSpinnerService) {
     this.apply();
     this.disasterService.stateUpdated$.subscribe(() => this.stateUpdated());
     this.disasterService.earthquakeStarted$.subscribe((params) => this.startEarthquake(params));

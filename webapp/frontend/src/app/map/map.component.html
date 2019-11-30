@@ -1,10 +1,15 @@
-<div leaflet
-     (leafletMapReady)="onMapReady($event)"
-     [leafletOptions]="options"
-     [leafletLayers]="layers"
-     leafletDraw
-     (leafletDrawReady)="onLeafletDrawReady($event)"
-     [leafletDrawOptions]="drawOptions"
-     (leafletDrawEditMove)="baseLayerUpdated()"
-     (leafletDrawEditResize)="baseLayerUpdated()">
+<div>
+  <div leaflet
+       (leafletMapReady)="onMapReady($event)"
+       [leafletOptions]="options"
+       [leafletLayers]="layers"
+       leafletDraw
+       (leafletDrawReady)="onLeafletDrawReady($event)"
+       [leafletDrawOptions]="drawOptions"
+       (leafletDrawEditMove)="baseLayerUpdated()"
+       (leafletDrawEditResize)="baseLayerUpdated()">
+  </div>
+  <ngx-spinner bdOpacity=0.5 bdColor="rgba(0,0,0,0.7)" size="large" color="#ffc637" type="ball-grid-pulse" [fullScreen]="true">
+    <h4 class="spinner-text"> Running simulations... Please wait... </h4>
+  </ngx-spinner>
 </div>
