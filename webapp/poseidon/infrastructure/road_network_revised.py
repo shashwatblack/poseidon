@@ -21,14 +21,18 @@ from poseidon.infrastructure.geo_location import GeoLocation
 class RoadNetwork:
     DATA_DIR = "dat"
     CITY_PERIMETER = 2  # 2 km bounding box distance for cities
+    graph_segment_view = None
+    graph_settlement_view = None
+    graph_tile_view = None
 
-    def __init__(self, should_load_from_files=False):
-        if should_load_from_files:
-            pass
-        else:
-            # self.construct_segment_view()
+    def __init__(self, recreate_files=False):
+        if recreate_files:
+            self.construct_segment_view()
             self.construct_settlement_view_from_parts()
             self.construct_tile_view()
+        self.graph_segment_view = nx.read_gpickle(f"{self.DATA_DIR}/graph_segment_view.gpickle")
+        self.graph_settlement_view = nx.read_gpickle(f"{self.DATA_DIR}/graph_settlement_view.gpickle")
+        # self.graph_tile_view = nx.read_gpickle(f"{self.DATA_DIR}/graph_tile_view.gpickle")
 
     # constructs the segment_view and saved it into graph_segment_view.gpickle
     def construct_segment_view(self):
@@ -354,6 +358,8 @@ class RoadNetwork:
             print(f"{graph_settlement_view.number_of_nodes()} nodes and "
                   f"{graph_settlement_view.number_of_edges()} edges.")
 
+        nx.write_gpickle(graph_settlement_view, f"{self.DATA_DIR}/graph_settlement_view.gpickle")
+
     def construct_tile_view(self):
         pass
 
@@ -370,4 +376,4 @@ class RoadNetwork:
 
 
 if __name__ == '__main__':
-    RoadNetwork()
+    RoadNetwork(recreate_files=True)
