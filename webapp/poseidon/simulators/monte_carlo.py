@@ -1,3 +1,10 @@
+"""
+The simulation infrastructure for the project. Uses a road network, a road damage model (bernoulli) and a disaster
+model to produces realizations of that particular disaster, then calculates the list of metrics that were provided
+on each instance. Then it calculates the average metric value for each node over all the simulations, giving us a
+stochastic approximation of the metric for that city in the aftermath of the given disaster.
+"""
+
 from poseidon.infrastructure.road_network import RoadNetwork
 from poseidon.disasters.disaster import Disaster
 from poseidon.infrastructure.road_damage_model import RoadDamageModel
@@ -36,4 +43,3 @@ class MonteCarloSimulator:
 
     def calculate_metrics(self, settlement_view) -> list:
         return [metric(settlement_view) for metric in self.metrics]
-

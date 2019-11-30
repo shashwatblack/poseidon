@@ -367,12 +367,12 @@ class RoadNetwork:
     # Should follow a different methodology from what we use to create the settlement view since all we have to
     # do here is edge deletion. To be completed by: Harish
     def get_recalculated_settlement_view_from_segment_view(self, revised_segment_view):
-        pass
+        return self.graph_settlement_view
 
     # This function takes a given set of tiles (damaged) and deletes the corresponding edges from the segmentView.
     # Useful for applying damages. To be completed by: Harish
     def get_recalculated_segment_view(self, damaged_road_tiles):
-        pass
+        return self.graph_segment_view
 
 
 if __name__ == '__main__':

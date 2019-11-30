@@ -6,7 +6,7 @@ class GeoLocation:
     '''
     Class representing a coordinate on a sphere, most likely Earth.
     
-    This class is based from the code smaple in this paper:
+    This class is based from the code sample in this paper:
         http://janmatuschek.de/LatitudeLongitudeBoundingCoordinates
         
     The owner of that website, Jan Philip Matuschek, is the full owner of 

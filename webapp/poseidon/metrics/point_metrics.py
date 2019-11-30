@@ -1,6 +1,6 @@
 """
 Contains definitions of point-wise metrics that do not consider the graph structure of the road network. An example is
-just to find out the fraction of tiles with a damaged road.
+to find out just the fraction of tiles with a damaged road.
 """
 import numpy as np
 
