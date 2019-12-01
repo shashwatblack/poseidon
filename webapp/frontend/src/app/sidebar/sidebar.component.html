@@ -96,7 +96,7 @@
     <h3 class="text-muted text-center">Most Vulnerable Cities:</h3>
     <div class="list-group simulation-stats">
       <div class="list-group-item d-flex justify-content-between"
-           [style.background-color]="utils.percentageToColor(row.vulnerability, 0.4)"
+           [style.background-color]="utils.percentageToColor(row.vulnerability, 0.2)"
            *ngFor="let row of disasterService.simulationResponse.stats">
         <div>
           <h5>{{row.city}}</h5>
@@ -112,7 +112,7 @@
     <hr>
     <br>
     <div class="action-buttons">
-      <button type="button" class="btn btn-outline-secondary" (click)="goBack(3)">Start Over</button>
+      <button type="button" class="btn btn-primary" (click)="goBack(3)">Start Over</button>
     </div>
   </div>
 </div>

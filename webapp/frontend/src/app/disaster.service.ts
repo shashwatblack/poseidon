@@ -20,8 +20,8 @@ export class DisasterService {
       lat: 0.0,
       lng: 0.0
     },
-    radius: 5000,
-    intensity: 5
+    radius: 300000,
+    intensity: 8
   };
 
   hurricaneParameters = {
@@ -30,16 +30,16 @@ export class DisasterService {
         lat: 0.0,
         lng: 0.0
       },
-      radius: 5000,
-      intensity: 5
+      radius: 100000,
+      intensity: 90
     },
     end: {
       center: {
         lat: 0.0,
         lng: 0.0
       },
-      radius: 5000,
-      intensity: 5
+      radius: 30000,
+      intensity: 30
     }
   };
 

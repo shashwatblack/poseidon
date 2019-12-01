@@ -47,7 +47,7 @@ export class MapComponent implements OnInit {
   layers: Layer[];
   options = {
     zoom: 8,
-    center: latLng(37.666025, -122.471097)
+    center: latLng(33.93424531, -118.21289063)
   };
   drawOptions = {
     position: 'topright',
@@ -170,7 +170,7 @@ export class MapComponent implements OnInit {
 
     this.disasterService.earthquakeParameters.center = latlng;
 
-    this.earthquakeBaseLayer = circle(latlng, {radius: 10000});
+    this.earthquakeBaseLayer = circle(latlng, {radius: this.disasterService.earthquakeParameters.radius});
     // @ts-ignore
     this.leafletDrawDirective.options.edit.featureGroup.addLayer(this.earthquakeBaseLayer);
 
@@ -182,7 +182,7 @@ export class MapComponent implements OnInit {
   }
 
   earthquakeIntensityUpdated() {
-    const color = this.utils.percentageToColor(this.disasterService.earthquakeParameters.intensity);
+    const color = this.utils.percentageToColor(this.disasterService.earthquakeParameters.intensity * 10);
     this.earthquakeBaseLayer.setStyle({
       color: color,
       fillColor: color,
@@ -202,8 +202,12 @@ export class MapComponent implements OnInit {
     let latlng = this.map.getCenter();
 
     this.hurricaneBaseLayers = {
-      start: circle(latlng, {radius: 10000}),
-      end: circle(new LatLng(latlng.lat + 0.4, latlng.lng + 0.4), {radius: 5000}),
+      start: circle(latlng, {
+        radius: this.disasterService.hurricaneParameters.start.radius
+      }),
+      end: circle(new LatLng(latlng.lat + 2, latlng.lng + 2), {
+        radius: this.disasterService.hurricaneParameters.end.radius
+      }),
     };
 
     // @ts-ignore
@@ -310,18 +314,22 @@ export class MapComponent implements OnInit {
 
   plotCities(data) {
     this.clearSimulationResults();
-    for (let city of data.cities) {
-      this.plotCity(this.simulationResultsFeatureGroup, city);
+    if (data.cities) {
+      for (let city of data.cities) {
+        this.plotCity(this.simulationResultsFeatureGroup, city);
+      }
     }
-    for (let edge of data.edges) {
-      this.plotEdge(this.simulationResultsFeatureGroup, edge);
+    if (data.edges) {
+      for (let edge of data.edges) {
+        this.plotEdge(this.simulationResultsFeatureGroup, edge);
+      }
     }
     this.map.fitBounds(this.simulationResultsFeatureGroup.getBounds());
   }
 
   plotCity(featureGroup, city) {
-    let radius = Math.sqrt(city.population);
-    let color = this.utils.intensityToColor(city.damage);
+    let radius = Math.sqrt(Math.max(city.population, 100));
+    let color = this.utils.intensityToColor(city.vulnerability);
     let cityCircle = circle([city.lat, city.lng], { radius, color });
     cityCircle.bindTooltip(`<b>${city.city}</b><br/> Population: <b>${city.population}</b>`);
     featureGroup.addLayer(cityCircle);
