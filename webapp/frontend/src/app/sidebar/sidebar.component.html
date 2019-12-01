@@ -16,7 +16,6 @@
         <div class="form-group">
           <label for="intensityRange">Earthquake Intensity</label>
           <input type="range" class="form-control custom-range" id="intensityRange" name="intensity"
-                 min="0" max="10"
                  [(ngModel)]="disasterService.earthquakeParameters.intensity"
                  (change)="disasterService.updateEarthquakeIntensity($event.target.value)">
         </div>
@@ -33,7 +32,7 @@
         </code>
         <br>
         <code>
-          Intensity: <span class="value">{{disasterService.earthquakeParameters.intensity}}</span>
+          Intensity: <span class="value">{{utils.toFloat(disasterService.earthquakeParameters.intensity) / 10}}</span>
         </code>
       </div>
       <div *ngIf="disasterService.state.chosenDisaster == DisasterTaxonomies.Hurricane">
@@ -64,7 +63,7 @@
         </code>
         <br>
         <code>
-          Start Intensity: <span class="value">{{disasterService.hurricaneParameters.start.intensity}}</span>
+          Start Intensity: <span class="value">{{utils.toFloat(disasterService.hurricaneParameters.start.intensity) / 10}}</span>
         </code>
         <br>
         <code>
@@ -80,7 +79,7 @@
         </code>
         <br>
         <code>
-          End Intensity: <span class="value">{{disasterService.hurricaneParameters.end.intensity}}</span>
+          End Intensity: <span class="value">{{utils.toFloat(disasterService.hurricaneParameters.end.intensity) / 10}}</span>
         </code>
       </div>
       <hr>

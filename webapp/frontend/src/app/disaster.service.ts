@@ -18,29 +18,29 @@ export class DisasterService {
 
   earthquakeParameters = {
     center: {
-      lat: 0.0,
-      lng: 0.0
+      lat: 34.04924594,
+      lng: -118.22387695
     },
     radius: 300000,
-    intensity: 8
+    intensity: 70
   };
 
   hurricaneParameters = {
     start: {
       center: {
-        lat: 0.0,
-        lng: 0.0
+        lat: 32.94414889,
+        lng: -116.63085938
       },
-      radius: 100000,
+      radius: 300000,
       intensity: 90
     },
     end: {
       center: {
-        lat: 0.0,
-        lng: 0.0
+        lat: 38.82259098,
+        lng: -123.35449219
       },
-      radius: 30000,
-      intensity: 30
+      radius: 100000,
+      intensity: 40
     }
   };
 
@@ -109,7 +109,7 @@ export class DisasterService {
           lng: this.utils.toFloat(this.earthquakeParameters.center.lng)
         },
         radius: this.utils.toFloat(this.earthquakeParameters.radius) / 1000,
-        intensity: this.utils.toFloat(this.earthquakeParameters.intensity)
+        intensity: this.utils.toFloat(this.earthquakeParameters.intensity) / 10
       };
     } else if (this.state.chosenDisaster === DisasterTaxonomies.Hurricane) {
       disaster_type = "hurricane";
@@ -121,7 +121,7 @@ export class DisasterService {
             lng: this.utils.toFloat(this.hurricaneParameters.start.center.lng)
           },
           radius: this.utils.toFloat(this.hurricaneParameters.start.radius) / 1000,
-          intensity: this.utils.toFloat(this.hurricaneParameters.start.intensity)
+          intensity: this.utils.toFloat(this.hurricaneParameters.start.intensity) / 10
         },
         end: {
           center: {
@@ -129,12 +129,9 @@ export class DisasterService {
             lng: this.utils.toFloat(this.hurricaneParameters.end.center.lng)
           },
           radius: this.utils.toFloat(this.hurricaneParameters.end.radius) / 1000,
-          intensity: this.utils.toFloat(this.hurricaneParameters.end.intensity)
+          intensity: this.utils.toFloat(this.hurricaneParameters.end.intensity) / 10
         },
       };
-      // make radius into kilometers
-      disaster_params.start.radius /= 1000;
-      disaster_params.end.radius /= 1000;
     } else {
       return;
     }

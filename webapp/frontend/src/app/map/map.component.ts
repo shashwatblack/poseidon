@@ -46,7 +46,7 @@ export class MapComponent implements OnInit {
   model = new LeafletLayersModel([this.LAYER_OSM], this.LAYER_OSM.id, []);
   layers: Layer[];
   options = {
-    zoom: 8,
+    zoom: 6,
     center: latLng(33.93424531, -118.21289063)
   };
   drawOptions = {
@@ -177,7 +177,14 @@ export class MapComponent implements OnInit {
     this.clearMap();
 
     let latlng;
-    latlng = params ? params.latlng : this.map.getCenter();
+    if (params && params.latlng) {
+      latlng = params.latlng;
+    } else {
+      latlng = this.disasterService.earthquakeParameters.center;
+      if (!latlng.lat && !latlng.lng) {
+        latlng = this.map.getCenter();
+      }
+    }
 
     this.disasterService.earthquakeParameters.center = latlng;
 
@@ -193,7 +200,7 @@ export class MapComponent implements OnInit {
   }
 
   earthquakeIntensityUpdated() {
-    const color = this.utils.percentageToColor(this.disasterService.earthquakeParameters.intensity * 10);
+    const color = this.utils.percentageToColor(this.disasterService.earthquakeParameters.intensity);
     this.earthquakeBaseLayer.setStyle({
       color: color,
       fillColor: color,
@@ -210,13 +217,20 @@ export class MapComponent implements OnInit {
   startHurricane() {
     this.clearMap();
 
-    let latlng = this.map.getCenter();
+    let startLatlng = this.disasterService.hurricaneParameters.start.center;
+    if (!startLatlng.lat && !startLatlng.lng) {
+      startLatlng = this.map.getCenter();
+    }
+    let endLatlng = this.disasterService.hurricaneParameters.end.center;
+    if (!endLatlng.lat && !endLatlng.lng) {
+      endLatlng = new LatLng(startLatlng.lat + 2, startLatlng.lng - 2);
+    }
 
     this.hurricaneBaseLayers = {
-      start: circle(latlng, {
+      start: circle(startLatlng, {
         radius: this.disasterService.hurricaneParameters.start.radius
       }),
-      end: circle(new LatLng(latlng.lat + 2, latlng.lng + 2), {
+      end: circle(endLatlng, {
         radius: this.disasterService.hurricaneParameters.end.radius
       }),
     };
@@ -340,14 +354,14 @@ export class MapComponent implements OnInit {
 
   plotCity(featureGroup, city) {
     let radius = 5 * Math.sqrt(Math.max(city.population, 100));
-    let color = this.utils.intensityToColor(city.vulnerability);
+    let color = this.utils.percentageToColor(city.vulnerability);
     let cityCircle = circle([city.lat, city.lng], { radius, color });
     cityCircle.bindTooltip(`<b>${city.city}</b><br/> Population: <b>${city.population}</b>`);
     featureGroup.addLayer(cityCircle);
   }
 
   plotEdge(featureGroup, edge) {
-    let color = this.utils.intensityToColor(edge.damage);
+    let color = this.utils.percentageToColor(edge.damage);
     featureGroup.addLayer(polyline([edge.start, edge.end], { color }));
   }
 
