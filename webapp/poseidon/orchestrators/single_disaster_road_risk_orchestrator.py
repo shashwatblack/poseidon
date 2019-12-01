@@ -15,6 +15,17 @@ class SingleDisasterRoadRiskOrchestrator:
         self.road_damage_model = BernoulliRoadDamageModel(quality_bias=-16.30, susceptibility_factor=1.8)
         self.metrics = [is_node_connected_to_hub]
 
+        # base metrics tell us the metrics without any disaster. used to normalize the final output
+        non_disaster = GaussianEarthquake({
+            "center": {
+                "lat": 34.04924594,
+                "lng": -118.22387695
+            },
+            "radius": 10,
+            "intensity": 0
+        })
+        self.base_metrics = MonteCarloSimulator(non_disaster, self.road_network, self.road_damage_model, self.metrics).run(1)
+
     def get_risk_metric_for_cities(self, inputs):
         if inputs['type'] == 'hurricane':
             disaster = None
@@ -36,7 +47,7 @@ class SingleDisasterRoadRiskOrchestrator:
                 "population": int(attr['population']),
                 "lat": pos.deg_lat,
                 "lng": pos.deg_lon,
-                "damage": risks[0][i]
+                "vulnerability": risks[0][i]
             })
             i += 1
         return cities

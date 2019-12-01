@@ -9,6 +9,7 @@ from django.views.generic import View
 from poseidon.infrastructure.road_network_revised import RoadNetwork
 from poseidon.utils.constants import Constants
 from poseidon.disasters.earthquakes import GaussianEarthquake
+from poseidon.orchestrators.single_disaster_road_risk_orchestrator import SingleDisasterRoadRiskOrchestrator
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -36,6 +37,8 @@ class EarthquakeView(View):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class DisasterSimulationView(View):
+    simulation_orchestrator = SingleDisasterRoadRiskOrchestrator()
+
     def post(self, request):
         data = json.loads(request.body)
         simulation_params = data.get('simulation_params', None)
@@ -43,10 +46,18 @@ class DisasterSimulationView(View):
             return HttpResponseBadRequest("Field simulation_params required.")
 
         # @harish: call simulation orchestrator here like this
-        # simulation_response = simulate(simulation_params)
+        citywise_data = self.simulation_orchestrator.get_risk_metric_for_cities(simulation_params)
+
+        interesting_cities = sorted([city for city in citywise_data if city['population'] >= 100000],
+                                    key=lambda i: i['vulnerability'],
+                                    reverse=True
+                                    )
+
+        simulation_response = {'cities': citywise_data,
+                               'stats': interesting_cities}
 
         # for now, I'll just create a dummy response
-        simulation_response = self.get_settlement_view()
+        #simulation_response = self.get_settlement_view()
 
         return JsonResponse({
             "success": True,
