@@ -74,7 +74,7 @@ class GeoLocation:
     def within_bounds(self, SW_loc, NE_loc):
         return ((self.deg_lat >= SW_loc.deg_lat and self.deg_lat <= NE_loc.deg_lat)
             and (self.deg_lon >= SW_loc.deg_lon and self.deg_lon <= NE_loc.deg_lon))
-            
+
     def distance_to(self, other, radius=EARTH_RADIUS):
         '''
         Computes the great circle distance between this GeoLocation instance

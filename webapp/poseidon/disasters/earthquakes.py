@@ -1,6 +1,6 @@
 import numpy as np
 from poseidon.disasters.disaster import Disaster
-from poseidon.utils.spatial_utils import haversine_distance
+from poseidon.infrastructure.geo_location import GeoLocation
 
 
 # Just uses a gaussian distribution to model the impact of an earthquake. Epicenter is the heaviest, and then the
@@ -9,13 +9,13 @@ from poseidon.utils.spatial_utils import haversine_distance
 class GaussianEarthquake(Disaster):
 
     def __init__(self, params: dict):
-        self.epicenter_coords = (params['center']['lat'], params['center']['long'])
+        self.epicenter_coords = GeoLocation.from_degrees(params['center']['lat'], params['center']['lng'])
         self.magnitude = params['intensity']
         self.sigma_radius = params['radius']
 
     def get_disaster_magnitudes_for_coordinates(self, coordinates):
-        distances = haversine_distance(self.epicenter_coords, coordinates)
-        region_magnitudes = self.magnitude * (1/(np.sqrt(2 * np.pi) * self.sigma_radius)) * np.exp(-distances/(self.sigma_radius ** 2))
+        distances = np.array([self.epicenter_coords.distance_to(coordinate) for coordinate in coordinates])
+        region_magnitudes = self.magnitude * np.exp(-np.multiply(distances, distances)/(2 * self.sigma_radius * self.sigma_radius))
         return region_magnitudes
 
 

@@ -26,4 +26,5 @@ class BernoulliRoadDamageModel(RoadDamageModel):
         val = self.quality_bias + self.susceptibility_factor * magnitudes
         probabilities = np.exp(val)/(1 + np.exp(val))
         random_samples = np.random.rand(len(coordinates))
-        return random_samples > probabilities
+        result = random_samples < probabilities
+        return result

@@ -13,6 +13,7 @@ blue edges that form up that road.
 import csv
 import math
 from itertools import combinations
+from copy import deepcopy
 
 import networkx as nx
 import pandas as pd
@@ -33,7 +34,25 @@ class RoadNetwork:
             self.construct_tile_view()
         self.graph_segment_view = nx.read_gpickle(f"{self.DATA_DIR}/graph_segment_view.gpickle")
         self.graph_settlement_view = nx.read_gpickle(f"{self.DATA_DIR}/graph_settlement_view.gpickle")
-        self.graph_tile_view = nx.read_gpickle(f"{self.DATA_DIR}/graph_tile_view.gpickle")
+        try:
+            self.graph_tile_view = nx.read_gpickle(f"{self.DATA_DIR}/graph_tile_view.gpickle")
+        except FileNotFoundError:
+            print("Couldn't find tile view file. If your segment view file exists, I will create the tile view now")
+            self.construct_tile_view()
+
+        self.make_helper_maps()
+
+    # creates a couple of precomputed helper maps to speed up computation
+    # A map from blue nodes to a list of red edges it supports
+
+    def make_helper_maps(self):
+        self.blue_node_to_red_edges = {}
+        for edge_u, edge_v, attr in self.graph_settlement_view.edges(data=True):
+            for blue_node in attr['blue_nodes']:
+                if blue_node in self.blue_node_to_red_edges:
+                    self.blue_node_to_red_edges[blue_node].add((edge_u, edge_v))
+                else:
+                    self.blue_node_to_red_edges[blue_node] = {(edge_u, edge_v)}
 
     # constructs the segment_view and saved it into graph_segment_view.gpickle
     def construct_segment_view(self):
@@ -55,6 +74,7 @@ class RoadNetwork:
                 graph_segment_view.add_edge(row[1], row[2], d=row[3])
 
         nx.write_gpickle(graph_segment_view, f"{self.DATA_DIR}/graph_segment_view.gpickle")
+        self.graph_segment_view = graph_segment_view
         print("Done")
         print(graph_segment_view.number_of_nodes(), "blue segments.")
         print(graph_segment_view.number_of_edges(), "blue edges.")
@@ -257,6 +277,7 @@ class RoadNetwork:
             print(f"\tDuration: {time.time() - start}", end="")
 
         nx.write_gpickle(graph_settlement_view, f"{self.DATA_DIR}/graph_settlement_view.gpickle")
+        self.graph_settlement_view = graph_settlement_view
 
     # uses the four_neighbor_combined_nodes to construct the settlemet view using shortest path algorithm
     # even this takes ~ 3 hours.
@@ -323,6 +344,7 @@ class RoadNetwork:
                 print(f"\tDuration: {time.time() - start}", end="")
 
             nx.write_gpickle(graph_settlement_view, f"{self.DATA_DIR}/graph_settlement_view.gpickle")
+            self.graph_settlement_view = graph_settlement_view
 
     # finally, we can combine the parts into a single settlement view.
     def construct_settlement_view_from_parts(self):
@@ -360,6 +382,7 @@ class RoadNetwork:
                   f"{graph_settlement_view.number_of_edges()} edges.")
 
         nx.write_gpickle(graph_settlement_view, f"{self.DATA_DIR}/graph_settlement_view.gpickle")
+        self.graph_settlement_view = graph_settlement_view
 
     def construct_tile_view(self):
         print("Building tile view...")
@@ -394,8 +417,9 @@ class RoadNetwork:
             for j in range(max_tile_j + 1):
                 sw_loc = GeoLocation.from_degrees(min_lat + i * delta, min_lng + j * delta)
                 ne_loc = GeoLocation.from_degrees(min_lat + (i + 1) * delta, min_lng + (j + 1) * delta)
+                center_loc = GeoLocation.from_degrees(min_lat + i * delta/2, min_lng + j * delta/2)
                 graph_tile_view.add_node(
-                    (i, j), sw_loc=sw_loc, ne_loc=ne_loc, segment_nodes=list(), segment_edges=list()
+                    (i, j), sw_loc=sw_loc, ne_loc=ne_loc, center_loc=center_loc, segment_nodes=set(), segment_edges=set()
                 )
 
         # now we assign blue nodes to tiles they belong to
@@ -406,6 +430,8 @@ class RoadNetwork:
             graph_tile_view.nodes[tile_id]['segment_nodes'].append(node)
 
         # now we assign blue edges to tiles
+        # we should ideally take all the tiles along the line joining u to v, then add a segment edge to all those
+        # tiles. But no big deal
         for u, v in graph_segment_view.edges():
             location = blue_nodes[u]['pos']
             tile1 = get_tile_id(location.deg_lat, location.deg_lon)
@@ -418,19 +444,37 @@ class RoadNetwork:
             if tile1 != tile2:
                 graph_tile_view.nodes[tile2]['segment_edges'].append((u, v))
 
+        # we need to delete those tiles that don't contain any roads at all. Would greatly speed up computation
+
+        node_indices = []
+        segment_lengths = []
+        for node, attr in graph_tile_view.nodes(data=True):
+            node_indices.append(node)
+            segment_lengths.append(len(attr['segment_nodes']))
+        for node, length in zip(node_indices, segment_lengths):
+            if length == 0:
+                graph_tile_view.remove_node(node)
+
         nx.write_gpickle(graph_tile_view, f"{self.DATA_DIR}/graph_tile_view.gpickle")
+        self.graph_tile_view = graph_tile_view
         print(f"Done! Created {graph_tile_view.number_of_nodes()} tiles.")
 
-    # This function should return the pertinent settlementView for a given segmentView. Useful to apply damages.
-    # Should follow a different methodology from what we use to create the settlement view since all we have to
-    # do here is edge deletion. To be completed by: Harish
-    def get_recalculated_settlement_view_from_segment_view(self, revised_segment_view):
-        return self.graph_settlement_view
+    # if a blue node is gone, then the corresponding red edge must disappear
+    def get_recalculated_settlement_view_from_segment_view(self, removed_blue_nodes):
+        new_settlement_view = self.graph_settlement_view.copy()
+        removed_edges = set()
+        for blue_node in removed_blue_nodes:
+            removed_edges = removed_edges.union(self.blue_node_to_red_edges.get(blue_node, []))
+        new_settlement_view.remove_edges_from(removed_edges)
+        return new_settlement_view
 
     # This function takes a given set of tiles (damaged) and deletes the corresponding edges from the segmentView.
-    # Useful for applying damages. To be completed by: Harish
-    def get_recalculated_segment_view(self, damaged_road_tiles):
-        return self.graph_segment_view
+    # Useful for applying damages.
+    def get_removed_blue_nodes(self, damaged_road_tiles):
+        removed_blue_nodes = set()
+        for tile in damaged_road_tiles:
+            removed_blue_nodes = removed_blue_nodes.union(self.graph_tile_view.node[tile]['segment_nodes'])
+        return removed_blue_nodes
 
 
 if __name__ == '__main__':
