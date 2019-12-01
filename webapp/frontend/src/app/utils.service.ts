@@ -25,6 +25,10 @@ export class UtilsService {
     return `hsla(${hue}, 100%, 50%, ${alpha})`;
   }
 
+  toFloat(value) {
+    return parseFloat(String(value));
+  }
+
   constructor() {
   }
 }

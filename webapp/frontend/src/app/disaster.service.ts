@@ -3,6 +3,7 @@ import {Subject} from 'rxjs';
 import {DisasterTaxonomies, WizardSteps} from './enums';
 import {HttpClient} from '@angular/common/http';
 import {ApiService} from "./api.service";
+import {UtilsService} from "./utils.service";
 
 @Injectable({
   providedIn: 'root'
@@ -101,16 +102,35 @@ export class DisasterService {
     let disaster_params;
     if (this.state.chosenDisaster === DisasterTaxonomies.Earthquake) {
       disaster_type = "earthquake";
-      // make copies
-      disaster_params = {...this.earthquakeParameters};
-      // make radius into kilometers
-      disaster_params.radius /= 1000;
+      // make copies, make sure it's float values, radius should be in KM
+      disaster_params = {
+        center: {
+          lat: this.utils.toFloat(this.earthquakeParameters.center.lat),
+          lng: this.utils.toFloat(this.earthquakeParameters.center.lng)
+        },
+        radius: this.utils.toFloat(this.earthquakeParameters.radius) / 1000,
+        intensity: this.utils.toFloat(this.earthquakeParameters.intensity)
+      };
     } else if (this.state.chosenDisaster === DisasterTaxonomies.Hurricane) {
       disaster_type = "hurricane";
-      // make copies
+      // make copies, make sure it's float values, radius should be in KM
       disaster_params = {
-        start: {...this.hurricaneParameters.start},
-        end: {...this.hurricaneParameters.end},
+        start: {
+          center: {
+            lat: this.utils.toFloat(this.hurricaneParameters.start.center.lat),
+            lng: this.utils.toFloat(this.hurricaneParameters.start.center.lng)
+          },
+          radius: this.utils.toFloat(this.hurricaneParameters.start.radius) / 1000,
+          intensity: this.utils.toFloat(this.hurricaneParameters.start.intensity)
+        },
+        end: {
+          center: {
+            lat: this.utils.toFloat(this.hurricaneParameters.end.center.lat),
+            lng: this.utils.toFloat(this.hurricaneParameters.end.center.lng)
+          },
+          radius: this.utils.toFloat(this.hurricaneParameters.end.radius) / 1000,
+          intensity: this.utils.toFloat(this.hurricaneParameters.end.intensity)
+        },
       };
       // make radius into kilometers
       disaster_params.start.radius /= 1000;
@@ -134,5 +154,5 @@ export class DisasterService {
     );
   }
 
-  constructor(private http: HttpClient, private api: ApiService) { }
+  constructor(private http: HttpClient, private api: ApiService, private utils: UtilsService) { }
 }
