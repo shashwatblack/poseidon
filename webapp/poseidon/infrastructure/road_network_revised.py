@@ -501,7 +501,7 @@ class RoadNetwork:
     def get_recalculated_segment_view(self, damaged_road_tiles):
         removed_blue_nodes = set()
         for tile in damaged_road_tiles:
-            removed_blue_nodes = removed_blue_nodes.union(self.graph_tile_view.node[tile]['segment_nodes'])
+            removed_blue_nodes = removed_blue_nodes.union(self.graph_tile_view.nodes[tile]['segment_nodes'])
         new_segment_view = self.graph_segment_view.copy()
 
         new_segment_view.remove_nodes_from(removed_blue_nodes)
