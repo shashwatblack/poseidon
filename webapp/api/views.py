@@ -51,7 +51,7 @@ class DisasterSimulationView(View):
         interesting_cities = sorted([city for city in citywise_data if city['population'] >= 100000],
                                     key=lambda i: i['vulnerability'],
                                     reverse=True
-                                    )
+                                    )[:10]
 
         simulation_response = {'cities': citywise_data,
                                'stats': interesting_cities}
