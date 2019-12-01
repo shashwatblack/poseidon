@@ -34,3 +34,20 @@ code {
   font-size: 15px;
   color: #1976d2;
 }
+
+.simulation-stats {
+  margin-top: 25px;
+  .list-group-item {
+    align-items: center;
+    border-radius: 0;
+  }
+  .vulnerability-label {
+    font-size: 13px;
+    text-transform: uppercase;
+  }
+  .vulnerability-score {
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+  }
+}

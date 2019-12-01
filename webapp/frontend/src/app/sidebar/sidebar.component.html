@@ -8,7 +8,8 @@
       Hurricane !!
     </button>
   </div>
-  <div *ngIf="disasterService.state.wizardStep == WizardSteps.InputParameters">
+  <div *ngIf="disasterService.state.wizardStep == WizardSteps.InputParameters ||
+              disasterService.state.wizardStep == WizardSteps.Simulation">
     <form (submit)="fetchMagnitude($event)">
       <div *ngIf="disasterService.state.chosenDisaster == DisasterTaxonomies.Earthquake">
         <h4 class="wizard-step-title">Earthquake</h4>
@@ -21,8 +22,8 @@
         <br>
         <code>
           Epicenter: [
-            <span class="value">{{disasterService.earthquakeParameters.center.lat.toFixed(8)}}</span>,
-            <span class="value">{{disasterService.earthquakeParameters.center.lng.toFixed(8)}}</span>
+          <span class="value">{{disasterService.earthquakeParameters.center.lat.toFixed(8)}}</span>,
+          <span class="value">{{disasterService.earthquakeParameters.center.lng.toFixed(8)}}</span>
           ]
         </code>
         <br>
@@ -51,13 +52,14 @@
         <br>
         <code>
           Start Center: [
-            <span class="value">{{disasterService.hurricaneParameters.start.center.lat.toFixed(8)}}</span>,
-            <span class="value">{{disasterService.hurricaneParameters.start.center.lng.toFixed(8)}}</span>
+          <span class="value">{{disasterService.hurricaneParameters.start.center.lat.toFixed(8)}}</span>,
+          <span class="value">{{disasterService.hurricaneParameters.start.center.lng.toFixed(8)}}</span>
           ]
         </code>
         <br>
         <code>
-          Start Radius: <span class="value">{{(disasterService.hurricaneParameters.start.radius / 1000).toFixed(4)}} km</span>
+          Start Radius: <span class="value">{{(disasterService.hurricaneParameters.start.radius / 1000).toFixed(4)}}
+          km</span>
         </code>
         <br>
         <code>
@@ -66,13 +68,14 @@
         <br>
         <code>
           End Center: [
-            <span class="value">{{disasterService.hurricaneParameters.end.center.lat.toFixed(8)}}</span>,
-            <span class="value">{{disasterService.hurricaneParameters.end.center.lng.toFixed(8)}}</span>
+          <span class="value">{{disasterService.hurricaneParameters.end.center.lat.toFixed(8)}}</span>,
+          <span class="value">{{disasterService.hurricaneParameters.end.center.lng.toFixed(8)}}</span>
           ]
         </code>
         <br>
         <code>
-          End Radius: <span class="value">{{(disasterService.hurricaneParameters.end.radius / 1000).toFixed(4)}} km</span>
+          End Radius: <span class="value">{{(disasterService.hurricaneParameters.end.radius / 1000).toFixed(4)}}
+          km</span>
         </code>
         <br>
         <code>
@@ -82,17 +85,33 @@
       <hr>
       <div class="action-buttons">
         <button type="button" class="btn btn-outline-secondary" (click)="goBack()">Previous</button>
-        <button type="submit" class="btn btn-success pull-right">Start Simulation!</button>
+        <button type="button" class="btn btn-success pull-right" (click)="simulateDisaster()">
+          Start Simulation!
+        </button>
       </div>
     </form>
   </div>
-
-
-  <br>
-
-  <div style="margin-top: 20px;">
-    <code *ngIf="magnitudeResponse">
-      The equivalent energy is: {{magnitudeResponse.energy}}
-    </code>
+  <div *ngIf="disasterService.state.wizardStep == WizardSteps.Results">
+    <h3 class="text-muted text-center">Most Vulnerable Cities:</h3>
+    <div class="list-group simulation-stats">
+      <div class="list-group-item d-flex justify-content-between"
+           [style.background-color]="utils.percentageToColor(row.vulnerability, 0.4)"
+           *ngFor="let row of disasterService.simulationResponse.stats">
+        <div>
+          <h5>{{row.city}}</h5>
+          <div>Population: <b>{{row.population}}</b></div>
+        </div>
+        <div>
+          <div class="vulnerability-label">Vulnerability</div>
+          <div class="vulnerability-score">{{row.vulnerability}}</div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <hr>
+    <br>
+    <div class="action-buttons">
+      <button type="button" class="btn btn-outline-secondary" (click)="goBack(3)">Start Over</button>
+    </div>
   </div>
 </div>

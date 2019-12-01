@@ -16,6 +16,7 @@ import {UtilsService} from '../utils.service';
 import {DisasterTaxonomies, WizardSteps} from '../enums';
 import * as L from 'leaflet';
 import {MapService} from '../map.service';
+import {NgxSpinnerService} from 'ngx-spinner';
 
 @Component({
   selector: 'app-map',
@@ -30,6 +31,7 @@ export class MapComponent implements OnInit {
   earthquakeBaseLayer: any;
   hurricaneBaseLayers: any;
   hurricaneShadow: Element;
+  simulationResultsFeatureGroup: FeatureGroup;
 
   /*** MAP PARAMETERS *************************************************************************************************/
   LAYER_OSM = {
@@ -113,15 +115,21 @@ export class MapComponent implements OnInit {
 
   /*** COMMON METHODS *************************************************************************************************/
   stateUpdated() {
+    this.spinner.hide();
     switch (this.disasterService.state.wizardStep) {
       case WizardSteps.DisasterChoice:
         this.clearMap();
+        this.clearSimulationResults();
         break;
       case WizardSteps.InputParameters:
+        this.clearSimulationResults();
         break;
       case WizardSteps.Simulation:
+        this.spinner.show();
         break;
       case WizardSteps.Results:
+        this.clearMap();
+        this.showSimulationResults();
         break;
     }
   }
@@ -292,20 +300,23 @@ export class MapComponent implements OnInit {
   }
 
   /*** PLOTTING BASE **************************************************************************************************/
-  plotCities() {
-    console.log("Trying");
-    this.mapService.getSettlementViewPromise().then((data) => {
-      let featureGroup = new FeatureGroup();
-      for (let city of data.cities) {
-        this.plotCity(featureGroup, city);
-      }
-      for (let edge of data.edges) {
-        this.plotEdge(featureGroup, edge);
-      }
+  showSimulationResults() {
+    this.plotCities(this.disasterService.simulationResponse);
+  }
 
-      featureGroup.addTo(this.map);
-      this.map.fitBounds(featureGroup.getBounds());
-    });
+  clearSimulationResults() {
+    this.simulationResultsFeatureGroup.clearLayers();
+  }
+
+  plotCities(data) {
+    this.clearSimulationResults();
+    for (let city of data.cities) {
+      this.plotCity(this.simulationResultsFeatureGroup, city);
+    }
+    for (let edge of data.edges) {
+      this.plotEdge(this.simulationResultsFeatureGroup, edge);
+    }
+    this.map.fitBounds(this.simulationResultsFeatureGroup.getBounds());
   }
 
   plotCity(featureGroup, city) {
@@ -322,7 +333,8 @@ export class MapComponent implements OnInit {
   }
 
   /*** CLASS METHODS **************************************************************************************************/
-  constructor(private mapService: MapService, private disasterService: DisasterService, private utils: UtilsService) {
+  constructor(private mapService: MapService, private disasterService: DisasterService,
+              private utils: UtilsService, private spinner: NgxSpinnerService) {
     this.apply();
     this.disasterService.stateUpdated$.subscribe(() => this.stateUpdated());
     this.disasterService.earthquakeStarted$.subscribe((params) => this.startEarthquake(params));
@@ -338,7 +350,8 @@ export class MapComponent implements OnInit {
     L.drawLocal.edit.handlers.edit.tooltip.subtext = "Drag middle point handler to change epicenter.";
     L.drawLocal.edit.handlers.edit.tooltip.text = "Drag edge point handler to change radius.";
 
-    this.plotCities();
+    this.simulationResultsFeatureGroup = new FeatureGroup();
+    this.simulationResultsFeatureGroup.addTo(this.map);
   }
 
   onLeafletDrawReady(leafletDrawDirective: LeafletDrawDirective) {

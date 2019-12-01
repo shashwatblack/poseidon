@@ -25,7 +25,7 @@ SECRET_KEY = '$@x%i$lqop#6ivd__hnmy8!h*my%6=z*x-p=_uqg%$0i!s-k93'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*', 'localhost', 'project-poseidon.ml']
 
 
 # Application definition
@@ -125,3 +125,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = '/home/ubuntu/poseidon_static/static/'

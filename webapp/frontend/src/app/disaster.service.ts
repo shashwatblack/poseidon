@@ -1,6 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
 import {DisasterTaxonomies, WizardSteps} from './enums';
+import {HttpClient} from '@angular/common/http';
+import {ApiService} from "./api.service";
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +42,8 @@ export class DisasterService {
       intensity: 5
     }
   };
+
+  simulationResponse = null;
 
   // Observable sources
   private updateStateSource = new Subject<object>();
@@ -91,5 +95,34 @@ export class DisasterService {
     this.updateHurricaneSource.next();
   }
 
-  constructor() { }
+  /*** SIMULATION *****************************************************************************************************/
+  simulateDisaster() {
+    let disaster_type;
+    let disaster_params;
+    if (this.state.chosenDisaster === DisasterTaxonomies.Earthquake) {
+      disaster_type = "earthquake";
+      disaster_params = this.earthquakeParameters;
+    } else if (this.state.chosenDisaster === DisasterTaxonomies.Hurricane) {
+      disaster_type = "hurricane";
+      disaster_params = this.hurricaneParameters;
+    } else {
+      return;
+    }
+    this.http.post(this.api.getUrl('simulation'), {
+      simulation_params: {
+        type: disaster_type,
+        params: disaster_params
+      }
+    }).subscribe(
+      data => {
+        // @ts-ignore
+        this.simulationResponse = data.simulation_response;
+        this.state.wizardStep = WizardSteps.Results;
+        this.invokeStateUpdate();
+      },
+      err => console.error(err)
+    );
+  }
+
+  constructor(private http: HttpClient, private api: ApiService) { }
 }

@@ -37,7 +37,8 @@ class EarthquakeView(View):
 @method_decorator(csrf_exempt, name='dispatch')
 class DisasterSimulationView(View):
     def post(self, request):
-        simulation_params = request.POST.get('simulation_params', None)
+        data = json.loads(request.body)
+        simulation_params = data.get('simulation_params', None)
         if not simulation_params:
             return HttpResponseBadRequest("Field simulation_params required.")
 
