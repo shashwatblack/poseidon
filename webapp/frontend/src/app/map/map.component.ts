@@ -46,8 +46,8 @@ export class MapComponent implements OnInit {
   model = new LeafletLayersModel([this.LAYER_OSM], this.LAYER_OSM.id, []);
   layers: Layer[];
   options = {
-    zoom: 10,
-    center: latLng(30.619026, -96.338900)
+    zoom: 8,
+    center: latLng(37.666025, -122.471097)
   };
   drawOptions = {
     position: 'topright',

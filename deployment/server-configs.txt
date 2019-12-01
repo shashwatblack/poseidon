@@ -22,6 +22,8 @@ server {
     location / {
         include         proxy_params;
         proxy_pass      http://unix:/home/ubuntu/poseidon/poseidon.sock;
+        proxy_read_timeout 300s;
+        proxy_connect_timeout 75s;
     }
 }
 
@@ -66,7 +68,7 @@ cd /home/ubuntu/poseidon; git pull origin master
 <pipenv install if necessary>
 <npm install if necessary>
 
+cd /home/ubuntu/poseidon/webapp/frontend; ng build --prod=true --base-href '/static/dist/'
 cd /home/ubuntu/poseidon/webapp; pipenv run ./manage.py collectstatic --noinput;
-cd /home/ubuntu/poseidon/webapp/frontend; ng build --prod=true
 sudo service supervisor restart
 sudo service nginx restart

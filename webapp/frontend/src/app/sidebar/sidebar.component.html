@@ -16,6 +16,7 @@
         <div class="form-group">
           <label for="intensityRange">Earthquake Intensity</label>
           <input type="range" class="form-control custom-range" id="intensityRange" name="intensity"
+                 min="0" max="10"
                  [(ngModel)]="disasterService.earthquakeParameters.intensity"
                  (change)="disasterService.updateEarthquakeIntensity($event.target.value)">
         </div>
