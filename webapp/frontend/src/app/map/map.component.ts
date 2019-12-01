@@ -328,7 +328,7 @@ export class MapComponent implements OnInit {
   }
 
   plotCity(featureGroup, city) {
-    let radius = Math.sqrt(Math.max(city.population, 100));
+    let radius = 5 * Math.sqrt(Math.max(city.population, 100));
     let color = this.utils.intensityToColor(city.vulnerability);
     let cityCircle = circle([city.lat, city.lng], { radius, color });
     cityCircle.bindTooltip(`<b>${city.city}</b><br/> Population: <b>${city.population}</b>`);
