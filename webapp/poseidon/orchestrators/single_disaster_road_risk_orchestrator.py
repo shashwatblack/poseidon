@@ -35,14 +35,14 @@ class SingleDisasterRoadRiskOrchestrator:
             raise(ValueError("Disaster not supported"))
 
         simulator = MonteCarloSimulator(disaster, self.road_network, self.road_damage_model, self.metrics)
-        metrics = simulator.run(5)
+        metrics = simulator.run(30)
         risks = 100 * (1 - metrics)
         cities = []
         i = 0
 
         for node, attr in self.road_network.graph_settlement_view.nodes(data=True):
             pos = attr['pos']
-            if attr['population'] >= 1000 and self.base_metrics[0][i] > 0:
+            if attr['population'] >= 10000 and self.base_metrics[0][i] > 0:
                 cities.append({
                     "city": attr['name'],
                     "population": int(attr['population']),
