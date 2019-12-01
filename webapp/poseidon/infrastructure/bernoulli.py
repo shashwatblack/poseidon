@@ -21,10 +21,9 @@ class BernoulliRoadDamageModel(RoadDamageModel):
         self.quality_bias = quality_bias
         self.susceptibility_factor = susceptibility_factor
 
-    def get_damage_for_coordinates(self, coordinates, magnitudes):
+    def get_damage_for_coordinates(self, coordinates, magnitudes, seed):
+        np.random.seed(seed)
         assert len(coordinates) == len(magnitudes)
         val = self.quality_bias + self.susceptibility_factor * magnitudes
         probabilities = np.exp(val)/(1 + np.exp(val))
-        random_samples = np.random.rand(len(coordinates))
-        result = random_samples < probabilities
-        return result
+        return np.random.binomial(len(magnitudes), p=probabilities)

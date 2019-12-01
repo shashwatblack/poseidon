@@ -16,6 +16,7 @@ from itertools import combinations
 from copy import deepcopy
 
 import networkx as nx
+from networkx import NetworkXNoPath
 import pandas as pd
 from poseidon.infrastructure.geo_location import GeoLocation
 
@@ -53,6 +54,21 @@ class RoadNetwork:
                     self.blue_node_to_red_edges[blue_node].add((edge_u, edge_v))
                 else:
                     self.blue_node_to_red_edges[blue_node] = {(edge_u, edge_v)}
+        self.initial_shortest_path_lengths = {}
+
+
+        for red_edge_u, red_edge_v, attr in self.graph_settlement_view.edges(data=True):
+            blue_u = attr['blue_nodes'][1]
+            blue_v = attr['blue_nodes'][-2]
+            if len(attr['blue_nodes']) == 2:
+                self.initial_shortest_path_lengths[(red_edge_u, red_edge_v)] = 0
+                continue
+            try:
+                self.initial_shortest_path_lengths[(red_edge_u, red_edge_v)] = nx.shortest_path_length(
+                    self.graph_segment_view, blue_u, blue_v)
+            except NetworkXNoPath:
+                self.initial_shortest_path_lengths[(red_edge_u, red_edge_v)] = len(self.graph_segment_view)
+
 
     # constructs the segment_view and saved it into graph_segment_view.gpickle
     def construct_segment_view(self):
@@ -460,21 +476,36 @@ class RoadNetwork:
         print(f"Done! Created {graph_tile_view.number_of_nodes()} tiles.")
 
     # if a blue node is gone, then the corresponding red edge must disappear
-    def get_recalculated_settlement_view_from_segment_view(self, removed_blue_nodes):
+    def get_recalculated_settlement_view_from_segment_view(self, new_segment_view):
         new_settlement_view = self.graph_settlement_view.copy()
         removed_edges = set()
-        for blue_node in removed_blue_nodes:
-            removed_edges = removed_edges.union(self.blue_node_to_red_edges.get(blue_node, []))
+
+        for red_edge_u, red_edge_v, attr in self.graph_settlement_view.edges(data=True):
+            blue_u = attr['blue_nodes'][1]
+            blue_v = attr['blue_nodes'][-2]
+            if len(attr['blue_nodes']) == 2:
+                continue
+            if not (blue_u in new_segment_view and blue_v in new_segment_view):
+                removed_edges.add((red_edge_u, red_edge_v))
+                continue
+            try:
+                if nx.shortest_path_length(new_segment_view, blue_u, blue_v) > self.initial_shortest_path_lengths[(red_edge_u, red_edge_v)]:
+                    removed_edges.add((red_edge_u, red_edge_v))
+            except NetworkXNoPath:
+                removed_edges.add((red_edge_u, red_edge_v))
         new_settlement_view.remove_edges_from(removed_edges)
         return new_settlement_view
 
     # This function takes a given set of tiles (damaged) and deletes the corresponding edges from the segmentView.
     # Useful for applying damages.
-    def get_removed_blue_nodes(self, damaged_road_tiles):
+    def get_recalculated_segment_view(self, damaged_road_tiles):
         removed_blue_nodes = set()
         for tile in damaged_road_tiles:
             removed_blue_nodes = removed_blue_nodes.union(self.graph_tile_view.node[tile]['segment_nodes'])
-        return removed_blue_nodes
+        new_segment_view = self.graph_segment_view.copy()
+
+        new_segment_view.remove_nodes_from(removed_blue_nodes)
+        return new_segment_view
 
 
 if __name__ == '__main__':

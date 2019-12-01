@@ -10,5 +10,5 @@ from abc import ABC, abstractmethod
 class RoadDamageModel(ABC):
 
     @abstractmethod
-    def get_damage_for_coordinates(self, coordinates, magnitudes):
+    def get_damage_for_coordinates(self, coordinates, magnitudes, seed):
         pass

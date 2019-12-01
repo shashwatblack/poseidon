@@ -9,11 +9,10 @@ from poseidon.disasters.hurricanes import LinearHurricane
 from poseidon.metrics.graph_metrics import is_node_connected_to_hub
 from poseidon.simulators.monte_carlo import MonteCarloSimulator
 
-
 class SingleDisasterRoadRiskOrchestrator:
     def __init__(self):
         self.road_network = RoadNetwork()
-        self.road_damage_model = BernoulliRoadDamageModel(quality_bias=-16.30, susceptibility_factor=1.8)
+        self.road_damage_model = BernoulliRoadDamageModel(quality_bias=-15.5, susceptibility_factor=1.5)
         self.metrics = [is_node_connected_to_hub]
 
         # base metrics tell us the metrics without any disaster. used to normalize the final output
@@ -36,20 +35,21 @@ class SingleDisasterRoadRiskOrchestrator:
             raise(ValueError("Disaster not supported"))
 
         simulator = MonteCarloSimulator(disaster, self.road_network, self.road_damage_model, self.metrics)
-        metrics = simulator.run(10)
+        metrics = simulator.run(5)
         risks = 100 * (1 - metrics)
         cities = []
         i = 0
 
         for node, attr in self.road_network.graph_settlement_view.nodes(data=True):
             pos = attr['pos']
-            cities.append({
-                "city": attr['name'],
-                "population": int(attr['population']),
-                "lat": pos.deg_lat,
-                "lng": pos.deg_lon,
-                "vulnerability": risks[0][i]
-            })
+            if attr['population'] >= 1000 and self.base_metrics[0][i] > 0:
+                cities.append({
+                    "city": attr['name'],
+                    "population": int(attr['population']),
+                    "lat": pos.deg_lat,
+                    "lng": pos.deg_lon,
+                    "vulnerability": risks[0][i]
+                })
             i += 1
         return cities
 
@@ -63,10 +63,11 @@ if __name__ == '__main__':
           "lat": 34.04924594,
           "lng": -118.22387695
         },
-        "radius": 500,
-        "intensity": 9
+        "radius": 300,
+        "intensity": 7
       }
     }
+
     params = {
         "type": "hurricane",
         "params": {
@@ -76,19 +77,24 @@ if __name__ == '__main__':
                     "lng": -116.63085938
                 },
                 "radius": 300,
-                "intensity": 8
+                "intensity": 9
             },
             "end": {
                 "center": {
                     "lat": 38.82259098,
                     "lng": -123.35449219
                 },
-                "radius": 5000,
-                "intensity": 8
+                "radius": 100,
+                "intensity": 4
             }
         }
     }
     risks = orc.get_risk_metric_for_cities(params)
+    vulnerabilities = [risk['vulnerability'] for risk in risks]
+    import matplotlib.pyplot as plt
+    plt.figure()
+    plt.hist(vulnerabilities)
+
 
 
 
