@@ -120,16 +120,19 @@ export class MapComponent implements OnInit {
       case WizardSteps.DisasterChoice:
         this.clearMap();
         this.clearSimulationResults();
+        this.disableMapEdit();
         break;
       case WizardSteps.InputParameters:
         this.clearSimulationResults();
         break;
       case WizardSteps.Simulation:
         this.spinner.show();
+        this.disableMapEdit();
         break;
       case WizardSteps.Results:
         this.clearMap();
         this.showSimulationResults();
+        this.disableMapEdit();
         break;
     }
   }
@@ -140,6 +143,14 @@ export class MapComponent implements OnInit {
     }
     // @ts-ignore
     this.leafletDrawDirective._toolbars.edit._modes.edit.handler.enable();
+  }
+
+  disableMapEdit() {
+    if (!this.leafletDrawDirective) {
+      return;
+    }
+    // @ts-ignore
+    this.leafletDrawDirective._toolbars.edit._modes.edit.handler.disable();
   }
 
   clearMap() {
