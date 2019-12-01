@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {DisasterService} from '../disaster.service';
 import {DisasterTaxonomies, WizardSteps} from '../enums';
+import {UtilsService} from '../utils.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -27,8 +28,8 @@ export class SidebarComponent implements OnInit {
     this.disasterService.state.wizardStep = WizardSteps.InputParameters;
   }
 
-  goBack() {
-    this.disasterService.state.wizardStep = Math.max(0, this.disasterService.state.wizardStep - 1);
+  goBack(steps = 1) {
+    this.disasterService.state.wizardStep = Math.max(0, this.disasterService.state.wizardStep - steps);
     this.disasterService.invokeStateUpdate();
   }
 
@@ -51,7 +52,7 @@ export class SidebarComponent implements OnInit {
       );
   }
 
-  constructor(private http: HttpClient, private disasterService: DisasterService) {}
+  constructor(private http: HttpClient, private disasterService: DisasterService, private utils: UtilsService) {}
 
   ngOnInit() {
   }

@@ -31,6 +31,7 @@ export class MapComponent implements OnInit {
   earthquakeBaseLayer: any;
   hurricaneBaseLayers: any;
   hurricaneShadow: Element;
+  simulationResultsFeatureGroup: FeatureGroup;
 
   /*** MAP PARAMETERS *************************************************************************************************/
   LAYER_OSM = {
@@ -120,6 +121,7 @@ export class MapComponent implements OnInit {
         this.clearMap();
         break;
       case WizardSteps.InputParameters:
+        this.clearSimulationResults();
         break;
       case WizardSteps.Simulation:
         this.spinner.show();
@@ -300,17 +302,19 @@ export class MapComponent implements OnInit {
     this.plotCities(this.disasterService.simulationResponse);
   }
 
+  clearSimulationResults() {
+    this.simulationResultsFeatureGroup.clearLayers();
+  }
+
   plotCities(data) {
-    let featureGroup = new FeatureGroup();
+    this.clearSimulationResults();
     for (let city of data.cities) {
-      this.plotCity(featureGroup, city);
+      this.plotCity(this.simulationResultsFeatureGroup, city);
     }
     for (let edge of data.edges) {
-      this.plotEdge(featureGroup, edge);
+      this.plotEdge(this.simulationResultsFeatureGroup, edge);
     }
-
-    featureGroup.addTo(this.map);
-    this.map.fitBounds(featureGroup.getBounds());
+    this.map.fitBounds(this.simulationResultsFeatureGroup.getBounds());
   }
 
   plotCity(featureGroup, city) {
@@ -343,6 +347,9 @@ export class MapComponent implements OnInit {
     this.map = map;
     L.drawLocal.edit.handlers.edit.tooltip.subtext = "Drag middle point handler to change epicenter.";
     L.drawLocal.edit.handlers.edit.tooltip.text = "Drag edge point handler to change radius.";
+
+    this.simulationResultsFeatureGroup = new FeatureGroup();
+    this.simulationResultsFeatureGroup.addTo(this.map);
   }
 
   onLeafletDrawReady(leafletDrawDirective: LeafletDrawDirective) {

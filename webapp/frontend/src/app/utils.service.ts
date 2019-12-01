@@ -19,10 +19,10 @@ export class UtilsService {
     return '#' + ('000000' + h.toString(16)).slice(-6);
   }
 
-  percentageToColor(percentage, maxHue = 0, minHue = 120) {
+  percentageToColor(percentage, alpha = 1, maxHue = 0, minHue = 120) {
     percentage /= 100;
     const hue = percentage * (maxHue - minHue) + minHue;
-    return `hsl(${hue}, 100%, 50%)`;
+    return `hsla(${hue}, 100%, 50%, ${alpha})`;
   }
 
   constructor() {
