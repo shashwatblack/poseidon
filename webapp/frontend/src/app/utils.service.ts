@@ -15,6 +15,14 @@ export class UtilsService {
     return parseFloat(String(value));
   }
 
+  toPrintableFloat(value) {
+    return this.toFloat(value).toFixed(2);
+  }
+
+  toPrintableInt(value) {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   constructor() {
   }
 }

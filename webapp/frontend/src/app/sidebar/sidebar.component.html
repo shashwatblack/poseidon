@@ -99,11 +99,11 @@
            *ngFor="let row of disasterService.simulationResponse.stats">
         <div>
           <h5>{{row.city}}</h5>
-          <div>Population: <b>{{row.population}}</b></div>
+          <div>Population: <b>{{utils.toPrintableInt(row.population)}}</b></div>
         </div>
         <div>
           <div class="vulnerability-label">Vulnerability</div>
-          <div class="vulnerability-score">{{row.vulnerability}}</div>
+          <div class="vulnerability-score">{{utils.toPrintableFloat(row.vulnerability)}}</div>
         </div>
       </div>
     </div>
