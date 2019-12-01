@@ -119,6 +119,7 @@ export class MapComponent implements OnInit {
     switch (this.disasterService.state.wizardStep) {
       case WizardSteps.DisasterChoice:
         this.clearMap();
+        this.clearSimulationResults();
         break;
       case WizardSteps.InputParameters:
         this.clearSimulationResults();
@@ -127,6 +128,7 @@ export class MapComponent implements OnInit {
         this.spinner.show();
         break;
       case WizardSteps.Results:
+        this.clearMap();
         this.showSimulationResults();
         break;
     }
