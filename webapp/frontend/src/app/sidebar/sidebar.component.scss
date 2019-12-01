@@ -36,13 +36,20 @@ code {
 }
 
 .simulation-stats {
-  margin-top: 25px;
+  margin-top: 15px;
   overflow-y: auto;
-  max-height: calc(100vh - 270px);
+  max-height: calc(100vh - 210px);
   .list-group-item {
     align-items: center;
     border-radius: 0;
     margin-bottom: 5px;
+    padding: 10px 15px;
+    background: #f2f2f2;
+
+    h5 {
+      font-size: 1rem;
+      font-weight: bold;
+    }
   }
   .vulnerability-label {
     font-size: 13px;
