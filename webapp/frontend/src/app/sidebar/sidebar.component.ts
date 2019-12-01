@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {DisasterService} from '../disaster.service';
 import {DisasterTaxonomies, WizardSteps} from '../enums';
 import {UtilsService} from '../utils.service';
+import {ApiService} from "../api.service";
 
 @Component({
   selector: 'app-sidebar',
@@ -41,7 +42,7 @@ export class SidebarComponent implements OnInit {
 
   fetchMagnitude(event: Event) {
     event.preventDefault();
-    this.http.post('http://localhost:8000/api/earthquake/', {
+    this.http.post(this.api.getUrl('earthquake'), {
       magnitude: this.magnitude
     })
       .subscribe(
@@ -52,7 +53,8 @@ export class SidebarComponent implements OnInit {
       );
   }
 
-  constructor(private http: HttpClient, private disasterService: DisasterService, private utils: UtilsService) {}
+  constructor(private http: HttpClient, private disasterService: DisasterService,
+              private utils: UtilsService, private api: ApiService) {}
 
   ngOnInit() {
   }

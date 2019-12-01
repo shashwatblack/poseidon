@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 import {DisasterTaxonomies, WizardSteps} from './enums';
 import {HttpClient} from '@angular/common/http';
+import {ApiService} from "./api.service";
 
 @Injectable({
   providedIn: 'root'
@@ -107,7 +108,7 @@ export class DisasterService {
     } else {
       return;
     }
-    this.http.post('http://localhost:8000/api/simulation/', {
+    this.http.post(this.api.getUrl('simulation'), {
       simulation_params: {
         type: disaster_type,
         params: disaster_params
@@ -123,5 +124,5 @@ export class DisasterService {
     );
   }
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private api: ApiService) { }
 }

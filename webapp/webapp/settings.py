@@ -25,7 +25,7 @@ SECRET_KEY = '$@x%i$lqop#6ivd__hnmy8!h*my%6=z*x-p=_uqg%$0i!s-k93'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['project-poseidon.ml']
+ALLOWED_HOSTS = ['*', 'localhost', 'project-poseidon.ml']
 
 
 # Application definition
