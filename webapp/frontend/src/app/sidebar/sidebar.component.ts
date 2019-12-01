@@ -53,8 +53,8 @@ export class SidebarComponent implements OnInit {
       );
   }
 
-  constructor(private http: HttpClient, private disasterService: DisasterService,
-              private utils: UtilsService, private api: ApiService) {}
+  constructor(private http: HttpClient, public disasterService: DisasterService,
+              public utils: UtilsService, private api: ApiService) {}
 
   ngOnInit() {
   }
