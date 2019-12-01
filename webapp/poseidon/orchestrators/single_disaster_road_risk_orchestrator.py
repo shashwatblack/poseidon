@@ -5,6 +5,7 @@ returns city-wise risks for that disaster. The inputs are just the raw parameter
 from poseidon.infrastructure.road_network_revised import RoadNetwork
 from poseidon.infrastructure.bernoulli import BernoulliRoadDamageModel
 from poseidon.disasters.earthquakes import GaussianEarthquake
+from poseidon.disasters.hurricanes import LinearHurricane
 from poseidon.metrics.graph_metrics import is_node_connected_to_hub
 from poseidon.simulators.monte_carlo import MonteCarloSimulator
 
@@ -28,7 +29,7 @@ class SingleDisasterRoadRiskOrchestrator:
 
     def get_risk_metric_for_cities(self, inputs):
         if inputs['type'] == 'hurricane':
-            disaster = None
+            disaster = LinearHurricane(inputs['params'])
         elif inputs['type'] == 'earthquake':
             disaster = GaussianEarthquake(inputs['params'])
         else:
@@ -65,6 +66,27 @@ if __name__ == '__main__':
         "radius": 500,
         "intensity": 9
       }
+    }
+    params = {
+        "type": "hurricane",
+        "params": {
+            "start": {
+                "center": {
+                    "lat": 32.94414889,
+                    "lng": -116.63085938
+                },
+                "radius": 300,
+                "intensity": 8
+            },
+            "end": {
+                "center": {
+                    "lat": 38.82259098,
+                    "lng": -123.35449219
+                },
+                "radius": 5000,
+                "intensity": 8
+            }
+        }
     }
     risks = orc.get_risk_metric_for_cities(params)
 
