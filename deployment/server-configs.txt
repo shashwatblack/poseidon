@@ -1,0 +1,63 @@
+-------------------- NGINX --------------------
+(poseidon) ubuntu@ip-172-31-87-174:/etc/nginx/sites-available$ pwd
+/etc/nginx/sites-available
+(poseidon) ubuntu@ip-172-31-87-174:/etc/nginx/sites-available$ ll
+total 16
+drwxr-xr-x 2 root root 4096 Dec  1 01:04 ./
+drwxr-xr-x 8 root root 4096 Oct 29 02:23 ../
+-rw-r--r-- 1 root root 2416 Apr  6  2018 default
+-rw-r--r-- 1 root root  415 Dec  1 00:45 poseidon
+(poseidon) ubuntu@ip-172-31-87-174:/etc/nginx/sites-available$ cat poseidon
+server {
+    listen 80;
+    server_name project-poseidon.ml;
+
+    location = /robots.txt { return 200 "User-agent: *\nDisallow: /\n"; }
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/ubuntu/poseidon_static;
+    }
+
+    location / {
+        include         proxy_params;
+        proxy_pass      http://unix:/home/ubuntu/poseidon/poseidon.sock;
+    }
+}
+
+-------------------- GUNICORN --------------------
+pipenv shell
+pipenv install gunicorn
+gunicorn --bind 0.0.0.0:8000 webapp.wsgi:application
+
+-------------------- SUPERVISORCTL --------------------
+(poseidon) ubuntu@ip-172-31-87-174:/etc/supervisor/conf.d$ pwd
+/etc/supervisor/conf.d
+(poseidon) ubuntu@ip-172-31-87-174:/etc/supervisor/conf.d$ ll
+total 12
+drwxr-xr-x 2 root root 4096 Dec  1 01:03 ./
+drwxr-xr-x 3 root root 4096 Dec  1 00:47 ../
+-rw-r--r-- 1 root root  593 Dec  1 01:03 gunicorn.conf
+(poseidon) ubuntu@ip-172-31-87-174:/etc/supervisor/conf.d$ cat gunicorn.conf
+[program:gunicorn]
+directory=/home/ubuntu/poseidon/webapp
+environment=LANG=en_US.UTF-8,LC_ALL=en_US.UTF-8,PYTHONPATH=/home/ubuntu/.local/share/virtualenvs/poseidon-q72hoiad/bin/python,DJANGO_SETTINGS_MODULE=webapp.settings
+command=/home/ubuntu/.local/share/virtualenvs/poseidon-PbQ2xrOh/bin/gunicorn --workers 3 --bind unix:/home/ubuntu/poseidon/poseidon.sock webapp.wsgi:application
+autostart=true
+autorestart=true
+stderr_logfile=/home/ubuntu/poseidon_logs/gunicorn.out.log
+stdout_logfile=/home/ubuntu/poseidon_logs/gunicorn.err.log
+user=ubuntu
+group=www-data
+
+[group:guni]
+programs:gunicorn
+
+
+-------------------- COMMANDS --------------------
+sudo service supervisor restart
+sudo service nginx restart
+$ sudo supervisorctl reread
+$ sudo supervisorctl update
+$ sudo supervisorctl status
+$ sudo supervisorctl stop guni:gunicorn
