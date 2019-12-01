@@ -101,10 +101,20 @@ export class DisasterService {
     let disaster_params;
     if (this.state.chosenDisaster === DisasterTaxonomies.Earthquake) {
       disaster_type = "earthquake";
-      disaster_params = this.earthquakeParameters;
+      // make copies
+      disaster_params = {...this.earthquakeParameters};
+      // make radius into kilometers
+      disaster_params.radius /= 1000;
     } else if (this.state.chosenDisaster === DisasterTaxonomies.Hurricane) {
       disaster_type = "hurricane";
-      disaster_params = this.hurricaneParameters;
+      // make copies
+      disaster_params = {
+        start: {...this.hurricaneParameters.start},
+        end: {...this.hurricaneParameters.end},
+      };
+      // make radius into kilometers
+      disaster_params.start.radius /= 1000;
+      disaster_params.end.radius /= 1000;
     } else {
       return;
     }
