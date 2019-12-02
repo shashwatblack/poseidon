@@ -26,4 +26,6 @@ class BernoulliRoadDamageModel(RoadDamageModel):
         assert len(coordinates) == len(magnitudes)
         val = self.quality_bias + self.susceptibility_factor * magnitudes
         probabilities = np.exp(val)/(1 + np.exp(val))
-        return np.random.binomial(len(magnitudes), p=probabilities)
+        print(min(probabilities), max(probabilities))
+        tosses = np.random.binomial(1, p=probabilities, size=len(magnitudes))
+        return tosses

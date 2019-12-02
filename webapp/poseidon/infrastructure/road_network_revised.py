@@ -47,15 +47,7 @@ class RoadNetwork:
     # A map from blue nodes to a list of red edges it supports
 
     def make_helper_maps(self):
-        self.blue_node_to_red_edges = {}
-        for edge_u, edge_v, attr in self.graph_settlement_view.edges(data=True):
-            for blue_node in attr['blue_nodes']:
-                if blue_node in self.blue_node_to_red_edges:
-                    self.blue_node_to_red_edges[blue_node].add((edge_u, edge_v))
-                else:
-                    self.blue_node_to_red_edges[blue_node] = {(edge_u, edge_v)}
         self.initial_shortest_path_lengths = {}
-
 
         for red_edge_u, red_edge_v, attr in self.graph_settlement_view.edges(data=True):
             blue_u = attr['blue_nodes'][1]
@@ -476,14 +468,19 @@ class RoadNetwork:
         print(f"Done! Created {graph_tile_view.number_of_nodes()} tiles.")
 
     # if a blue node is gone, then the corresponding red edge must disappear
-    def get_recalculated_settlement_view_from_segment_view(self, new_segment_view):
+    def get_recalculated_settlement_view_from_segment_view(self, new_segment_view, city_damaged):
         new_settlement_view = self.graph_settlement_view.copy()
+
+        city_damaged_map = {node : city_damaged[i] for i, node in enumerate(self.graph_settlement_view.nodes())}
         removed_edges = set()
 
         for red_edge_u, red_edge_v, attr in self.graph_settlement_view.edges(data=True):
             blue_u = attr['blue_nodes'][1]
             blue_v = attr['blue_nodes'][-2]
             if len(attr['blue_nodes']) == 2:
+                if city_damaged_map[red_edge_u] or city_damaged_map[red_edge_v]:
+                    # direct city-city link. If one of the cities is damaged, then that link is broken
+                    removed_edges.add((red_edge_u, red_edge_v))
                 continue
             if not (blue_u in new_segment_view and blue_v in new_segment_view):
                 removed_edges.add((red_edge_u, red_edge_v))

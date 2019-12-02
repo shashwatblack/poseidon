@@ -43,7 +43,7 @@ class MonteCarloSimulator:
         damage_realization = self.get_tilewise_realization(seed)
         damaged_tiles = [tile_index for tile_index in damage_realization.keys() if damage_realization[tile_index]]
         revised_segment_view = self.road_network.get_recalculated_segment_view(damaged_tiles)
-        revised_settlement_view = self.road_network.get_recalculated_settlement_view_from_segment_view(revised_segment_view)
+        revised_settlement_view = self.road_network.get_recalculated_settlement_view_from_segment_view(revised_segment_view, self.city_damaged)
         metrics = self.calculate_metrics(revised_settlement_view)
         return revised_segment_view, revised_settlement_view, metrics
 

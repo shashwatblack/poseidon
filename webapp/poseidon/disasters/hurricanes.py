@@ -32,6 +32,7 @@ class LinearHurricane(Disaster):
 
             distances = np.array([center.distance_to(coordinate) for coordinate in coordinates])
             multi_magnitudes.append(magnitude * np.exp(-np.multiply(distances, distances)/(2 * radius * radius)))
+            # could instead use a bounded inverse linear function, i.e. min(radius/distance, 1)
         return np.max(np.array(multi_magnitudes), axis=0)
 
 

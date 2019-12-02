@@ -16,7 +16,7 @@ def is_node_connected_to_hub(revised_settlement_graph: networkx.Graph(), city_da
     hub_nodes = []
     hub_node_indices = []
     for i in range(len(city_damaged)):
-        if (not city_damaged[i]) and (nodes[node_indices[i]]['population'] >= 500000):
+        if (not city_damaged[i]) and (nodes[node_indices[i]]['population'] >= 250000):
             hub_node_indices.append(node_indices[i])
             hub_nodes.append(nodes[node_indices[i]])
 

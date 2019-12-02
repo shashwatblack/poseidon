@@ -12,7 +12,7 @@ from poseidon.simulators.monte_carlo import MonteCarloSimulator
 class SingleDisasterRoadRiskOrchestrator:
     def __init__(self):
         self.road_network = RoadNetwork()
-        self.road_damage_model = BernoulliRoadDamageModel(quality_bias=-15.5, susceptibility_factor=1.5)
+        self.road_damage_model = BernoulliRoadDamageModel(quality_bias=-16.8, susceptibility_factor=1.8)
         self.metrics = [is_node_connected_to_hub]
 
         # base metrics tell us the metrics without any disaster. used to normalize the final output
@@ -60,35 +60,36 @@ if __name__ == '__main__':
       "type": "earthquake",
       "params": {
         "center": {
-          "lat": 34.04924594,
-          "lng": -118.22387695
+          "lat": 37.76420119,
+          "lng": -122.35748291
         },
-        "radius": 300,
-        "intensity": 7
+        "radius": 225,
+        "intensity": 9
       }
     }
-
-    params = {
-        "type": "hurricane",
-        "params": {
-            "start": {
-                "center": {
-                    "lat": 32.94414889,
-                    "lng": -116.63085938
+    '''
+        params = {
+            "type": "hurricane",
+            "params": {
+                "start": {
+                    "center": {
+                        "lat": 32.94414889,
+                        "lng": -116.63085938
+                    },
+                    "radius": 300,
+                    "intensity": 9
                 },
-                "radius": 300,
-                "intensity": 9
-            },
-            "end": {
-                "center": {
-                    "lat": 38.82259098,
-                    "lng": -123.35449219
-                },
-                "radius": 100,
-                "intensity": 4
+                "end": {
+                    "center": {
+                        "lat": 38.82259098,
+                        "lng": -123.35449219
+                    },
+                    "radius": 100,
+                    "intensity": 4
+                }
             }
         }
-    }
+    '''
     risks = orc.get_risk_metric_for_cities(params)
     vulnerabilities = [risk['vulnerability'] for risk in risks]
     import matplotlib.pyplot as plt
