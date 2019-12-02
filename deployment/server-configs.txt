@@ -27,6 +27,8 @@ server {
     }
 }
 
+# to enable accessing with ec2 web address
+sudo rm /etc/nginx/sites-enabled/default
 -------------------- GUNICORN --------------------
 pipenv shell
 pipenv install gunicorn
@@ -44,7 +46,7 @@ drwxr-xr-x 3 root root 4096 Dec  1 00:47 ../
 [program:gunicorn]
 directory=/home/ubuntu/poseidon/webapp
 environment=LANG=en_US.UTF-8,LC_ALL=en_US.UTF-8,PYTHONPATH=/home/ubuntu/.local/share/virtualenvs/poseidon-q72hoiad/bin/python,DJANGO_SETTINGS_MODULE=webapp.settings
-command=/home/ubuntu/.local/share/virtualenvs/poseidon-PbQ2xrOh/bin/gunicorn --workers 3 --bind unix:/home/ubuntu/poseidon/poseidon.sock webapp.wsgi:application
+command=/home/ubuntu/.local/share/virtualenvs/poseidon-PbQ2xrOh/bin/gunicorn --workers 3 --timeout 300 --bind unix:/home/ubuntu/poseidon/poseidon.sock webapp.wsgi:application
 autostart=true
 autorestart=true
 stderr_logfile=/home/ubuntu/poseidon_logs/gunicorn.out.log
@@ -57,10 +59,10 @@ programs:gunicorn
 
 
 -------------------- COMMANDS --------------------
-$ sudo supervisorctl reread
-$ sudo supervisorctl update
-$ sudo supervisorctl status
-$ sudo supervisorctl stop guni:gunicorn
+sudo supervisorctl reread
+sudo supervisorctl update
+sudo supervisorctl status
+sudo supervisorctl stop guni:gunicorn
 
 -------------------- DEPLOYMENT --------------------
 cd /home/ubuntu/poseidon; git pull origin master

@@ -52,34 +52,36 @@
         <br>
         <code>
           Start Center: [
-          <span class="value">{{disasterService.hurricaneParameters.start.center.lat.toFixed(8)}}</span>,
-          <span class="value">{{disasterService.hurricaneParameters.start.center.lng.toFixed(8)}}</span>
+          <span class="value">{{disasterService.hurricaneParameters.start.center.lat.toFixed(7)}}</span>,
+          <span class="value">{{disasterService.hurricaneParameters.start.center.lng.toFixed(7)}}</span>
           ]
         </code>
         <br>
         <code>
-          Start Radius: <span class="value">{{(disasterService.hurricaneParameters.start.radius / 1000).toFixed(4)}}
-          km</span>
+          Start Radius:
+          <span class="value">{{(disasterService.hurricaneParameters.start.radius / 1000).toFixed(4)}}km</span>
         </code>
         <br>
         <code>
-          Start Intensity: <span class="value">{{utils.toFloat(disasterService.hurricaneParameters.start.intensity) / 10}}</span>
+          Start Intensity:
+          <span class="value">{{utils.toFloat(disasterService.hurricaneParameters.start.intensity) / 10}}</span>
         </code>
         <br>
         <code>
           End Center: [
-          <span class="value">{{disasterService.hurricaneParameters.end.center.lat.toFixed(8)}}</span>,
-          <span class="value">{{disasterService.hurricaneParameters.end.center.lng.toFixed(8)}}</span>
+          <span class="value">{{disasterService.hurricaneParameters.end.center.lat.toFixed(7)}}</span>,
+          <span class="value">{{disasterService.hurricaneParameters.end.center.lng.toFixed(7)}}</span>
           ]
         </code>
         <br>
         <code>
-          End Radius: <span class="value">{{(disasterService.hurricaneParameters.end.radius / 1000).toFixed(4)}}
-          km</span>
+          End Radius:
+          <span class="value">{{(disasterService.hurricaneParameters.end.radius / 1000).toFixed(4)}}km</span>
         </code>
         <br>
         <code>
-          End Intensity: <span class="value">{{utils.toFloat(disasterService.hurricaneParameters.end.intensity) / 10}}</span>
+          End Intensity:
+          <span class="value">{{utils.toFloat(disasterService.hurricaneParameters.end.intensity) / 10}}</span>
         </code>
       </div>
       <hr>
@@ -92,10 +94,9 @@
     </form>
   </div>
   <div *ngIf="disasterService.state.wizardStep == WizardSteps.Results">
-    <h3 class="text-muted text-center">Most Vulnerable Cities:</h3>
+    <h4 class="text-muted text-center">Most Vulnerable Cities:</h4>
     <div class="list-group simulation-stats">
       <div class="list-group-item d-flex justify-content-between"
-           [style.background-color]="utils.percentageToColor(row.vulnerability, 0.2)"
            *ngFor="let row of disasterService.simulationResponse.stats">
         <div>
           <h5>{{row.city}}</h5>
@@ -103,13 +104,14 @@
         </div>
         <div>
           <div class="vulnerability-label">Vulnerability</div>
-          <div class="vulnerability-score">{{utils.toPrintableFloat(row.vulnerability)}}</div>
+          <div class="vulnerability-score"
+               [style.color]="utils.percentageToColor(row.vulnerability, 40)">
+            {{utils.toPrintableFloat(row.vulnerability)}}
+          </div>
         </div>
       </div>
     </div>
-    <br>
     <hr>
-    <br>
     <div class="action-buttons">
       <button type="button" class="btn btn-primary" (click)="goBack(3)">Start Over</button>
     </div>

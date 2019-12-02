@@ -10,10 +10,12 @@ Steps:
     git clone git@github.com:harishk1908/poseidon.git
     cd poseidon
     pipenv install
-    pipenv shell
+    npm install -g angular-cli
     cd webapp/frontend
+    npm install
     ng build --base-href '/static/dist/'
     cd ..
+    pipenv shell
     python manage.py migrate
     python manage.py runserver
 

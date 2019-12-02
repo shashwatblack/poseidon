@@ -91,11 +91,11 @@
 </div>
 
 <div class="content" role="main">
-  <div class="map-wrapper">
-    <app-map #mapComponent></app-map>
-  </div>
   <div class="sidebar-wrapper">
     <app-sidebar (startEarthquakeEvent)="mapComponent.startEarthquake()"></app-sidebar>
+  </div>
+  <div class="map-wrapper">
+    <app-map #mapComponent></app-map>
   </div>
 </div>
 
