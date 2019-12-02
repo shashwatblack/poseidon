@@ -104,7 +104,8 @@
         </div>
         <div>
           <div class="vulnerability-label">Vulnerability</div>
-          <div class="vulnerability-score" [style.color]="utils.percentageToColor(row.vulnerability)">
+          <div class="vulnerability-score"
+               [style.color]="utils.percentageToColor(row.vulnerability, 40)">
             {{utils.toPrintableFloat(row.vulnerability)}}
           </div>
         </div>
