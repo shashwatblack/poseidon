@@ -24,7 +24,7 @@ echo
 echo -e "${GC}#### NPM #########################################################${NC}"
 cd /home/ubuntu/poseidon/webapp/frontend
 npm install
-ng build --prod=true --base-href '/static/dist/'
+npm run build
 cd /home/ubuntu/poseidon/webapp
 pipenv run ./manage.py collectstatic --noinput
 

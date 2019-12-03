@@ -70,7 +70,7 @@ cd /home/ubuntu/poseidon; git pull origin master
 <pipenv install if necessary>
 <npm install if necessary>
 
-cd /home/ubuntu/poseidon/webapp/frontend; ng build --prod=true --base-href '/static/dist/'
+cd /home/ubuntu/poseidon/webapp/frontend; npm run build
 cd /home/ubuntu/poseidon/webapp; pipenv run ./manage.py collectstatic --noinput;
 sudo service supervisor restart
 sudo service nginx restart

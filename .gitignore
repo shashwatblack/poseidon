@@ -102,3 +102,7 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+webapp/frontend/dist
+webapp/frontend/static/app
+webapp/frontend/templates/app.html

@@ -17,8 +17,11 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.views.generic import TemplateView
 
+from frontend.views import poseindon_app
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include('api.urls')),
-    url(r'^$', TemplateView.as_view(template_name='index.html'), name='home'),
+    url(r'^app/(?P<rest>.*)$', poseindon_app, name='app'),
+    url(r'^$', TemplateView.as_view(template_name='landing.html'), name='home'),
 ]

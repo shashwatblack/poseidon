@@ -13,7 +13,7 @@ Steps:
     npm install -g angular-cli
     cd webapp/frontend
     npm install
-    ng build --base-href '/static/dist/'
+    npm run build
     cd ..
     pipenv shell
     python manage.py migrate
