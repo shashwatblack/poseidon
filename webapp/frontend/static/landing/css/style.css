@@ -1284,3 +1284,12 @@ body.mobile-nav-active #mobile-nav-toggle {
   transform: translateY(-11px);
   border: 2px solid #fff;
 }
+
+.white-popup {
+  position: relative;
+  background: #FFF;
+  padding: 20px;
+  width: auto;
+  max-width: 500px;
+  margin: 20px auto;
+}
