@@ -86,37 +86,24 @@
     <!--==========================
       About Us Section
     ============================-->
-    <section id="about" class="section-bg">
+    <section id="about" class="about section-bg">
       <div class="container-fluid">
         <div class="section-header">
-          <h3 class="section-title">About Us</h3>
+          <h3 class="section-title">Introduction and Motivation</h3>
           <span class="section-divider"></span>
-          <p class="section-description">
-            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque<br>
-            sunt in culpa qui officia deserunt mollit anim id est laborum
-          </p>
         </div>
 
         <div class="row">
-          <div class="col-lg-6 about-img wow fadeInLeft">
-            <img src="{% static 'landing/img/about-img.jpg' %}" alt="">
-          </div>
-
-          <div class="col-lg-6 content wow fadeInRight">
-            <h2>Lorem ipsum dolor sit amet, consectetur adipiscing elite storium paralate</h2>
-            <h3>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</h3>
+          <div class="col-lg-6 offset-3 text-center content wow fadeInRight">
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ullamco laboris nisi ut aliquip ex ea commodo consequat.
-            </p>
+              The impact of extremely rare and almost completely unexpected events (called “Black Swans”) is often underestimated, and plans to mitigate or repair their damage upon public infrastructure are often carelessly designed or even non-existent. In many instances when catastrophes cause unprecedented damage to lives and property, it is often realized after the fact that most decision-makers did not even consider the possibility of such an event happening. The impact of these events is magnified due to the completely unprepared nature of its victims.
+In case of large-scale natural and man-made disasters,
 
-            <ul>
-              <li><i class="ion-android-checkmark-circle"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
-              <li><i class="ion-android-checkmark-circle"></i> Duis aute irure dolor in reprehenderit in voluptate velit.</li>
-              <li><i class="ion-android-checkmark-circle"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore eu fugiat nulla pariatur.</li>
-            </ul>
+Areas where disasters have almost never happened over a long time are also extremely vulnerable to these catastrophes (when they end up happening) as the preparedness is almost non-existent.
 
-            <p>
-              Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum Libero justo laoreet sit amet cursus sit amet dictum sit. Commodo sed egestas egestas fringilla phasellus faucibus scelerisque eleifend donec... <a href="#test-popup" class="open-popup-link">Keep reading.</a>
+No existing work on simulating disaster impact on transport infrastructure.
+
+Areas where disasters have almost never happened over a long time are extremely vulnerable to catastrophes as preparedness is almost non-existent. Policy focus has been on building codes, local first-response preparedness. Not on large-scale relief that is required from outside a heavily damaged settlement. <a href="#test-popup" class="open-popup-link">Keep reading.</a>
             </p>
 
             <div id="test-popup" class="white-popup mfp-hide">
@@ -124,6 +111,27 @@
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea, numquam sit! Cum distinctio dolores eos exercitationem, hic mollitia quo rerum suscipit tempora voluptatum! Iure laudantium reiciendis vel. Corporis facere, quod.
               </p>
             </div>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- #about -->
+    <section id="suggested-improvements" class="about section-bg">
+      <div class="container-fluid">
+        <div class="section-header">
+          <h3 class="section-title">Suggested Improvements</h3>
+          <span class="section-divider"></span>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6 offset-3 text-justify content wow fadeInLeft">
+            <ul class="check-list">
+              <li><i class="ion-android-checkmark-circle"></i> Roads are not treated differently according to their different real-life qualities. The helpful presence of the quality bias factor in the damage model can allow us to introduce this variation into the simulation. We will also have to move to more informative road datasets such as OpenStreetMaps to derive this data.</li>
+              <li><i class="ion-android-checkmark-circle"></i> We are working on a very limited region, that of the State of California. Obviously, cities from neighboring states will also assist in case of a catastrophe, thus reducing the vulnerability of cities like Los Angeles.</li>
+              <li><i class="ion-android-checkmark-circle"></i> Some previous research into the logistical side of post-event planning has considered deep factors like the volume of relief material required, the number of drivers, trucks, fuels, routing plans, etc. While this kind of low-level planning with insufficiently detailed computer models might end up with fragile “paper plans” that don’t really extend to the diverse range of situations that could manifest in the real world, they do point to the need to consider the widely varying needs of different cities in the aftermath of a disaster in terms of the volume of relief material they require as well as the variations in logistical challenges between different cities.</li>
+              <li><i class="ion-android-checkmark-circle"></i> From an implementation standpoint, our simulation code is currently single-thread, single-machine, so it is not easily scalable to larger regions of interest. We should switch to using Pregel or other distributed graph libraries so that we can look at inter-state or even international assistance routes.</li>
+              <li><i class="ion-android-checkmark-circle"></i> Our disaster models, as well as our damage models, could use improvements. We are basing them on existing research, which by itself is quite sparse, so we could, with the assistance of subject experts, use more informed models. One example is to use a correlated damage model for the roads where the probability of a road segment being damaged has a conditional dependence on its neighbor being damaged (we are assuming conditional independence given the disaster magnitude at that point).</li>
+            </ul>
           </div>
         </div>
 
