@@ -17,7 +17,7 @@ body {
 }
 
 a {
-  color: #1dc8cd;
+  color: #1d8de2;
   transition: 0.5s;
 }
 
@@ -51,7 +51,7 @@ h6 {
 .back-to-top {
   position: fixed;
   display: none;
-  background: linear-gradient(45deg, #1de099, #1dc8cd);
+  background: linear-gradient(45deg, #1d49cd, #1d8de2);
   color: #fff;
   padding: 2px 20px 8px 20px;
   font-size: 16px;
@@ -62,13 +62,13 @@ h6 {
 }
 
 .back-to-top:focus {
-  background: linear-gradient(45deg, #1de099, #1dc8cd);
+  background: linear-gradient(45deg, #1d49cd, #1d8de2);
   color: #fff;
   outline: none;
 }
 
 .back-to-top:hover {
-  background: #1dc8cd;
+  background: #1d8de2;
   color: #fff;
 }
 
@@ -114,7 +114,7 @@ h6 {
 }
 
 #header.header-fixed {
-  background: linear-gradient(45deg, #1de099, #1dc8cd);
+  background: linear-gradient(45deg, #1d49cd, #1d8de2);
   padding: 20px 0;
   height: 72px;
   transition: all 0.5s;
@@ -127,7 +127,7 @@ h6 {
 #intro {
   width: 100%;
   height: 100vh;
-  background: linear-gradient(45deg, rgba(29, 224, 153, 0.8), rgba(29, 200, 205, 0.8)), url("../img/intro-bg.jpg") center top no-repeat;
+  background: linear-gradient(45deg, #1d49cdcc, #1d8de2cc), url("../img/intro-bg.jpg") center top no-repeat;
   background-size: cover;
   position: relative;
 }
@@ -189,7 +189,7 @@ h6 {
 }
 
 #intro .btn-get-started:hover {
-  color: #1dc8cd;
+  color: #1d8de2;
   background: #fff;
 }
 
@@ -340,7 +340,7 @@ h6 {
 }
 
 .nav-menu ul li:hover > a {
-  color: #1dc8cd;
+  color: #1d8de2;
 }
 
 .nav-menu ul ul {
@@ -423,11 +423,11 @@ h6 {
 }
 
 #mobile-nav ul .menu-has-children i.fa-chevron-up {
-  color: #1dc8cd;
+  color: #1d8de2;
 }
 
 #mobile-nav ul .menu-item-active {
-  color: #1dc8cd;
+  color: #1d8de2;
 }
 
 #mobile-body-overly {
@@ -480,8 +480,8 @@ body.mobile-nav-active #mobile-nav-toggle {
   display: block;
   width: 60px;
   height: 3px;
-  background: #1dc8cd;
-  background: linear-gradient(0deg, #1dc8cd 0%, #55fabe 100%);
+  background: #1d8de2;
+  background: linear-gradient(0deg, #1d8de2 0%, #1d49cd 100%);
   margin: 0 auto;
   margin-bottom: 20px;
 }
@@ -536,7 +536,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 #about .content i {
   font-size: 20px;
   padding-right: 4px;
-  color: #1dc8cd;
+  color: #1d8de2;
 }
 
 #about .content ul {
@@ -582,8 +582,8 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 #features .icon i:before {
-  background: #1dc8cd;
-  background: linear-gradient(45deg, #1dc8cd 0%, #55fabe 100%);
+  background: #1d8de2;
+  background: linear-gradient(45deg, #1d8de2 0%, #1d49cd 100%);
   background-clip: border-box;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -650,8 +650,8 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 #advanced-features i:before {
-  background: #1dc8cd;
-  background: linear-gradient(45deg, #1dc8cd 0%, #55fabe 100%);
+  background: #1d8de2;
+  background: linear-gradient(45deg, #1d8de2 0%, #1d49cd 100%);
   background-clip: border-box;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -674,7 +674,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 #call-to-action {
   overflow: hidden;
-  background: linear-gradient(rgba(29, 200, 205, 0.65), rgba(29, 205, 89, 0.2)), url(../img/call-to-action-bg.jpg) fixed center center;
+  background: linear-gradient(#1d49cdcc, #1d8de233), url(../img/call-to-action-bg.jpg) fixed center center;
   background-size: cover;
   padding: 80px 0;
 }
@@ -704,8 +704,8 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 #call-to-action .cta-btn:hover {
-  background: #1dc8cd;
-  border: 2px solid #1dc8cd;
+  background: #1d8de2;
+  border: 2px solid #1d8de2;
 }
 
 /* More Features Section
@@ -736,8 +736,8 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 #more-features .icon i:before {
-  background: #1dc8cd;
-  background: linear-gradient(45deg, #1dc8cd 0%, #55fabe 100%);
+  background: #1d8de2;
+  background: linear-gradient(45deg, #1d8de2 0%, #1d49cd 100%);
   background-clip: border-box;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -805,7 +805,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 #pricing h4 {
   font-size: 46px;
-  color: #1dc8cd;
+  color: #1d8de2;
   font-weight: 300;
 }
 
@@ -832,7 +832,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 #pricing ul i {
-  color: #1dc8cd;
+  color: #1d8de2;
   font-size: 18px;
   padding-right: 4px;
 }
@@ -850,11 +850,11 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 #pricing .featured {
-  border: 2px solid #1dc8cd;
+  border: 2px solid #1d8de2;
 }
 
 #pricing .featured .get-started-btn {
-  background: linear-gradient(45deg, #1de099, #1dc8cd);
+  background: linear-gradient(45deg, #1d49cd, #1d8de2);
 }
 
 /* Frequently Asked Questions Section
@@ -897,7 +897,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 #faq #faq-list a.collapse {
-  color: #1dc8cd;
+  color: #1d8de2;
 }
 
 #faq #faq-list a.collapsed {
@@ -952,7 +952,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 #team .member .social a:hover {
-  color: #1dc8cd;
+  color: #1d8de2;
 }
 
 #team .member .social i {
@@ -1026,7 +1026,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   font-weight: 300;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: #1dc8cd;
+  color: #1d8de2;
 }
 
 #contact .contact-about p {
@@ -1044,7 +1044,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   font-size: 18px;
   display: inline-block;
   background: #fff;
-  color: #1dc8cd;
+  color: #1d8de2;
   line-height: 1;
   padding: 8px 0;
   margin-right: 4px;
@@ -1053,11 +1053,11 @@ body.mobile-nav-active #mobile-nav-toggle {
   width: 36px;
   height: 36px;
   transition: 0.3s;
-  border: 1px solid #1dc8cd;
+  border: 1px solid #1d8de2;
 }
 
 #contact .social-links a:hover {
-  background: #1dc8cd;
+  background: #1d8de2;
   color: #fff;
 }
 
@@ -1067,7 +1067,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 #contact .info i {
   font-size: 32px;
-  color: #1dc8cd;
+  color: #1d8de2;
   float: left;
   line-height: 1;
 }
@@ -1079,8 +1079,8 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 #contact .form #sendmessage {
-  color: #1dc8cd;
-  border: 1px solid #1dc8cd;
+  color: #1d8de2;
+  border: 1px solid #1d8de2;
   display: none;
   text-align: center;
   padding: 15px;
@@ -1120,7 +1120,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 #contact .form button[type="submit"] {
-  background: linear-gradient(45deg, #1de099, #1dc8cd);
+  background: linear-gradient(45deg, #1d49cd, #1d8de2);
   border: 0;
   border-radius: 20px;
   padding: 8px 30px;
@@ -1158,7 +1158,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 #footer .footer-links a:hover {
-  color: #1dc8cd;
+  color: #1d8de2;
 }
 
 @media (min-width: 769px) {
