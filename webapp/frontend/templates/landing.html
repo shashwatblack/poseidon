@@ -525,72 +525,79 @@ After identifying the relief hubs, the process that we follow is:</p>
 
 
     <!--==========================
-      Frequently Asked Questions Section
+      Conclusions
+    ============================-->
+    <section id="more-features" class="section-bg bg-white">
+      <div class="container">
+
+        <div class="section-header">
+          <h3 class="section-title">Conclusion</h3>
+          <span class="section-divider"></span>
+        </div>
+
+        <div class="row">
+
+          <div class="col-12">
+            <div class="wow fadeInRight">
+              <p>Our specific example shows that much of the Bay Area is very vulnerable to being isolated in case of a disaster of catastrophic disaster, although such a disaster by itself may seem unlikely. Further research along two completely independent paths is required to
+              <ol>
+              <li>Improve the accuracy of our simulation process by reducing some of the more general assumptions (uniform road quality, oversimplified disaster models) to make a stronger argument in favor of risk mitigation procedures that require possibly expensive public infrastructure projects.</li>
+              <li>Propose optimal changes to the transport network structure that best eliminate risk while still being socially and politically viable.</li>
+            </ol>
+              </p>
+              <p>From a technical standpoint, It is very interesting to see how disaster models and independence assumptions (think back to the massless pulleys, inextensible strings, incompressible fluids, spherical cows, point masses and all the outrageous things that we saw in high school physics) that are extremely simple when applied to real-life network data still manage to produce useful insights that are well aligned with our intuition on network resilience.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section><!-- #more-features -->
+    <!--==========================
+      Suggested Improvements
     ============================-->
     <section id="faq">
       <div class="container">
 
         <div class="section-header">
-          <h3 class="section-title">Frequently Asked Questions</h3>
+          <h3 class="section-title">Suggested Improvements</h3>
           <span class="section-divider"></span>
-          <p class="section-description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque</p>
         </div>
 
         <ul id="faq-list" class="wow fadeInUp">
           <li>
-            <a data-toggle="collapse" class="collapsed" href="#faq1">Non consectetur a erat nam at lectus urna duis? <i class="ion-android-remove"></i></a>
-            <div id="faq1" class="collapse" data-parent="#faq-list">
+            <a data-toggle="collapse" class="collapsed" href="#improvements1">Dataset Upgrades <i class="ion-android-remove"></i></a>
+            <div id="improvements1" class="collapse" data-parent="#faq-list">
               <p>
-                Feugiat pretium nibh ipsum consequat. Tempus iaculis urna id volutpat lacus laoreet non curabitur gravida. Venenatis lectus magna fringilla urna porttitor rhoncus dolor purus non.
+                <ol>
+              <li class="border-0">Roads are not treated differently according to their different real-life qualities. The helpful presence of the quality bias factor in the damage model can allow us to introduce this variation into the simulation. We will also have to move to more informative road datasets such as OpenStreetMaps to derive this data.</li>
+              <li class="border-0">We are working on a very limited region, that of the California. Obviously, cities from neighboring states will also assist in case of a catastrophe, thus reducing the vulnerability of cities like Los Angeles.</li>
+            </ol>
               </p>
             </div>
           </li>
 
           <li>
-            <a data-toggle="collapse" href="#faq2" class="collapsed">Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque? <i class="ion-android-remove"></i></a>
-            <div id="faq2" class="collapse" data-parent="#faq-list">
+            <a data-toggle="collapse" href="#improvements2" class="collapsed">Functional Improvements <i class="ion-android-remove"></i></a>
+            <div id="improvements2" class="collapse" data-parent="#faq-list">
               <p>
-                Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id interdum velit laoreet id donec ultrices. Fringilla phasellus faucibus scelerisque eleifend donec pretium. Est pellentesque elit ullamcorper dignissim. Mauris ultrices eros in cursus turpis massa tincidunt dui.
+                <ol>
+              <li class="border-0">Some previous research into the logistical side of post-event planning has considered deep factors like the volume of relief material required, the number of drivers, trucks, fuels, routing plans, etc. While this kind of low-level planning with insufficiently detailed computer models might end up with fragile “paper plans” that don’t really extend to the diverse range of situations that could manifest in the real world, they do point to the need to consider the widely varying needs of different cities in the aftermath of a disaster in terms of the volume of relief material they require as well as the variations in logistical challenges between different cities.</li>
+              <li class="border-0">Our disaster models, as well as our damage models, could use improvements. We are basing them on existing research, which by itself is quite sparse, so we could, with the assistance of subject experts, use more informed models. One example is to use a correlated damage model for the roads where the probability of a road segment being damaged has a conditional dependence on its neighbor being damaged (we are assuming conditional independence given the disaster magnitude at that point).</li>
+            </ol>
               </p>
             </div>
           </li>
 
           <li>
-            <a data-toggle="collapse" href="#faq3" class="collapsed">Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi? <i class="ion-android-remove"></i></a>
-            <div id="faq3" class="collapse" data-parent="#faq-list">
+            <a data-toggle="collapse" href="#improvements3" class="collapsed">Technical Improvements <i class="ion-android-remove"></i></a>
+            <div id="improvements3" class="collapse" data-parent="#faq-list">
               <p>
-                Eleifend mi in nulla posuere sollicitudin aliquam ultrices sagittis orci. Faucibus pulvinar elementum integer enim. Sem nulla pharetra diam sit amet nisl suscipit. Rutrum tellus pellentesque eu tincidunt. Lectus urna duis convallis convallis tellus. Urna molestie at elementum eu facilisis sed odio morbi quis
+                <ol>
+              <li class="border-0">From an implementation standpoint, our simulation code is currently single-thread, single-machine, so it is not easily scalable to larger regions of interest. We should switch to using Pregel or other distributed graph libraries so that we can look at inter-state or even international assistance routes.</li>
+            </ol>
               </p>
             </div>
           </li>
-
-          <li>
-            <a data-toggle="collapse" href="#faq4" class="collapsed">Ac odio tempor orci dapibus. Aliquam eleifend mi in nulla? <i class="ion-android-remove"></i></a>
-            <div id="faq4" class="collapse" data-parent="#faq-list">
-              <p>
-                Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id interdum velit laoreet id donec ultrices. Fringilla phasellus faucibus scelerisque eleifend donec pretium. Est pellentesque elit ullamcorper dignissim. Mauris ultrices eros in cursus turpis massa tincidunt dui.
-              </p>
-            </div>
-          </li>
-
-          <li>
-            <a data-toggle="collapse" href="#faq5" class="collapsed">Tempus quam pellentesque nec nam aliquam sem et tortor consequat? <i class="ion-android-remove"></i></a>
-            <div id="faq5" class="collapse" data-parent="#faq-list">
-              <p>
-                Molestie a iaculis at erat pellentesque adipiscing commodo. Dignissim suspendisse in est ante in. Nunc vel risus commodo viverra maecenas accumsan. Sit amet nisl suscipit adipiscing bibendum est. Purus gravida quis blandit turpis cursus in
-              </p>
-            </div>
-          </li>
-
-          <li>
-            <a data-toggle="collapse" href="#faq6" class="collapsed">Tortor vitae purus faucibus ornare. Varius vel pharetra vel turpis nunc eget lorem dolor? <i class="ion-android-remove"></i></a>
-            <div id="faq6" class="collapse" data-parent="#faq-list">
-              <p>
-                Laoreet sit amet cursus sit amet dictum sit amet justo. Mauris vitae ultricies leo integer malesuada nunc vel. Tincidunt eget nullam non nisi est sit amet. Turpis nunc eget lorem dolor sed. Ut venenatis tellus in metus vulputate eu scelerisque. Pellentesque diam volutpat commodo sed egestas egestas fringilla phasellus faucibus. Nibh tellus molestie nunc non blandit massa enim nec.
-              </p>
-            </div>
-          </li>
-
         </ul>
 
       </div>
