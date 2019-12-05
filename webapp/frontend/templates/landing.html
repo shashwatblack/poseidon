@@ -110,6 +110,10 @@
 
       </div>
     </section><!-- #about -->
+
+    <!--==========================
+      Related Work Section
+    ============================-->
     <section id="suggested-improvements" class="about section-bg bg-white">
       <div class="container-fluid" style="max-width: 1390px;">
         <div class="section-header">
@@ -130,7 +134,7 @@
     </section><!-- #about -->
 
     <!--==========================
-      Product Featuress Section
+      Datasets Section
     ============================-->
     <section id="features" class="bg-gray">
       <div class="container">
@@ -173,6 +177,72 @@
       </div>
 
     </section><!-- #features -->
+
+    <!--==========================
+      Building the graph
+    ============================-->
+    <section id="faq">
+      <div class="container">
+
+        <div class="section-header">
+          <h3 class="section-title">Building the graph</h3>
+          <span class="section-divider"></span>
+          <p class="section-description">We first had to merge the above two datasets and produce an inter-city road graph. <br>We also required three different facets or views of the graph for the rest of our system.</p>
+        </div>
+
+        <ul id="faq-list" class="wow fadeInUp">
+          <li>
+            <a data-toggle="collapse" class="collapsed" href="#faq1">Tile View <i class="ion-android-remove"></i></a>
+            <div id="faq1" class="collapse" data-parent="#faq-list">
+              <p>Our goal is to generate a tiled map of California along with the set of road segments each tile contains. We generate this view by first drawing uniformly dividing California into 1km x 1km tiles. After that, we create a representation of the set of all tiles and store:</p>
+              <p>
+                <ul>
+              <li class="border-0">The latitude and longitude of the center of the tile</li>
+<li class="border-0">A set of Node IDs and Edge IDs of the road segments located within the tile.</li>
+            </ul>
+              </p>
+              <p>An obvious, but clever optimization that we did was to not store any information about tiles that do not contain any roads, bringing down the number of tiles by 96%.</p>
+            </div>
+          </li>
+
+          <li>
+            <a data-toggle="collapse" href="#faq2" class="collapsed">Segment View <i class="ion-android-remove"></i></a>
+            <div id="faq2" class="collapse" data-parent="#faq-list">
+              <p>Here, we wish to construct a graph where the nodes are endpoints of road segments, and the edges are the segments themselves. The node attributes are Latitude, Longitude, Node ID while the edge attributes are Start node ID, end node ID and edge ID.
+              </p>
+                <p>This can be formed by just reading the California road network dataset without any major pre-processing steps.</p>
+            </div>
+          </li>
+
+          <li>
+            <a data-toggle="collapse" href="#faq3" class="collapsed">Settlement View <i class="ion-android-remove"></i></a>
+            <div id="faq3" class="collapse" data-parent="#faq-list">
+              <p>For this view, we wish to construct a graph representation of the inter-city transportation network. This requires merging information from the Settlement dataset with the road dataset.</p>
+              <p>Each node v in this view contains:</p>
+              <p>
+                <ol>
+                  <li class="border-0">A unique id: This identifies the settlement.</li>
+                  <li class="border-0">Access roads: A set of nodes from V_seg that are within some geographical radius R of v.</li>
+                  <li class="border-0">Latitude and longitude of the settlement’s center.</li>
+                  <li class="border-0">Other information such as city name, population etc.</li>
+                </ol>
+              </p>
+              <p>Each edge (u, v) in this view represents a road directly connecting u to v without going through any other settlement. As useful auxiliary information, we store the IDs of the road segments that make up this road.</p>
+              <p>We construct this view by starting with the Segment view and following the below algorithm:</p>
+              <p>
+                <ol>
+                  <li class="border-0">Attach all segment nodes within a 2km radius of each city to that city.</li>
+                  <li class="border-0">Recursively merge pairs of road nodes A and B if B has a degree <= 2. This eliminates irrelevant nodes and reduces the number of nodes from 18668 to 2276.</li>
+                  <li class="border-0">For each settlement, find out whether there is a direct link to another settlement through the reduced set of road nodes. If so, the settlements are directly connected.</li>
+                </ol>
+              </p>
+              <p>We distributed the computation required across 5 machines and it took 3 hours to build the above graph. We obtained a graph with 1505 cities and 6522 direct roads between them.</p>
+            </div>
+          </li>
+        </ul>
+
+      </div>
+    </section><!-- #faq -->
 
     <!--==========================
       Product Advanced Featuress Section
