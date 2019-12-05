@@ -1165,8 +1165,8 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 @media (min-width: 769px) {
   #features .features-img {
-    padding-top: 120px;
-    margin-top: -150px;
+/*    padding-top: 120px;
+    margin-top: -150px;*/
   }
 
   #call-to-action .cta-btn-container {
