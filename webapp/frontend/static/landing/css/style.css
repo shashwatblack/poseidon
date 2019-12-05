@@ -502,7 +502,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 .about .about-img {
-  height: 510px;
+  /*height: 510px;*/
   overflow: hidden;
 }
 
@@ -1166,7 +1166,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 @media (min-width: 769px) {
   #features .features-img {
     padding-top: 120px;
-    margin-top: -200px;
+    margin-top: -150px;
   }
 
   #call-to-action .cta-btn-container {
@@ -1301,4 +1301,8 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 .check-list i {
   margin-right: 10px;
+}
+
+.bg-gray {
+  background: #eff5f5 !important;
 }
