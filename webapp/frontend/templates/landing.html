@@ -394,48 +394,55 @@ After identifying the relief hubs, the process that we follow is:</p>
     </section><!-- #more-features -->
 
     <!--==========================
-      More Features Section
+      Results and Insights
     ============================-->
     <section id="more-features" class="section-bg">
-      <div class="container">
+      <div class="container" id="gallery">
 
         <div class="section-header">
-          <h3 class="section-title">More Features</h3>
+          <h3 class="section-title">Results and Insights</h3>
           <span class="section-divider"></span>
-          <p class="section-description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque</p>
         </div>
 
         <div class="row">
 
-          <div class="col-lg-6">
-            <div class="box wow fadeInLeft">
-              <div class="icon"><i class="ion-ios-stopwatch-outline"></i></div>
-              <h4 class="title"><a href="">Lorem Ipsum</a></h4>
-              <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident etiro rabeta lingo.</p>
+          <div class="col-lg-12">
+            <div class="box wow fadeInLeft clearfix">
+              <div class="icon gallery-item" style="width: 500px;">
+                <img href="{% static 'landing/img/results0.png' %}" class="gallery-popup"
+                  src="{% static 'landing/img/results0.png' %}" style="height: 240px">
+              </div>
+              <p class="description m-0">For the same disaster, different cities and network structures display very different risk metrics, and the patterns are in line with probabilistic graphical intuition.
+                <br>
+                Consider an example where we simulate a hurricane that starts near LA and heads beyond the Bay Area.
+                <br>
+              The hurricane exerts peak magnitude along its spine and becomes weaker as we move away to the edges, as we discussed in the disaster modeling earlier.
+                <br>
+                Despite the intensity being near-identical in the Bay Area and in the LA area, we'll find the risks to be very distinct!
+              </p>
             </div>
           </div>
-
           <div class="col-lg-6">
-            <div class="box wow fadeInRight">
-              <div class="icon"><i class="ion-ios-bookmarks-outline"></i></div>
-              <h4 class="title"><a href="">Dolor Sitema</a></h4>
-              <p class="description">Minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat tarad limino ata nodera clas.</p>
+            <div class="box wow fadeInLeft clearfix">
+              <div class="icon gallery-item" style="width: 500px;">
+                <img href="{% static 'landing/img/results-sf.jpg' %}" class="gallery-popup"
+                  src="{% static 'landing/img/results-sf.jpg' %}" style="height: 250px; margin-bottom: 10px;">
+              </div>
+              <p class="description m-0">The Bay Area has numerous settlements that depend on a single road, and also has several risky settlements that can easily be cutoff from external relief. This illustrates the fact that “bus” or “path” networks are highly vulnerable to disconnection. Some isolated settlements (San Jose, Sacramento) have high connectivity in <b>diverse</b> directions and are risk-free.
+                <br>San Francisco does have 3 roads leading out, but two of those roads funnel very closely together into the path of the hurricane and are thus both put out of action. This is very likely in real scenario as well.
+              </p>
             </div>
           </div>
-
           <div class="col-lg-6">
-            <div class="box wow fadeInLeft">
-              <div class="icon"><i class="ion-ios-heart-outline"></i></div>
-              <h4 class="title"><a href="">Sed ut perspiciatis</a></h4>
-              <p class="description">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur trinige zareta lobur trade.</p>
-            </div>
-          </div>
-
-          <div class="col-lg-6">
-            <div class="box wow fadeInRight">
-              <div class="icon"><i class="ion-ios-analytics-outline"></i></div>
-              <h4 class="title"><a href="">Magni Dolores</a></h4>
-              <p class="description">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum rideta zanox satirente madera</p>
+            <div class="box wow fadeInRight clearfix">
+              <div class="icon gallery-item" style="width: 500px;">
+                <img href="{% static 'landing/img/results-la.jpg' %}" class="gallery-popup"
+                  src="{% static 'landing/img/results-la.jpg' %}" style="height: 250px; margin-bottom: 10px;">
+              </div>
+              <p class="description m-0">LA and its surrounding cities lie on a highly interconnected grid, and their risks are very low despite the equally high magnitude of the disaster. Grid structures are resilient to disruption due to the high amount of built-in redundancy - for every interior node, four edges must be removed to disconnect that node. We also notice that a few grid corners that have only two edges also have elevated vulnerability.
+                <br>
+Triangular structures, while not as expensive as grid structures still provide some amount of resiliency since two neighboring nodes must be removed to disconnect the graph.
+              </p>
             </div>
           </div>
 
@@ -492,6 +499,7 @@ After identifying the relief hubs, the process that we follow is:</p>
         </div>
       </div>
     </section><!-- #more-features -->
+
     <!--==========================
       Suggested Improvements
     ============================-->

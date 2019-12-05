@@ -726,6 +726,14 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 #more-features .icon {
   float: left;
+  width: 200px;
+  max-width: 100%;
+  margin-right: 15px;
+}
+
+#more-features .icon img {
+  width: 100%;
+  object-fit: cover;
 }
 
 #more-features .icon i {
