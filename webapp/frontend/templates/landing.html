@@ -245,20 +245,36 @@
     </section><!-- #faq -->
 
     <!--==========================
-      Product Advanced Featuress Section
+      Modeling Disasters
     ============================-->
     <section id="advanced-features">
 
       <div class="features-row section-bg">
         <div class="container">
+          <div class="section-header">
+            <h3 class="section-title">Modeling and Risk Assessment</h3>
+            <span class="section-divider"></span>
+            <p class="section-description">Poseidon supports two types of disasters: Earthquakes and Hurricanes.</p>
+          </div>
           <div class="row">
-            <div class="col-12">
-              <img class="advanced-feature-img-right wow fadeInRight" src="{% static 'landing/img/advanced-feature-1.jpg' %}" alt="">
+            <div class="col-6">
               <div class="wow fadeInLeft">
-                <h2>Duis aute irure dolor in reprehenderit in voluptate velit esse</h2>
-                <h3>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-                <p>Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                <h2>Modeling Earthquakes</h2>
+                <p>Earthquakes are represented as a Gaussian-like function centered at a geo-coordinate. We assume that the intensity of the earthquake at its epicenter is <code>I0</code>. This earthquake has a particular decay radius <code>R</code>. This radius controls how rapidly the impact of the earthquake decays from the center. Mathematically, the intensity at a point <code>(x, y)</code> is given by:
+                  <br>
+                  <br>
+                <img src="{% static 'landing/img/earthquake-equation.png' %}" style="width: 300px">
+                </p>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="wow fadeInRight">
+                <h2>Modeling Hurricanes</h2>
+                <p>A hurricane is represented as a maximal mixture of Gaussian-like functions interpolated along the path of the hurricane. We assume that the hurricane has a <code>start_radius</code>, <code>start_intensity</code>, <code>end_radius</code> and <code>end_intensity</code>. We draw Gaussian-like functions all along the path, and the standard deviation as well as the multiplicative factor for the Gaussian are given by interpolating the relevant start and end parameters. We support straight paths and linear interpolation for the intensities and radii. Mathematically, the following expression gives the intensity of the hurricane at every point:
+                  <br>
+                  <br>
+                <img src="{% static 'landing/img/hurricane-equation.png' %}" style="width: 300px">
+                </p>
               </div>
             </div>
           </div>
@@ -269,15 +285,31 @@
         <div class="container">
           <div class="row">
             <div class="col-12">
-              <img class="advanced-feature-img-left" src="{% static 'landing/img/advanced-feature-2.jpg' %}" alt="">
+              <div class="wow fadeInLeft">
+                <h2>Modeling Damage</h2>
+                <h5>Segment/City Damage Probability</h5>
+                <p>The probability that a segment or city can be damaged depends on the intensity of the disaster at that point as well as the nature of the disaster. In line with previous work, we use a logistic regression model to estimate this probability. The intensity is related to the probability of damage as:
+                  <br><br>
+                <img src="{% static 'landing/img/damage-equation.png' %}" style="width: 300px">
+                </p>
+                <p><a href="#modeling-damage-popup" class="open-popup-link">Continue Reading.</a></p>
+                <div id="modeling-damage-popup" class="white-popup mfp-hide">
+                  <img src="{% static 'landing/img/damage-equation.png' %}" style="width: 300px">
+                  <br><br>
+                  <p>The parameters \mu and \chi allow us to encode a lot of intuition and external knowledge into the model:
+                  <ol>
+                    <li>\mu, the Quality Bias, allows us to specify how resistant a particular road segment or city is to damage in general. In the future, we can be cognizant of the fact that different road segments were built with different technologies and have different age/pre-existing damage and thus have different levels of vulnerability to damage.</li>
+                    <li>\chi, the Susceptibility Factor, allows us to specify how strongly the intensity of the disaster is related to the probability of damage. This allows us to generalize the model to several different kinds of disasters such as earthquakes, hurricanes, nuclear explosions, etc. which have different scales to measure them as well as different effects on infrastructure.</li>
+              </ol>
+                </p>
+                <p class="m-0">The parameters were chosen to match expected damage levels from specific intensity values for earthquakes and hurricanes. We expect a magnitude 9 earthquake to cause widespread destruction while a magnitude 7 earthquake is nearly harmless to modern structures.</p>
+                </div>
+              </div>
               <div class="wow fadeInRight">
-                <h2>Duis aute irure dolor in reprehenderit in voluptate velit esse</h2>
-                <i class="ion-ios-paper-outline" class="wow fadeInRight" data-wow-duration="0.5s"></i>
-                <p class="wow fadeInRight" data-wow-duration="0.5s">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-                <i class="ion-ios-color-filter-outline wow fadeInRight" data-wow-delay="0.2s" data-wow-duration="0.5s"></i>
-                <p class="wow fadeInRight" data-wow-delay="0.2s" data-wow-duration="0.5s">Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.</p>
-                <i class="ion-ios-barcode-outline wow fadeInRight" data-wow-delay="0.4" data-wow-duration="0.5s"></i>
-                <p class="wow fadeInRight" data-wow-delay="0.4s" data-wow-duration="0.5s">Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.</p>
+                <h5>Correlations in nearby damage</h5>
+                <p>We are currently assuming that given all the intensities at each point on the map, the probability that a city or road segment is damaged is independent of whether or not a neighboring region is damaged. This is very similar to the Naive Bayes assumption that is often made in classification models. This allows us to treat each segment and city as an independent Bernoulli random variable and sample from that distribution.</p>
+                <p>In truth, roads being solid structures, stresses and shears exerted on one segment of a road will propagate to neighboring sections as well, leading to conditional dependence. A solution is to use more complex models like the
+                  <a href="https://en.wikipedia.org/wiki/Square-lattice_Ising_model">Lattice Ising Model</a> to encode spatial correlations in the damage probabilities, but this is greatly more complicated than a Naive Bayes Bernoulli model.</p>
               </div>
             </div>
           </div>
@@ -288,13 +320,20 @@
         <div class="container">
           <div class="row">
             <div class="col-12">
-              <img class="advanced-feature-img-right wow fadeInRight" src="{% static 'landing/img/advanced-feature-3.jpg' %}" alt="">
               <div class="wow fadeInLeft">
-                <h2>Duis aute irure dolor in reprehenderit in voluptate velit esse</h2>
-                <h3>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam</p>
-                <i class="ion-ios-albums-outline"></i>
-                <p>Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                <h2>Modeling Risk</h2>
+                <p>Given a particular state of the network where some road segments and cities are damaged, we need to identify which settlements that require help are now cut off from aid. We do this through the following model:</p>
+                <p>In the aftermath of a disaster, certain well-equipped settlements must take on the role of <b><em>Relief Hubs</em></b> and render assistance to settlements through <b><em>undamaged</em></b> roads. We assume that relief hubs are those settlements which are undamaged and have a population of more than 250,000.
+After identifying the relief hubs, the process that we follow is:</p>
+                <p>
+                  <ol>
+                <li>For every settlement, use Dijsktra’s Algorithm to find out the nearest relief hub.</li>
+                <li> If there is no access to a relief hub at all, declare the settlement to be <em>unreachable</em>, thus setting the <em>reachability</em> value to 0.</li>
+                <li>If the nearest hub is more than 700km away, declare the settlement to be unreachable, thus setting the reachability to 0.</li>
+                <li>All other cases imply that the settlement is still connected to the road network, thereby causing its reachability to be 1.</li>
+              </ol>
+                </p>
+                <p>Settlements that are repeatedly unreachable for several realizations of a particular disaster are vulnerable to that disaster. This leads us to the next section where we produce these several realizations.</p>
               </div>
             </div>
           </div>
