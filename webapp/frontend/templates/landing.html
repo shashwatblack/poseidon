@@ -13,7 +13,8 @@
   <link href="{% static 'landing/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700|Open+Sans:300,300i,400,400i,700,700i" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700|Open+Sans:300,300i,400,400i,700,700i"
+        rel="stylesheet">
 
   <!-- Bootstrap CSS File -->
   <link href="{% static 'landing/lib/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -37,669 +38,825 @@
 
 <body>
 
+<!--==========================
+  Header
+============================-->
+<header id="header">
+  <div class="container">
+
+    <div id="logo" class="pull-left">
+      <h1><a href="#intro" class="scrollto">Poseidon</a></h1>
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <!-- <a href="#intro"><img src="{% static 'landing/img/logo.png' %}" alt="" title=""></a> -->
+    </div>
+
+    <nav id="nav-menu-container">
+      <ul class="nav-menu">
+        <li class="menu-active"><a href="#intro">Home</a></li>
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#methodology">Methodology</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#conclusion">Conclusion</a></li>
+        <li><a href="https://github.com/harishk1908/poseidon/" target="_blank">Github</a></li>
+        <li><a href="{% url 'app' '' %}">
+          <button class="btn btn-outline-light nav-launch-app-btn">
+            Launch App
+          </button>
+        </a></li>
+      </ul>
+    </nav><!-- #nav-menu-container -->
+  </div>
+</header><!-- #header -->
+
+<!--==========================
+  Intro Section
+============================-->
+<section id="intro">
+
+  <div class="intro-text">
+    <h2>Project Poseidon</h2>
+    <p>Studying the Impact of Disasters on Transportation Infrastructure</p>
+    <a href="#about" class="btn-get-started scrollto">Get Started</a>
+  </div>
+
+</section><!-- #intro -->
+
+<main id="main">
+
   <!--==========================
-    Header
+    About Us Section
   ============================-->
-  <header id="header">
+  <div id="introduction"></div>
+  <section id="about" class="about section-bg">
+    <div class="container-fluid">
+      <div class="section-header">
+        <h3 class="section-title">Introduction and Motivation</h3>
+        <span class="section-divider"></span>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-6 offset-3 text-center content wow fadeInRight">
+          <p>The impact of extremely rare and almost completely unexpected events (called “<em>Black Swans</em>”) is
+            often underestimated, and plans to mitigate or repair their damage upon public infrastructure are often
+            outdated or even non-existent. In many instances where catastrophes cause unprecedented damage to lives and
+            property, it is often realized after the fact that most decision-makers did not even consider the
+            possibility of such an event happening. The impact of these events is magnified due to the completely
+            unprepared nature of its victims. One case in point is the 2004 Indian Ocean Tsunami which had a death toll
+            of almost 240,000. Previous such events in the same region were in 1883 and 1400 and these had catastrophic
+            casualties as well. The vast majority of people as well as decision-makers in some heavily-hit regions did
+            not even know that tsunamis were a thing, let alone advocate preparative measures for one.
+          </p>
+          <p>Policy discussions, decision-making, regulations and preparedness measures against disasters often center
+            around:</p>
+          <ul class="check-list">
+            <li><i class="ion-android-checkmark-circle"></i> <b>Individual buildings:</b>&nbsp; Building codes,
+              strengthened materials, better structural design, evacuation drills
+            </li>
+            <li><i class="ion-android-checkmark-circle"></i> <b>Intra-city first response:</b>&nbsp; Removing
+              encroachments on critical roads, funding for local first responders.
+            </li>
+            <li><i class="ion-android-checkmark-circle"></i> <b>Prediction:</b>&nbsp; Tsunami warning systems, better
+              weather satellites, weather prediction models.
+            </li>
+          </ul>
+          <p>However, when the public recovery infrastructure of an entire city is put out of action, which is often the
+            case with extremely powerful disasters, help has to arrive from outside. This cannot happen in volume if the
+            city is disconnected from all inter-city transportation networks.</p>
+          <p>Our project makes a <b>post-facto</b> study of the impact that such disasters can have on road connectivity
+            by building road network graphs from datasets and running Monte-Carlo simulations to measure the
+            vulnerability of each city to being unreachable in the aftermath of a disaster.</p>
+        </div>
+      </div>
+
+    </div>
+  </section><!-- #about -->
+
+  <!--==========================
+    Related Work Section
+  ============================-->
+  <section id="suggested-improvements" class="about section-bg bg-white">
+    <div class="container-fluid" style="max-width: 1390px;">
+      <div class="section-header">
+        <h3 class="section-title">Related Work</h3>
+        <span class="section-divider"></span>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-6 about-img wow fadeInLeft">
+          <img src="{% static 'landing/img/wisetjindawat.png' %}" alt="">
+        </div>
+        <div class="col-lg-6 text-left content wow fadeInRight">
+          <p><a href="https://www.jstage.jst.go.jp/article/easts/10/0/10_196/_article/-char/en">Wisetjindawat et.
+            al.</a> perform a thorough study of the aftermath of the 2011 East Japan Earthquake in terms of its impact
+            on water, gas, electricity and roads. Their focus is on building logistical plans for distributing food,
+            water and medicines, as well as supporting the civilian population in temporary shelters until recovery.
+            They attempt to estimate how many trucks, drivers, the quantity of fuel and the number of operational hours
+            required to restore normalcy in the aftermath of the disaster. They compare the existing response plan with
+            their proposed plan which they obtain by setting up an optimization problem. However, their road network
+            analysis is primarily deterministic in nature and their focus is on response planning rather than
+            vulnerability estimation. This paper provides the main inspiration for much of the disaster and damage
+            modeling that we do in our work.</p>
+        </div>
+      </div>
+
+    </div>
+  </section><!-- #about -->
+
+  <!--==========================
+    Datasets Section
+  ============================-->
+  <div id="methodology"></div>
+  <section id="features" class="bg-gray">
     <div class="container">
 
-      <div id="logo" class="pull-left">
-        <h1><a href="#intro" class="scrollto">Poseidon</a></h1>
-        <!-- Uncomment below if you prefer to use an image logo -->
-        <!-- <a href="#intro"><img src="{% static 'landing/img/logo.png' %}" alt="" title=""></a> -->
+      <div class="row">
+
+        <div class="col-lg-12">
+          <div class="section-header wow fadeIn" data-wow-duration="1s">
+            <h3 class="section-title">Datasets</h3>
+            <span class="section-divider"></span>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-5 features-img">
+          <img src="{% static 'landing/img/datasets.png' %}" alt="" class="wow fadeInLeft">
+        </div>
+
+        <div class="col-lg-8 col-md-7 ">
+
+          <div class="row">
+
+            <div class="col-lg-6 col-md-6 box wow fadeInRight">
+              <div class="icon"><i class="ion-android-locate"></i></div>
+              <h4 class="title"><a href="https://simplemaps.com/data/us-cities" target="_blank">SimpleMaps US Cities
+                Dataset</a></h4>
+              <p class="description">This provides a list of cities in the US along with their latitude, longitude and
+                population. A more advanced paid version also provides demographic information, income distribution,
+                etc. However, geocoordinage and the population is enough for our project.</p>
+              <p><a href="https://simplemaps.com/data/us-cities" target="_blank">simplemaps.com</a></p>
+            </div>
+            <div class="col-lg-6 col-md-6 box wow fadeInRight" data-wow-delay="0.1s">
+              <div class="icon"><i class="ion-android-subway"></i></div>
+              <h4 class="title"><a href="https://www.cs.utah.edu/~lifeifei/SpatialDataset.htm" target="_blank">California
+                Road Network</a></h4>
+              <p class="description">This dataset was prepared by dividing the inter-city road network of California
+                into segments that are upto 10 km long and creating a graph out of the result. It provides us the
+                latitude and longitudes of the endpoints of each segment.</p>
+              <p><a href="https://www.cs.utah.edu/~lifeifei/SpatialDataset.htm" target="_blank">cs.utah.edu</a></p>
+            </div>
+          </div>
+
+        </div>
+
       </div>
 
-      <nav id="nav-menu-container">
-        <ul class="nav-menu">
-          <li class="menu-active"><a href="#intro">Home</a></li>
-          <li><a href="#introduction">Introduction</a></li>
-          <li><a href="#methodology">Methodology</a></li>
-          <li><a href="#results">Results</a></li>
-          <li><a href="#conclusion">Conclusion</a></li>
-          <li><a href="https://github.com/harishk1908/poseidon/" target="_blank">
-            <i class="ion-android-github"></i> Github
-          </a></li>
-          <li><a href="{% url 'app' '' %}">
-            <button class="btn btn-outline-light nav-launch-app-btn">
-              Launch App
-            </button>
-          </a></li>
-        </ul>
-      </nav><!-- #nav-menu-container -->
     </div>
-  </header><!-- #header -->
+
+  </section><!-- #features -->
 
   <!--==========================
-    Intro Section
+    Building the graph
   ============================-->
-  <section id="intro">
+  <section id="faq">
+    <div class="container">
 
-    <div class="intro-text">
-      <h2>Project Poseidon</h2>
-      <p>Studying the Impact of Disasters on Transportation Infrastructure</p>
-      <a href="#about" class="btn-get-started scrollto">Get Started</a>
+      <div class="section-header">
+        <h3 class="section-title">Building the graph</h3>
+        <span class="section-divider"></span>
+        <p class="section-description">We first had to merge the above two datasets and produce an inter-city road
+          graph. <br>We also required three different facets or views of the graph for the rest of our system.</p>
+      </div>
+
+      <ul id="faq-list" class="wow fadeInUp">
+        <li>
+          <a data-toggle="collapse" class="collapsed" href="#faq1">Tile View <i class="ion-android-remove"></i></a>
+          <div id="faq1" class="collapse" data-parent="#faq-list">
+            <p>Our goal is to generate a tiled map of California along with the set of road segments each tile contains.
+              We generate this view by first drawing uniformly dividing California into 1km x 1km tiles. After that, we
+              create a representation of the set of all tiles and store:</p>
+            <p>
+            <ul>
+              <li class="border-0">The latitude and longitude of the center of the tile</li>
+              <li class="border-0">A set of Node IDs and Edge IDs of the road segments located within the tile.</li>
+            </ul>
+            </p>
+            <p>An obvious, but clever optimization that we did was to not store any information about tiles that do not
+              contain any roads, bringing down the number of tiles by 96%.</p>
+          </div>
+        </li>
+
+        <li>
+          <a data-toggle="collapse" href="#faq2" class="collapsed">Segment View <i class="ion-android-remove"></i></a>
+          <div id="faq2" class="collapse" data-parent="#faq-list">
+            <p>Here, we wish to construct a graph where the nodes are endpoints of road segments, and the edges are the
+              segments themselves. The node attributes are Latitude, Longitude, Node ID while the edge attributes are
+              Start node ID, end node ID and edge ID.
+            </p>
+            <p>This can be formed by just reading the California road network dataset without any major pre-processing
+              steps.</p>
+          </div>
+        </li>
+
+        <li>
+          <a data-toggle="collapse" href="#faq3" class="collapsed">Settlement View <i
+            class="ion-android-remove"></i></a>
+          <div id="faq3" class="collapse" data-parent="#faq-list">
+            <p>For this view, we wish to construct a graph representation of the inter-city transportation network. This
+              requires merging information from the Settlement dataset with the road dataset.</p>
+            <p>Each node v in this view contains:</p>
+            <p>
+            <ol>
+              <li class="border-0">A unique id: This identifies the settlement.</li>
+              <li class="border-0">Access roads: A set of nodes from V_seg that are within some geographical radius R of
+                v.
+              </li>
+              <li class="border-0">Latitude and longitude of the settlement’s center.</li>
+              <li class="border-0">Other information such as city name, population etc.</li>
+            </ol>
+            </p>
+            <p>Each edge (u, v) in this view represents a road directly connecting u to v without going through any
+              other settlement. As useful auxiliary information, we store the IDs of the road segments that make up this
+              road.</p>
+            <p>We construct this view by starting with the Segment view and following the below algorithm:</p>
+            <p>
+            <ol>
+              <li class="border-0">Attach all segment nodes within a 2km radius of each city to that city.</li>
+              <li class="border-0">Recursively merge pairs of road nodes A and B if B has a degree <= 2. This eliminates
+                irrelevant nodes and reduces the number of nodes from 18668 to 2276.
+              </li>
+              <li class="border-0">For each settlement, find out whether there is a direct link to another settlement
+                through the reduced set of road nodes. If so, the settlements are directly connected.
+              </li>
+            </ol>
+            </p>
+            <p>We distributed the computation required across 5 machines and it took 3 hours to build the above graph.
+              We obtained a graph with 1505 cities and 6522 direct roads between them.</p>
+          </div>
+        </li>
+      </ul>
+
+    </div>
+  </section><!-- #faq -->
+
+  <!--==========================
+    Modeling Disasters
+  ============================-->
+  <section id="advanced-features">
+
+    <div class="features-row section-bg">
+      <div class="container">
+        <div class="section-header">
+          <h3 class="section-title">Modeling and Risk Assessment</h3>
+          <span class="section-divider"></span>
+          <p class="section-description">Poseidon supports two types of disasters: Earthquakes and Hurricanes.</p>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="wow fadeInLeft">
+              <h2>Modeling Earthquakes</h2>
+              <p>Earthquakes are represented as a Gaussian-like function centered at a geo-coordinate. We assume that
+                the intensity of the earthquake at its epicenter is <code>I0</code>. This earthquake has a particular
+                decay radius <code>R</code>. This radius controls how rapidly the impact of the earthquake decays from
+                the center. Mathematically, the intensity at a point <code>(x, y)</code> is given by:
+                <br>
+                <br>
+                <img src="{% static 'landing/img/earthquake-equation.png' %}" style="width: 300px">
+                <br>
+                <br>
+                The intensity function has an exponential decay which fits perfectly in simulating an earthquake since
+                Richter scale, the most common standard of measurement of an earthquake, is logarithmic.
+              </p>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="wow fadeInRight">
+              <h2>Modeling Hurricanes</h2>
+              <p>A hurricane is represented as a maximal mixture of Gaussian-like functions interpolated along the path
+                of the hurricane. We assume that the hurricane has a <code>start_radius</code>,
+                <code>start_intensity</code>, <code>end_radius</code> and <code>end_intensity</code>. We draw
+                Gaussian-like functions all along the path, and the standard deviation as well as the multiplicative
+                factor for the Gaussian are given by interpolating the relevant start and end parameters. We support
+                straight paths and linear interpolation for the intensities and radii. Mathematically, the following
+                expression gives the intensity of the hurricane at every point:
+                <br>
+                <br>
+                <img src="{% static 'landing/img/hurricane-equation.png' %}" style="width: 300px">
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-  </section><!-- #intro -->
-
-  <main id="main">
-
-    <!--==========================
-      About Us Section
-    ============================-->
-    <div id="introduction"></div>
-    <section id="about" class="about section-bg">
-      <div class="container-fluid">
-        <div class="section-header">
-          <h3 class="section-title">Introduction and Motivation</h3>
-          <span class="section-divider"></span>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-6 offset-3 text-center content wow fadeInRight">
-            <p>The impact of extremely rare and almost completely unexpected events (called “<em>Black Swans</em>”) is often underestimated, and plans to mitigate or repair their damage upon public infrastructure are often outdated or even non-existent. In many instances where catastrophes cause unprecedented damage to lives and property, it is often realized after the fact that most decision-makers did not even consider the possibility of such an event happening. The impact of these events is magnified due to the completely unprepared nature of its victims. One case in point is the 2004 Indian Ocean Tsunami which had a death toll of almost 240,000. Previous such events in the same region were in 1883 and 1400 and these had catastrophic casualties as well. The vast majority of people as well as decision-makers in some heavily-hit regions did not even know that tsunamis were a thing, let alone advocate preparative measures for one.
-            </p>
-            <p>Policy discussions, decision-making, regulations and preparedness measures against disasters often center around:</p>
-            <ul class="check-list">
-              <li><i class="ion-android-checkmark-circle"></i> <b>Individual buildings:</b>&nbsp; Building codes, strengthened materials, better structural design, evacuation drills</li>
-              <li><i class="ion-android-checkmark-circle"></i> <b>Intra-city first response:</b>&nbsp; Removing encroachments on critical roads, funding for local first responders.</li>
-              <li><i class="ion-android-checkmark-circle"></i> <b>Prediction:</b>&nbsp; Tsunami warning systems, better weather satellites, weather prediction models.</li>
-            </ul>
-            <p>However, when the public recovery infrastructure of an entire city is put out of action, which is often the case with extremely powerful disasters, help has to arrive from outside. This cannot happen in volume if the city is disconnected from all inter-city transportation networks.</p>
-            <p>Our project makes a <b>post-facto</b> study of the impact that such disasters can have on road connectivity by building road network graphs from datasets and running Monte-Carlo simulations to measure the vulnerability of each city to being unreachable in the aftermath of a disaster.</p>
-          </div>
-        </div>
-
-      </div>
-    </section><!-- #about -->
-
-    <!--==========================
-      Related Work Section
-    ============================-->
-    <section id="suggested-improvements" class="about section-bg bg-white">
-      <div class="container-fluid" style="max-width: 1390px;">
-        <div class="section-header">
-          <h3 class="section-title">Related Work</h3>
-          <span class="section-divider"></span>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-6 about-img wow fadeInLeft">
-            <img src="{% static 'landing/img/wisetjindawat.png' %}" alt="">
-          </div>
-          <div class="col-lg-6 text-left content wow fadeInRight">
-            <p><a href="https://www.jstage.jst.go.jp/article/easts/10/0/10_196/_article/-char/en">Wisetjindawat et. al.</a> perform a thorough study of the aftermath of the 2011 East Japan Earthquake in terms of its impact on water, gas, electricity and roads. Their focus is on building logistical plans for distributing food, water and medicines, as well as supporting the civilian population in temporary shelters until recovery. They attempt to estimate how many trucks, drivers, the quantity of fuel and the number of operational hours required to restore normalcy in the aftermath of the disaster. They compare the existing response plan with their proposed plan which they obtain by setting up an optimization problem. However, their road network analysis is primarily deterministic in nature and their focus is on response planning rather than vulnerability estimation. This paper provides the main inspiration for much of the disaster and damage modeling that we do in our work.</p>
-          </div>
-        </div>
-
-      </div>
-    </section><!-- #about -->
-
-    <!--==========================
-      Datasets Section
-    ============================-->
-    <div id="methodology"></div>
-    <section id="features" class="bg-gray">
+    <div class="features-row">
       <div class="container">
-
         <div class="row">
-
-          <div class="col-lg-12">
-            <div class="section-header wow fadeIn" data-wow-duration="1s">
-              <h3 class="section-title">Datasets</h3>
-              <span class="section-divider"></span>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-5 features-img">
-            <img src="{% static 'landing/img/datasets.png' %}" alt="" class="wow fadeInLeft">
-          </div>
-
-          <div class="col-lg-8 col-md-7 ">
-
-            <div class="row">
-
-              <div class="col-lg-6 col-md-6 box wow fadeInRight">
-                <div class="icon"><i class="ion-android-locate"></i></div>
-                <h4 class="title"><a href="https://simplemaps.com/data/us-cities" target="_blank">SimpleMaps US Cities Dataset</a></h4>
-                <p class="description">This provides a list of cities in the US along with their latitude, longitude and population. A more advanced paid version also provides demographic information, income distribution, etc. However, geocoordinage and the population is enough for our project.</p>
-                <p><a href="https://simplemaps.com/data/us-cities" target="_blank">simplemaps.com</a></p>
-              </div>
-              <div class="col-lg-6 col-md-6 box wow fadeInRight" data-wow-delay="0.1s">
-                <div class="icon"><i class="ion-android-subway"></i></div>
-                <h4 class="title"><a href="https://www.cs.utah.edu/~lifeifei/SpatialDataset.htm" target="_blank">California Road Network</a></h4>
-                <p class="description">This dataset was prepared by dividing the inter-city road network of California into segments that are upto 10 km long and creating a graph out of the result. It provides us the latitude and longitudes of the endpoints of each segment.</p>
-                <p><a href="https://www.cs.utah.edu/~lifeifei/SpatialDataset.htm" target="_blank">cs.utah.edu</a></p>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section><!-- #features -->
-
-    <!--==========================
-      Building the graph
-    ============================-->
-    <section id="faq">
-      <div class="container">
-
-        <div class="section-header">
-          <h3 class="section-title">Building the graph</h3>
-          <span class="section-divider"></span>
-          <p class="section-description">We first had to merge the above two datasets and produce an inter-city road graph. <br>We also required three different facets or views of the graph for the rest of our system.</p>
-        </div>
-
-        <ul id="faq-list" class="wow fadeInUp">
-          <li>
-            <a data-toggle="collapse" class="collapsed" href="#faq1">Tile View <i class="ion-android-remove"></i></a>
-            <div id="faq1" class="collapse" data-parent="#faq-list">
-              <p>Our goal is to generate a tiled map of California along with the set of road segments each tile contains. We generate this view by first drawing uniformly dividing California into 1km x 1km tiles. After that, we create a representation of the set of all tiles and store:</p>
-              <p>
-                <ul>
-              <li class="border-0">The latitude and longitude of the center of the tile</li>
-<li class="border-0">A set of Node IDs and Edge IDs of the road segments located within the tile.</li>
-            </ul>
-              </p>
-              <p>An obvious, but clever optimization that we did was to not store any information about tiles that do not contain any roads, bringing down the number of tiles by 96%.</p>
-            </div>
-          </li>
-
-          <li>
-            <a data-toggle="collapse" href="#faq2" class="collapsed">Segment View <i class="ion-android-remove"></i></a>
-            <div id="faq2" class="collapse" data-parent="#faq-list">
-              <p>Here, we wish to construct a graph where the nodes are endpoints of road segments, and the edges are the segments themselves. The node attributes are Latitude, Longitude, Node ID while the edge attributes are Start node ID, end node ID and edge ID.
-              </p>
-                <p>This can be formed by just reading the California road network dataset without any major pre-processing steps.</p>
-            </div>
-          </li>
-
-          <li>
-            <a data-toggle="collapse" href="#faq3" class="collapsed">Settlement View <i class="ion-android-remove"></i></a>
-            <div id="faq3" class="collapse" data-parent="#faq-list">
-              <p>For this view, we wish to construct a graph representation of the inter-city transportation network. This requires merging information from the Settlement dataset with the road dataset.</p>
-              <p>Each node v in this view contains:</p>
-              <p>
-                <ol>
-                  <li class="border-0">A unique id: This identifies the settlement.</li>
-                  <li class="border-0">Access roads: A set of nodes from V_seg that are within some geographical radius R of v.</li>
-                  <li class="border-0">Latitude and longitude of the settlement’s center.</li>
-                  <li class="border-0">Other information such as city name, population etc.</li>
-                </ol>
-              </p>
-              <p>Each edge (u, v) in this view represents a road directly connecting u to v without going through any other settlement. As useful auxiliary information, we store the IDs of the road segments that make up this road.</p>
-              <p>We construct this view by starting with the Segment view and following the below algorithm:</p>
-              <p>
-                <ol>
-                  <li class="border-0">Attach all segment nodes within a 2km radius of each city to that city.</li>
-                  <li class="border-0">Recursively merge pairs of road nodes A and B if B has a degree <= 2. This eliminates irrelevant nodes and reduces the number of nodes from 18668 to 2276.</li>
-                  <li class="border-0">For each settlement, find out whether there is a direct link to another settlement through the reduced set of road nodes. If so, the settlements are directly connected.</li>
-                </ol>
-              </p>
-              <p>We distributed the computation required across 5 machines and it took 3 hours to build the above graph. We obtained a graph with 1505 cities and 6522 direct roads between them.</p>
-            </div>
-          </li>
-        </ul>
-
-      </div>
-    </section><!-- #faq -->
-
-    <!--==========================
-      Modeling Disasters
-    ============================-->
-    <section id="advanced-features">
-
-      <div class="features-row section-bg">
-        <div class="container">
-          <div class="section-header">
-            <h3 class="section-title">Modeling and Risk Assessment</h3>
-            <span class="section-divider"></span>
-            <p class="section-description">Poseidon supports two types of disasters: Earthquakes and Hurricanes.</p>
-          </div>
-          <div class="row">
-            <div class="col-6">
-              <div class="wow fadeInLeft">
-                <h2>Modeling Earthquakes</h2>
-                <p>Earthquakes are represented as a Gaussian-like function centered at a geo-coordinate. We assume that the intensity of the earthquake at its epicenter is <code>I0</code>. This earthquake has a particular decay radius <code>R</code>. This radius controls how rapidly the impact of the earthquake decays from the center. Mathematically, the intensity at a point <code>(x, y)</code> is given by:
-                  <br>
-                  <br>
-                <img src="{% static 'landing/img/earthquake-equation.png' %}" style="width: 300px">
-                  <br>
-                  <br>
-                  The intensity function has an exponential decay which fits perfectly in simulating an earthquake since Richter scale, the most common standard of measurement of an earthquake, is logarithmic.
-                </p>
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="wow fadeInRight">
-                <h2>Modeling Hurricanes</h2>
-                <p>A hurricane is represented as a maximal mixture of Gaussian-like functions interpolated along the path of the hurricane. We assume that the hurricane has a <code>start_radius</code>, <code>start_intensity</code>, <code>end_radius</code> and <code>end_intensity</code>. We draw Gaussian-like functions all along the path, and the standard deviation as well as the multiplicative factor for the Gaussian are given by interpolating the relevant start and end parameters. We support straight paths and linear interpolation for the intensities and radii. Mathematically, the following expression gives the intensity of the hurricane at every point:
-                  <br>
-                  <br>
-                <img src="{% static 'landing/img/hurricane-equation.png' %}" style="width: 300px">
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="features-row">
-        <div class="container">
-          <div class="row">
-            <div class="col-12">
-              <div class="wow fadeInLeft">
-                <h2>Modeling Damage</h2>
-                <h5>Segment/City Damage Probability</h5>
-                <p>The probability that a segment or city can be damaged depends on the intensity of the disaster at that point as well as the nature of the disaster. In line with previous work, we use a logistic regression model to estimate this probability. The intensity is related to the probability of damage as:
-                  <br><br>
-                <img src="{% static 'landing/img/damage-equation.png' %}" style="width: 300px">
-                </p>
-                <p><a href="#modeling-damage-popup" class="open-popup-link">Continue Reading.</a></p>
-                <div id="modeling-damage-popup" class="white-popup mfp-hide">
-                  <img src="{% static 'landing/img/damage-equation.png' %}" style="width: 300px">
-                  <br><br>
-                  <p>The parameters \mu and \chi allow us to encode a lot of intuition and external knowledge into the model:
-                  <ol>
-                    <li>\mu, the Quality Bias, allows us to specify how resistant a particular road segment or city is to damage in general. In the future, we can be cognizant of the fact that different road segments were built with different technologies and have different age/pre-existing damage and thus have different levels of vulnerability to damage.</li>
-                    <li>\chi, the Susceptibility Factor, allows us to specify how strongly the intensity of the disaster is related to the probability of damage. This allows us to generalize the model to several different kinds of disasters such as earthquakes, hurricanes, nuclear explosions, etc. which have different scales to measure them as well as different effects on infrastructure.</li>
-              </ol>
-                </p>
-                <p class="m-0">The parameters were chosen to match expected damage levels from specific intensity values for earthquakes and hurricanes. We expect a magnitude 9 earthquake to cause widespread destruction while a magnitude 7 earthquake is nearly harmless to modern structures.</p>
-                </div>
-              </div>
-              <div class="wow fadeInRight">
-                <h5>Correlations in nearby damage</h5>
-                <p>We are currently assuming that given all the intensities at each point on the map, the probability that a city or road segment is damaged is independent of whether or not a neighboring region is damaged. This is very similar to the Naive Bayes assumption that is often made in classification models. This allows us to treat each segment and city as an independent Bernoulli random variable and sample from that distribution.</p>
-                <p>In truth, roads being solid structures, stresses and shears exerted on one segment of a road will propagate to neighboring sections as well, leading to conditional dependence. A solution is to use more complex models like the
-                  <a href="https://en.wikipedia.org/wiki/Square-lattice_Ising_model">Lattice Ising Model</a> to encode spatial correlations in the damage probabilities, but this is greatly more complicated than a Naive Bayes Bernoulli model.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="features-row section-bg">
-        <div class="container">
-          <div class="row">
-            <div class="col-12">
-              <div class="wow fadeInLeft">
-                <h2>Modeling Risk</h2>
-                <p>Given a particular state of the network where some road segments and cities are damaged, we need to identify which settlements that require help are now cut off from aid. We do this through the following model:</p>
-                <p>In the aftermath of a disaster, certain well-equipped settlements must take on the role of <b><em>Relief Hubs</em></b> and render assistance to settlements through <b><em>undamaged</em></b> roads. We assume that relief hubs are those settlements which are undamaged and have a population of more than 250,000.
-After identifying the relief hubs, the process that we follow is:</p>
-                <p>
-                  <ol>
-                <li>For every settlement, use Dijsktra’s Algorithm to find out the nearest relief hub.</li>
-                <li> If there is no access to a relief hub at all, declare the settlement to be <em>unreachable</em>, thus setting the <em>reachability</em> value to 0.</li>
-                <li>If the nearest hub is more than 700km away, declare the settlement to be unreachable, thus setting the reachability to 0.</li>
-                <li>All other cases imply that the settlement is still connected to the road network, thereby causing its reachability to be 1.</li>
-              </ol>
-                </p>
-                <p>Settlements that are repeatedly unreachable for several realizations of a particular disaster are vulnerable to that disaster. This leads us to the next section where we produce these several realizations.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section><!-- #advanced-features -->
-
-    <!--==========================
-      SIMULATION
-    ============================-->
-    <section id="more-features" class="section-bg bg-white">
-      <div class="container">
-
-        <div class="section-header">
-          <h3 class="section-title">Simulation</h3>
-          <span class="section-divider"></span>
-        </div>
-
-        <div class="row">
-
           <div class="col-12">
+            <div class="wow fadeInLeft">
+              <h2>Modeling Damage</h2>
+              <h5>Segment/City Damage Probability</h5>
+              <p>The probability that a segment or city can be damaged depends on the intensity of the disaster at that
+                point as well as the nature of the disaster. In line with previous work, we use a logistic regression
+                model to estimate this probability. The intensity is related to the probability of damage as:
+                <br><br>
+                <img src="{% static 'landing/img/damage-equation.png' %}" style="width: 300px">
+              </p>
+              <p><a href="#modeling-damage-popup" class="open-popup-link">Continue Reading.</a></p>
+              <div id="modeling-damage-popup" class="white-popup mfp-hide">
+                <img src="{% static 'landing/img/damage-equation.png' %}" style="width: 300px">
+                <br><br>
+                <p>The parameters \mu and \chi allow us to encode a lot of intuition and external knowledge into the
+                  model:
+                <ol>
+                  <li>\mu, the Quality Bias, allows us to specify how resistant a particular road segment or city is to
+                    damage in general. In the future, we can be cognizant of the fact that different road segments were
+                    built with different technologies and have different age/pre-existing damage and thus have different
+                    levels of vulnerability to damage.
+                  </li>
+                  <li>\chi, the Susceptibility Factor, allows us to specify how strongly the intensity of the disaster
+                    is related to the probability of damage. This allows us to generalize the model to several different
+                    kinds of disasters such as earthquakes, hurricanes, nuclear explosions, etc. which have different
+                    scales to measure them as well as different effects on infrastructure.
+                  </li>
+                </ol>
+                </p>
+                <p class="m-0">The parameters were chosen to match expected damage levels from specific intensity values
+                  for earthquakes and hurricanes. We expect a magnitude 9 earthquake to cause widespread destruction
+                  while a magnitude 7 earthquake is nearly harmless to modern structures.</p>
+              </div>
+            </div>
             <div class="wow fadeInRight">
-              <p>Our goal, given a disaster with a specific set of parameters, is to use the above described probability models to calculate the probability that a city is cut off from all external aid due to that disaster. We cannot calculate this analytically as the relationships are too complicated to allow tractable analysis. In such a case, a standard solution is Monte Carlo simulation. Given a disaster, the simulation proceeds as follows:
+              <h5>Correlations in nearby damage</h5>
+              <p>We are currently assuming that given all the intensities at each point on the map, the probability that
+                a city or road segment is damaged is independent of whether or not a neighboring region is damaged. This
+                is very similar to the Naive Bayes assumption that is often made in classification models. This allows
+                us to treat each segment and city as an independent Bernoulli random variable and sample from that
+                distribution.</p>
+              <p>In truth, roads being solid structures, stresses and shears exerted on one segment of a road will
+                propagate to neighboring sections as well, leading to conditional dependence. A solution is to use more
+                complex models like the
+                <a href="https://en.wikipedia.org/wiki/Square-lattice_Ising_model">Lattice Ising Model</a> to encode
+                spatial correlations in the damage probabilities, but this is greatly more complicated than a Naive
+                Bayes Bernoulli model.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="features-row section-bg">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <div class="wow fadeInLeft">
+              <h2>Modeling Risk</h2>
+              <p>Given a particular state of the network where some road segments and cities are damaged, we need to
+                identify which settlements that require help are now cut off from aid. We do this through the following
+                model:</p>
+              <p>In the aftermath of a disaster, certain well-equipped settlements must take on the role of <b><em>Relief
+                Hubs</em></b> and render assistance to settlements through <b><em>undamaged</em></b> roads. We assume
+                that relief hubs are those settlements which are undamaged and have a population of more than 250,000.
+                After identifying the relief hubs, the process that we follow is:</p>
+              <p>
               <ol>
-              <li>Calculate the intensities at every point using the disaster model. Calculate the road segment and city damage probabilities at every point using the damage model.</li>
-              <li>Sample a particular realization of the damage from these probabilities under the independence assumption stated earlier. This gives us a set of damaged roads and cities.</li>
-              <li>For every city, calculate the reachability metric using Dijkstra’s algorithm and the subsequent conditions defined above.</li>
-              <li>Repeat steps 2 and 3 for many independent iterations, then take the average reachability value for each city.</li>
+                <li>For every settlement, use Dijsktra’s Algorithm to find out the nearest relief hub.</li>
+                <li> If there is no access to a relief hub at all, declare the settlement to be <em>unreachable</em>,
+                  thus setting the <em>reachability</em> value to 0.
+                </li>
+                <li>If the nearest hub is more than 700km away, declare the settlement to be unreachable, thus setting
+                  the reachability to 0.
+                </li>
+                <li>All other cases imply that the settlement is still connected to the road network, thereby causing
+                  its reachability to be 1.
+                </li>
+              </ol>
+              </p>
+              <p>Settlements that are repeatedly unreachable for several realizations of a particular disaster are
+                vulnerable to that disaster. This leads us to the next section where we produce these several
+                realizations.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section><!-- #advanced-features -->
+
+  <!--==========================
+    SIMULATION
+  ============================-->
+  <section id="more-features" class="section-bg bg-white">
+    <div class="container">
+
+      <div class="section-header">
+        <h3 class="section-title">Simulation</h3>
+        <span class="section-divider"></span>
+      </div>
+
+      <div class="row">
+
+        <div class="col-12">
+          <div class="wow fadeInRight">
+            <p>Our goal, given a disaster with a specific set of parameters, is to use the above described probability
+              models to calculate the probability that a city is cut off from all external aid due to that disaster. We
+              cannot calculate this analytically as the relationships are too complicated to allow tractable analysis.
+              In such a case, a standard solution is Monte Carlo simulation. Given a disaster, the simulation proceeds
+              as follows:
+            <ol>
+              <li>Calculate the intensities at every point using the disaster model. Calculate the road segment and city
+                damage probabilities at every point using the damage model.
+              </li>
+              <li>Sample a particular realization of the damage from these probabilities under the independence
+                assumption stated earlier. This gives us a set of damaged roads and cities.
+              </li>
+              <li>For every city, calculate the reachability metric using Dijkstra’s algorithm and the subsequent
+                conditions defined above.
+              </li>
+              <li>Repeat steps 2 and 3 for many independent iterations, then take the average reachability value for
+                each city.
+              </li>
               <li>The risk/vulnerability for a city is 1 - average_reachability.</li>
             </ol>
-              </p>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section><!-- #more-features -->
-
-    <!--==========================
-      GITHUB LINK
-    ============================-->
-    <div id="results"></div>
-    <section id="call-to-action">
-      <div class="container">
-
-        <div class="row wow fadeInUp">
-          <div class="col-lg-9 text-center text-lg-left">
-            <h3 class="cta-title">Our app is Open Source!!!</h3>
-            <p class="cta-text m-0">Check out our github. It's all in there!</p>
-          </div>
-          <div class="col-lg-3 cta-btn-container text-center">
-            <a class="cta-btn align-middle" href="https://github.com/harishk1908/poseidon/" target="_blank">Go to Github</a>
-          </div>
-        </div>
-      </div>
-    </section><!-- #more-features -->
-
-    <!--==========================
-      Results and Insights
-    ============================-->
-    <section id="more-features" class="section-bg">
-      <div class="container" id="gallery">
-
-        <div class="section-header">
-          <h3 class="section-title">Results and Insights</h3>
-          <span class="section-divider"></span>
-        </div>
-
-        <div class="row">
-
-          <div class="col-lg-12">
-            <div class="box wow fadeInLeft clearfix">
-              <div class="icon gallery-item" style="width: 500px;">
-                <img href="{% static 'landing/img/results0.png' %}" class="gallery-popup"
-                  src="{% static 'landing/img/results0.png' %}" style="height: 240px">
-              </div>
-              <p class="description m-0">For the same disaster, different cities and network structures display very different risk metrics, and the patterns are in line with probabilistic graphical intuition.
-                <br>
-                Consider an example where we simulate a hurricane that starts near LA and heads beyond the Bay Area.
-                <br>
-              The hurricane exerts peak magnitude along its spine and becomes weaker as we move away to the edges, as we discussed in the disaster modeling earlier.
-                <br>
-                Despite the intensity being near-identical in the Bay Area and in the LA area, we'll find the risks to be very distinct!
-              </p>
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="box wow fadeInLeft clearfix">
-              <div class="icon gallery-item" style="width: 500px;">
-                <img href="{% static 'landing/img/results-sf.jpg' %}" class="gallery-popup"
-                  src="{% static 'landing/img/results-sf.jpg' %}" style="height: 250px; margin-bottom: 10px;">
-              </div>
-              <p class="description m-0">The Bay Area has numerous settlements that depend on a single road, and also has several risky settlements that can easily be cutoff from external relief. This illustrates the fact that “bus” or “path” networks are highly vulnerable to disconnection. Some isolated settlements (San Jose, Sacramento) have high connectivity in <b>diverse</b> directions and are risk-free.
-                <br>San Francisco does have 3 roads leading out, but two of those roads funnel very closely together into the path of the hurricane and are thus both put out of action. This is very likely in real scenario as well.
-              </p>
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="box wow fadeInRight clearfix">
-              <div class="icon gallery-item" style="width: 500px;">
-                <img href="{% static 'landing/img/results-la.jpg' %}" class="gallery-popup"
-                  src="{% static 'landing/img/results-la.jpg' %}" style="height: 250px; margin-bottom: 10px;">
-              </div>
-              <p class="description m-0">LA and its surrounding cities lie on a highly interconnected grid, and their risks are very low despite the equally high magnitude of the disaster. Grid structures are resilient to disruption due to the high amount of built-in redundancy - for every interior node, four edges must be removed to disconnect that node. We also notice that a few grid corners that have only two edges also have elevated vulnerability.
-                <br>
-Triangular structures, while not as expensive as grid structures still provide some amount of resiliency since two neighboring nodes must be removed to disconnect the graph.
-              </p>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section><!-- #more-features -->
-
-    <!--==========================
-      APP IS LIVE
-    ============================-->
-    <section id="call-to-action">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-9 text-center text-lg-left">
-            <h3 class="cta-title">Our app is live!!!</h3>
-            <p class="cta-text m-0">Curious what would happen if a magnitude 8 earthquake hit San Diego? <br>
-               Simulate hurricanes and earthquakes using our webapp. It's live!<br>
-               Go ahead! Try it out!
             </p>
           </div>
-          <div class="col-lg-3 cta-btn-container text-center">
-            <a class="cta-btn align-middle" href="{% url 'app' '' %}">Launch App</a>
-          </div>
         </div>
 
       </div>
-    </section><!-- #call-to-action -->
-
-    <!--==========================
-      Conclusions
-    ============================-->
-    <div id="conclusion"></div>
-    <section id="more-features" class="section-bg bg-white">
-      <div class="container">
-
-        <div class="section-header">
-          <h3 class="section-title">Conclusion</h3>
-          <span class="section-divider"></span>
-        </div>
-
-        <div class="row">
-
-          <div class="col-12">
-            <div class="wow fadeInRight">
-              <p>Our specific example shows that much of the Bay Area is very vulnerable to being isolated in case of a disaster of catastrophic disaster, although such a disaster by itself may seem unlikely. Further research along two completely independent paths is required to
-              <ol>
-              <li>Improve the accuracy of our simulation process by reducing some of the more general assumptions (uniform road quality, oversimplified disaster models) to make a stronger argument in favor of risk mitigation procedures that require possibly expensive public infrastructure projects.</li>
-              <li>Propose optimal changes to the transport network structure that best eliminate risk while still being socially and politically viable.</li>
-            </ol>
-              </p>
-              <p>From a technical standpoint, It is very interesting to see how disaster models and independence assumptions (think back to the massless pulleys, inextensible strings, incompressible fluids, spherical cows, point masses and all the outrageous things that we saw in high school physics) that are extremely simple when applied to real-life network data still manage to produce useful insights that are well aligned with our intuition on network resilience.</p>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section><!-- #more-features -->
-
-    <!--==========================
-      Suggested Improvements
-    ============================-->
-    <section id="faq">
-      <div class="container">
-
-        <div class="section-header">
-          <h3 class="section-title">Suggested Improvements</h3>
-          <span class="section-divider"></span>
-        </div>
-
-        <ul id="faq-list" class="wow fadeInUp">
-          <li>
-            <a data-toggle="collapse" class="collapsed" href="#improvements1">Dataset Upgrades <i class="ion-android-remove"></i></a>
-            <div id="improvements1" class="collapse" data-parent="#faq-list">
-              <p>
-                <ol>
-              <li class="border-0">Roads are not treated differently according to their different real-life qualities. The helpful presence of the quality bias factor in the damage model can allow us to introduce this variation into the simulation. We will also have to move to more informative road datasets such as OpenStreetMaps to derive this data.</li>
-              <li class="border-0">We are working on a very limited region, that of the California. Obviously, cities from neighboring states will also assist in case of a catastrophe, thus reducing the vulnerability of cities like Los Angeles.</li>
-            </ol>
-              </p>
-            </div>
-          </li>
-
-          <li>
-            <a data-toggle="collapse" href="#improvements2" class="collapsed">Functional Improvements <i class="ion-android-remove"></i></a>
-            <div id="improvements2" class="collapse" data-parent="#faq-list">
-              <p>
-                <ol>
-              <li class="border-0">Some previous research into the logistical side of post-event planning has considered deep factors like the volume of relief material required, the number of drivers, trucks, fuels, routing plans, etc. While this kind of low-level planning with insufficiently detailed computer models might end up with fragile “paper plans” that don’t really extend to the diverse range of situations that could manifest in the real world, they do point to the need to consider the widely varying needs of different cities in the aftermath of a disaster in terms of the volume of relief material they require as well as the variations in logistical challenges between different cities.</li>
-              <li class="border-0">Our disaster models, as well as our damage models, could use improvements. We are basing them on existing research, which by itself is quite sparse, so we could, with the assistance of subject experts, use more informed models. One example is to use a correlated damage model for the roads where the probability of a road segment being damaged has a conditional dependence on its neighbor being damaged (we are assuming conditional independence given the disaster magnitude at that point).</li>
-            </ol>
-              </p>
-            </div>
-          </li>
-
-          <li>
-            <a data-toggle="collapse" href="#improvements3" class="collapsed">Technical Improvements <i class="ion-android-remove"></i></a>
-            <div id="improvements3" class="collapse" data-parent="#faq-list">
-              <p>
-                <ol>
-              <li class="border-0">From an implementation standpoint, our simulation code is currently single-thread, single-machine, so it is not easily scalable to larger regions of interest. We should switch to using Pregel or other distributed graph libraries so that we can look at inter-state or even international assistance routes.</li>
-            </ol>
-              </p>
-            </div>
-          </li>
-        </ul>
-
-      </div>
-    </section><!-- #faq -->
-
-    <!--==========================
-      Our Team Section
-    ============================-->
-    <section id="team" class="section-bg">
-      <div class="container">
-        <div class="section-header">
-          <h3 class="section-title">Our Team</h3>
-          <span class="section-divider"></span>
-        </div>
-        <div class="row wow fadeInUp">
-          <div class="col-lg-4 col-md-4">
-            <div class="member">
-              <div class="pic"><img src="{% static 'landing/img/team/arif.jpg' %}" alt=""></div>
-              <h4>Arif Arman</h4>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-4">
-            <div class="member">
-              <div class="pic"><img src="{% static 'landing/img/team/harish.jpg' %}" alt=""></div>
-              <h4>Harish Kumar</h4>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-4">
-            <div class="member">
-              <div class="pic"><img src="{% static 'landing/img/team/shashwat.jpg' %}" alt=""></div>
-              <h4>Shashwat Mehta</h4>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section><!-- #team -->
-
-    <!--==========================
-      Gallery Section
-    ============================-->
-    <section id="gallery">
-      <div class="container-fluid">
-        <div class="section-header">
-          <h3 class="section-title">Gallery</h3>
-          <span class="section-divider"></span>
-        </div>
-
-        <div class="row no-gutters">
-
-          <div class="col-lg-4 col-md-6">
-            <div class="gallery-item wow fadeInUp">
-              <a href="{% static 'landing/img/gallery/screenshot-1.jpg' %}" class="gallery-popup">
-                <img src="{% static 'landing/img/gallery/screenshot-1.jpg' %}" alt="">
-              </a>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6">
-            <div class="gallery-item wow fadeInUp">
-              <a href="{% static 'landing/img/gallery/screenshot-2.jpg' %}" class="gallery-popup">
-                <img src="{% static 'landing/img/gallery/screenshot-5.jpg' %}" alt="">
-              </a>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6">
-            <div class="gallery-item wow fadeInUp">
-              <a href="{% static 'landing/img/gallery/screenshot-3.jpg' %}" class="gallery-popup">
-                <img src="{% static 'landing/img/gallery/screenshot-3.jpg' %}" alt="">
-              </a>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6">
-            <div class="gallery-item wow fadeInUp">
-              <a href="{% static 'landing/img/gallery/screenshot-4.jpg' %}" class="gallery-popup">
-                <img src="{% static 'landing/img/gallery/screenshot-4.jpg' %}" alt="">
-              </a>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6">
-            <div class="gallery-item wow fadeInUp">
-              <a href="{% static 'landing/img/gallery/screenshot-5.jpg' %}" class="gallery-popup">
-                <img src="{% static 'landing/img/gallery/screenshot-6.jpg' %}" alt="">
-              </a>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6">
-            <div class="gallery-item wow fadeInUp">
-              <a href="{% static 'landing/img/gallery/screenshot-6.jpg' %}" class="gallery-popup">
-                <img src="{% static 'landing/img/gallery/screenshot-7.jpg' %}" alt="">
-              </a>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-    </section><!-- #gallery -->
-
-  </main>
+    </div>
+  </section><!-- #more-features -->
 
   <!--==========================
-    Footer
+    GITHUB LINK
   ============================-->
-  <footer id="footer">
+  <div id="results"></div>
+  <section id="call-to-action">
     <div class="container">
+
+      <div class="row wow fadeInUp">
+        <div class="col-lg-9 text-center text-lg-left">
+          <h3 class="cta-title">Our app is Open Source!!!</h3>
+          <p class="cta-text m-0">Check out our github. It's all in there!</p>
+        </div>
+        <div class="col-lg-3 cta-btn-container text-center">
+          <a class="cta-btn align-middle" href="https://github.com/harishk1908/poseidon/" target="_blank">Go to
+            Github</a>
+        </div>
+      </div>
+    </div>
+  </section><!-- #more-features -->
+
+  <!--==========================
+    Results and Insights
+  ============================-->
+  <section id="more-features" class="section-bg">
+    <div class="container" id="gallery">
+
+      <div class="section-header">
+        <h3 class="section-title">Results and Insights</h3>
+        <span class="section-divider"></span>
+      </div>
+
       <div class="row">
-        <div class="col-lg-6 text-lg-left text-center">
-          <div class="copyright">
-            TAMU CSCE 676 Data Mining Project
-          </div>
-          <div class="credits">
-            Course Instructor: <a href="http://faculty.cse.tamu.edu/caverlee/" target="_blank">Dr. James Caverlee</a>
+
+        <div class="col-lg-12">
+          <div class="box wow fadeInLeft clearfix">
+            <div class="icon gallery-item" style="width: 500px;">
+              <img href="{% static 'landing/img/results0.png' %}" class="gallery-popup"
+                   src="{% static 'landing/img/results0.png' %}" style="height: 240px">
+            </div>
+            <p class="description m-0">For the same disaster, different cities and network structures display very
+              different risk metrics, and the patterns are in line with probabilistic graphical intuition.
+              <br>
+              Consider an example where we simulate a hurricane that starts near LA and heads beyond the Bay Area.
+              <br>
+              The hurricane exerts peak magnitude along its spine and becomes weaker as we move away to the edges, as we
+              discussed in the disaster modeling earlier.
+              <br>
+              Despite the intensity being near-identical in the Bay Area and in the LA area, we'll find the risks to be
+              very distinct!
+            </p>
           </div>
         </div>
         <div class="col-lg-6">
-          <nav class="footer-links text-lg-right text-center pt-2 pt-lg-0">
-            <a href="https://bootstrapmade.com/" target="_blank">
-              Template by: <span class="text-primary">BootstrapMade</span>
-            </a>
-          </nav>
+          <div class="box wow fadeInLeft clearfix">
+            <div class="icon gallery-item" style="width: 500px;">
+              <img href="{% static 'landing/img/results-sf.jpg' %}" class="gallery-popup"
+                   src="{% static 'landing/img/results-sf.jpg' %}" style="height: 250px; margin-bottom: 10px;">
+            </div>
+            <p class="description m-0">The Bay Area has numerous settlements that depend on a single road, and also has
+              several risky settlements that can easily be cutoff from external relief. This illustrates the fact that
+              “bus” or “path” networks are highly vulnerable to disconnection. Some isolated settlements (San Jose,
+              Sacramento) have high connectivity in <b>diverse</b> directions and are risk-free.
+              <br>San Francisco does have 3 roads leading out, but two of those roads funnel very closely together into
+              the path of the hurricane and are thus both put out of action. This is very likely in real scenario as
+              well.
+            </p>
+          </div>
         </div>
+        <div class="col-lg-6">
+          <div class="box wow fadeInRight clearfix">
+            <div class="icon gallery-item" style="width: 500px;">
+              <img href="{% static 'landing/img/results-la.jpg' %}" class="gallery-popup"
+                   src="{% static 'landing/img/results-la.jpg' %}" style="height: 250px; margin-bottom: 10px;">
+            </div>
+            <p class="description m-0">LA and its surrounding cities lie on a highly interconnected grid, and their
+              risks are very low despite the equally high magnitude of the disaster. Grid structures are resilient to
+              disruption due to the high amount of built-in redundancy - for every interior node, four edges must be
+              removed to disconnect that node. We also notice that a few grid corners that have only two edges also have
+              elevated vulnerability.
+              <br>
+              Triangular structures, while not as expensive as grid structures still provide some amount of resiliency
+              since two neighboring nodes must be removed to disconnect the graph.
+            </p>
+          </div>
+        </div>
+
       </div>
     </div>
-  </footer><!-- #footer -->
+  </section><!-- #more-features -->
 
-  <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+  <!--==========================
+    APP IS LIVE
+  ============================-->
+  <section id="call-to-action">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-9 text-center text-lg-left">
+          <h3 class="cta-title">Our app is live!!!</h3>
+          <p class="cta-text m-0">Curious what would happen if a magnitude 8 earthquake hit San Diego? <br>
+            Simulate hurricanes and earthquakes using our webapp. It's live!<br>
+            Go ahead! Try it out!
+          </p>
+        </div>
+        <div class="col-lg-3 cta-btn-container text-center">
+          <a class="cta-btn align-middle" href="{% url 'app' '' %}">Launch App</a>
+        </div>
+      </div>
 
-  <!-- JavaScript Libraries -->
-  <script src="{% static 'landing/lib/jquery/jquery.min.js' %}"></script>
-  <script src="{% static 'landing/lib/jquery/jquery-migrate.min.js' %}"></script>
-  <script src="{% static 'landing/lib/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-  <script src="{% static 'landing/lib/easing/easing.min.js' %}"></script>
-  <script src="{% static 'landing/lib/wow/wow.min.js' %}"></script>
-  <script src="{% static 'landing/lib/superfish/hoverIntent.js' %}"></script>
-  <script src="{% static 'landing/lib/superfish/superfish.min.js' %}"></script>
-  <script src="{% static 'landing/lib/magnific-popup/magnific-popup.min.js' %}"></script>
+    </div>
+  </section><!-- #call-to-action -->
 
-  <!-- Contact Form JavaScript File -->
-  <script src="{% static 'landing/contactform/contactform.js' %}"></script>
+  <!--==========================
+    Conclusions
+  ============================-->
+  <div id="conclusion"></div>
+  <section id="more-features" class="section-bg bg-white">
+    <div class="container">
 
-  <!-- Template Main Javascript File -->
-  <script src="{% static 'landing/js/main.js' %}"></script>
+      <div class="section-header">
+        <h3 class="section-title">Conclusion</h3>
+        <span class="section-divider"></span>
+      </div>
+
+      <div class="row">
+
+        <div class="col-12">
+          <div class="wow fadeInRight">
+            <p>Our specific example shows that much of the Bay Area is very vulnerable to being isolated in case of a
+              disaster of catastrophic disaster, although such a disaster by itself may seem unlikely. Further research
+              along two completely independent paths is required to
+            <ol>
+              <li>Improve the accuracy of our simulation process by reducing some of the more general assumptions
+                (uniform road quality, oversimplified disaster models) to make a stronger argument in favor of risk
+                mitigation procedures that require possibly expensive public infrastructure projects.
+              </li>
+              <li>Propose optimal changes to the transport network structure that best eliminate risk while still being
+                socially and politically viable.
+              </li>
+            </ol>
+            </p>
+            <p>From a technical standpoint, It is very interesting to see how disaster models and independence
+              assumptions (think back to the massless pulleys, inextensible strings, incompressible fluids, spherical
+              cows, point masses and all the outrageous things that we saw in high school physics) that are extremely
+              simple when applied to real-life network data still manage to produce useful insights that are well
+              aligned with our intuition on network resilience.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section><!-- #more-features -->
+
+  <!--==========================
+    Suggested Improvements
+  ============================-->
+  <section id="faq">
+    <div class="container">
+
+      <div class="section-header">
+        <h3 class="section-title">Suggested Improvements</h3>
+        <span class="section-divider"></span>
+      </div>
+
+      <ul id="faq-list" class="wow fadeInUp">
+        <li>
+          <a data-toggle="collapse" class="collapsed" href="#improvements1">Dataset Upgrades <i
+            class="ion-android-remove"></i></a>
+          <div id="improvements1" class="collapse" data-parent="#faq-list">
+            <p>
+            <ol>
+              <li class="border-0">Roads are not treated differently according to their different real-life qualities.
+                The helpful presence of the quality bias factor in the damage model can allow us to introduce this
+                variation into the simulation. We will also have to move to more informative road datasets such as
+                OpenStreetMaps to derive this data.
+              </li>
+              <li class="border-0">We are working on a very limited region, that of the California. Obviously, cities
+                from neighboring states will also assist in case of a catastrophe, thus reducing the vulnerability of
+                cities like Los Angeles.
+              </li>
+            </ol>
+            </p>
+          </div>
+        </li>
+
+        <li>
+          <a data-toggle="collapse" href="#improvements2" class="collapsed">Functional Improvements <i
+            class="ion-android-remove"></i></a>
+          <div id="improvements2" class="collapse" data-parent="#faq-list">
+            <p>
+            <ol>
+              <li class="border-0">Some previous research into the logistical side of post-event planning has considered
+                deep factors like the volume of relief material required, the number of drivers, trucks, fuels, routing
+                plans, etc. While this kind of low-level planning with insufficiently detailed computer models might end
+                up with fragile “paper plans” that don’t really extend to the diverse range of situations that could
+                manifest in the real world, they do point to the need to consider the widely varying needs of different
+                cities in the aftermath of a disaster in terms of the volume of relief material they require as well as
+                the variations in logistical challenges between different cities.
+              </li>
+              <li class="border-0">Our disaster models, as well as our damage models, could use improvements. We are
+                basing them on existing research, which by itself is quite sparse, so we could, with the assistance of
+                subject experts, use more informed models. One example is to use a correlated damage model for the roads
+                where the probability of a road segment being damaged has a conditional dependence on its neighbor being
+                damaged (we are assuming conditional independence given the disaster magnitude at that point).
+              </li>
+            </ol>
+            </p>
+          </div>
+        </li>
+
+        <li>
+          <a data-toggle="collapse" href="#improvements3" class="collapsed">Technical Improvements <i
+            class="ion-android-remove"></i></a>
+          <div id="improvements3" class="collapse" data-parent="#faq-list">
+            <p>
+            <ol>
+              <li class="border-0">From an implementation standpoint, our simulation code is currently single-thread,
+                single-machine, so it is not easily scalable to larger regions of interest. We should switch to using
+                Pregel or other distributed graph libraries so that we can look at inter-state or even international
+                assistance routes.
+              </li>
+            </ol>
+            </p>
+          </div>
+        </li>
+      </ul>
+
+    </div>
+  </section><!-- #faq -->
+
+  <!--==========================
+    Our Team Section
+  ============================-->
+  <section id="team" class="section-bg">
+    <div class="container">
+      <div class="section-header">
+        <h3 class="section-title">Our Team</h3>
+        <span class="section-divider"></span>
+      </div>
+      <div class="row wow fadeInUp">
+        <div class="col-lg-4 col-md-4">
+          <div class="member">
+            <div class="pic"><img src="{% static 'landing/img/team/arif.jpg' %}" alt=""></div>
+            <h4>Arif Arman</h4>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-4">
+          <div class="member">
+            <div class="pic"><img src="{% static 'landing/img/team/harish.jpg' %}" alt=""></div>
+            <h4>Harish Kumar</h4>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-4">
+          <div class="member">
+            <div class="pic"><img src="{% static 'landing/img/team/shashwat.jpg' %}" alt=""></div>
+            <h4>Shashwat Mehta</h4>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section><!-- #team -->
+
+  <!--==========================
+    Gallery Section
+  ============================-->
+  <section id="gallery">
+    <div class="container-fluid">
+      <div class="section-header">
+        <h3 class="section-title">Gallery</h3>
+        <span class="section-divider"></span>
+      </div>
+
+      <div class="row no-gutters">
+
+        <div class="col-lg-4 col-md-6">
+          <div class="gallery-item wow fadeInUp">
+            <a href="{% static 'landing/img/gallery/screenshot-1.jpg' %}" class="gallery-popup">
+              <img src="{% static 'landing/img/gallery/screenshot-1.jpg' %}" alt="">
+            </a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="gallery-item wow fadeInUp">
+            <a href="{% static 'landing/img/gallery/screenshot-2.jpg' %}" class="gallery-popup">
+              <img src="{% static 'landing/img/gallery/screenshot-5.jpg' %}" alt="">
+            </a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="gallery-item wow fadeInUp">
+            <a href="{% static 'landing/img/gallery/screenshot-3.jpg' %}" class="gallery-popup">
+              <img src="{% static 'landing/img/gallery/screenshot-3.jpg' %}" alt="">
+            </a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="gallery-item wow fadeInUp">
+            <a href="{% static 'landing/img/gallery/screenshot-4.jpg' %}" class="gallery-popup">
+              <img src="{% static 'landing/img/gallery/screenshot-4.jpg' %}" alt="">
+            </a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="gallery-item wow fadeInUp">
+            <a href="{% static 'landing/img/gallery/screenshot-5.jpg' %}" class="gallery-popup">
+              <img src="{% static 'landing/img/gallery/screenshot-6.jpg' %}" alt="">
+            </a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="gallery-item wow fadeInUp">
+            <a href="{% static 'landing/img/gallery/screenshot-6.jpg' %}" class="gallery-popup">
+              <img src="{% static 'landing/img/gallery/screenshot-7.jpg' %}" alt="">
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section><!-- #gallery -->
+
+</main>
+
+<!--==========================
+  Footer
+============================-->
+<footer id="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 text-lg-left text-center">
+        <div class="copyright">
+          TAMU CSCE 676 Data Mining Project
+        </div>
+        <div class="credits">
+          Course Instructor: <a href="http://faculty.cse.tamu.edu/caverlee/" target="_blank">Dr. James Caverlee</a>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <nav class="footer-links text-lg-right text-center pt-2 pt-lg-0">
+          <a href="https://bootstrapmade.com/" target="_blank">
+            Template by: <span class="text-primary">BootstrapMade</span>
+          </a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</footer><!-- #footer -->
+
+<a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+<!-- JavaScript Libraries -->
+<script src="{% static 'landing/lib/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'landing/lib/jquery/jquery-migrate.min.js' %}"></script>
+<script src="{% static 'landing/lib/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'landing/lib/easing/easing.min.js' %}"></script>
+<script src="{% static 'landing/lib/wow/wow.min.js' %}"></script>
+<script src="{% static 'landing/lib/superfish/hoverIntent.js' %}"></script>
+<script src="{% static 'landing/lib/superfish/superfish.min.js' %}"></script>
+<script src="{% static 'landing/lib/magnific-popup/magnific-popup.min.js' %}"></script>
+
+<!-- Contact Form JavaScript File -->
+<script src="{% static 'landing/contactform/contactform.js' %}"></script>
+
+<!-- Template Main Javascript File -->
+<script src="{% static 'landing/js/main.js' %}"></script>
 
 </body>
 </html>
