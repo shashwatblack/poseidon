@@ -342,6 +342,36 @@ After identifying the relief hubs, the process that we follow is:</p>
     </section><!-- #advanced-features -->
 
     <!--==========================
+      SIMULATION
+    ============================-->
+    <section id="more-features" class="section-bg bg-white">
+      <div class="container">
+
+        <div class="section-header">
+          <h3 class="section-title">Simulation</h3>
+          <span class="section-divider"></span>
+        </div>
+
+        <div class="row">
+
+          <div class="col-12">
+            <div class="wow fadeInRight">
+              <p>Our goal, given a disaster with a specific set of parameters, is to use the above described probability models to calculate the probability that a city is cut off from all external aid due to that disaster. We cannot calculate this analytically as the relationships are too complicated to allow tractable analysis. In such a case, a standard solution is Monte Carlo simulation. Given a disaster, the simulation proceeds as follows:
+              <ol>
+              <li>Calculate the intensities at every point using the disaster model. Calculate the road segment and city damage probabilities at every point using the damage model.</li>
+              <li>Sample a particular realization of the damage from these probabilities under the independence assumption stated earlier. This gives us a set of damaged roads and cities.</li>
+              <li>For every city, calculate the reachability metric using Dijkstra’s algorithm and the subsequent conditions defined above.</li>
+              <li>Repeat steps 2 and 3 for many independent iterations, then take the average reachability value for each city.</li>
+              <li>The risk/vulnerability for a city is 1 - average_reachability.</li>
+            </ol>
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section><!-- #more-features -->
+    <!--==========================
       APP IS LIVE
     ============================-->
     <section id="call-to-action">
