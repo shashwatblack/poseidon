@@ -124,6 +124,7 @@ export class MapComponent implements OnInit {
         break;
       case WizardSteps.InputParameters:
         this.clearSimulationResults();
+        this.enableMapEdit();
         break;
       case WizardSteps.Simulation:
         this.spinner.show();

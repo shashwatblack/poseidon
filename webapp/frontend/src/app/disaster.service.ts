@@ -147,7 +147,17 @@ export class DisasterService {
         this.state.wizardStep = WizardSteps.Results;
         this.invokeStateUpdate();
       },
-      err => console.error(err)
+      err => {
+        console.error(err);
+        alert("Server error.");
+        if (this.state.chosenDisaster === DisasterTaxonomies.Earthquake) {
+          this.startEarthquake();
+        } else if (this.state.chosenDisaster === DisasterTaxonomies.Hurricane) {
+          this.startHurricane();
+        }
+        this.state.wizardStep = WizardSteps.InputParameters;
+        this.invokeStateUpdate();
+      }
     );
   }
 
